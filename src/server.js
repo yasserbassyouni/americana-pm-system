@@ -4459,24 +4459,22 @@ app.post(
                     });
             }
 
+// ============================================================
+// ALLOW IMPORT OF VALID ROWS
+// INVALID ROWS ARE SKIPPED
+// ============================================================
 
-            if (
-                Number(
-                    preview.summary.errors
-                ) >
-                0
-            ) {
+if (
+    Number(
+        preview.summary.errors
+    ) >
+    0
+) {
 
-                return res
-                    .status(
-                        400
-                    )
-                    .json({
-
-                        error:
-                            `Excel contains ${preview.summary.errors} validation error(s). Correct the file before importing.`
-                    });
-            }
+    console.warn(
+        `Excel import contains ${preview.summary.errors} validation error(s). Invalid rows will be skipped.`
+    );
+}
 
 
             const result =
