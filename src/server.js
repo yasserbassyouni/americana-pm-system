@@ -721,6 +721,7 @@ function parseActiveValue(
 
 // ============================================================
 // PARSE FREQUENCY
+// Supports spelling mistakes and common Excel variations
 // ============================================================
 
 function parseFrequency(
@@ -734,11 +735,15 @@ function parseFrequency(
         ).trim();
 
 
-    const text =
+    let text =
         normalizeText(
             original
         );
 
+
+    // ========================================================
+    // EMPTY VALUE
+    // ========================================================
 
     if (
         !text
@@ -750,23 +755,56 @@ function parseFrequency(
                 false,
 
             error:
-                "Frequency is empty."
+                "Frequency is empty"
         };
     }
 
 
     // ========================================================
+    // CLEAN COMMON TYPING / SPELLING VARIATIONS
+    // ========================================================
+
+    text =
+        text
+            .replace(
+                /\s+/g,
+                " "
+            )
+            .trim();
+
+
+    // ========================================================
     // WEEKLY
+    //
+    // Supports:
+    // weekly
+    // weeekly
+    // wekly
+    // weekely
+    // every week
     // ========================================================
 
     if (
         text ===
-        "weekly" ||
+            "weekly" ||
+
         text ===
-        "week" ||
-        text.includes(
-            "every week"
-        )
+            "weeekly" ||
+
+        text ===
+            "wekly" ||
+
+        text ===
+            "weekely" ||
+
+        text ===
+            "weekley" ||
+
+        text ===
+            "every week" ||
+
+        text ===
+            "1 week"
     ) {
 
         return {
@@ -775,7 +813,7 @@ function parseFrequency(
                 true,
 
             frequency_text:
-                original,
+                "Weekly",
 
             frequency_type:
                 "weekly",
@@ -788,17 +826,37 @@ function parseFrequency(
 
     // ========================================================
     // MONTHLY
+    //
+    // Supports:
+    // monthly
+    // montly
+    // monthy
+    // mounthly
+    // every month
+    // 1 month
     // ========================================================
 
     if (
         text ===
-        "monthly" ||
+            "monthly" ||
+
         text ===
-        "month" ||
+            "montly" ||
+
         text ===
-        "1 month" ||
+            "monthy" ||
+
         text ===
-        "1month"
+            "mounthly" ||
+
+        text ===
+            "monthley" ||
+
+        text ===
+            "every month" ||
+
+        text ===
+            "1 month"
     ) {
 
         return {
@@ -807,7 +865,7 @@ function parseFrequency(
                 true,
 
             frequency_text:
-                original,
+                "Monthly",
 
             frequency_type:
                 "monthly",
@@ -820,12 +878,36 @@ function parseFrequency(
 
     // ========================================================
     // QUARTERLY
+    //
+    // Supports:
+    // quarterly
+    // quaterly
+    // quartely
+    // every 3 months
+    // 3 months
     // ========================================================
 
     if (
-        text.includes(
-            "quarter"
-        )
+        text ===
+            "quarterly" ||
+
+        text ===
+            "quaterly" ||
+
+        text ===
+            "quartely" ||
+
+        text ===
+            "quarterley" ||
+
+        text ===
+            "every 3 months" ||
+
+        text ===
+            "3 months" ||
+
+        text ===
+            "3 month"
     ) {
 
         return {
@@ -834,7 +916,7 @@ function parseFrequency(
                 true,
 
             frequency_text:
-                original,
+                "Quarterly",
 
             frequency_type:
                 "monthly",
@@ -847,18 +929,50 @@ function parseFrequency(
 
     // ========================================================
     // SEMIANNUAL
+    //
+    // Supports:
+    // semiannual
+    // semi annual
+    // semiannually
+    // semi annually
+    // half yearly
+    // every 6 months
+    // 6 months
     // ========================================================
 
     if (
-        text.includes(
-            "semiannual"
-        ) ||
-        text.includes(
-            "semi annual"
-        ) ||
-        text.includes(
-            "half year"
-        )
+        text ===
+            "semiannual" ||
+
+        text ===
+            "semi annual" ||
+
+        text ===
+            "semiannually" ||
+
+        text ===
+            "semi annually" ||
+
+        text ===
+            "semi anual" ||
+
+        text ===
+            "semi anualy" ||
+
+        text ===
+            "half yearly" ||
+
+        text ===
+            "half-yearly" ||
+
+        text ===
+            "every 6 months" ||
+
+        text ===
+            "6 months" ||
+
+        text ===
+            "6 month"
     ) {
 
         return {
@@ -867,7 +981,7 @@ function parseFrequency(
                 true,
 
             frequency_text:
-                original,
+                "Semiannual",
 
             frequency_type:
                 "monthly",
@@ -880,21 +994,47 @@ function parseFrequency(
 
     // ========================================================
     // ANNUAL
+    //
+    // Supports:
+    // annual
+    // annually
+    // anually
+    // anual
+    // yearly
+    // every year
+    // every 12 months
     // ========================================================
 
     if (
         text ===
-        "annual" ||
+            "annual" ||
+
         text ===
-        "annually" ||
+            "annually" ||
+
         text ===
-        "yearly" ||
+            "anually" ||
+
         text ===
-        "1 year" ||
+            "anual" ||
+
         text ===
-        "12 month" ||
+            "anualy" ||
+
         text ===
-        "12 months"
+            "yearly" ||
+
+        text ===
+            "every year" ||
+
+        text ===
+            "every 12 months" ||
+
+        text ===
+            "12 months" ||
+
+        text ===
+            "12 month"
     ) {
 
         return {
@@ -903,7 +1043,7 @@ function parseFrequency(
                 true,
 
             frequency_text:
-                original,
+                "Annual",
 
             frequency_type:
                 "monthly",
@@ -913,60 +1053,75 @@ function parseFrequency(
         };
     }
 
+// ========================================================
+// ADDITIONAL ANNUAL SPELLING VARIATIONS
+// ========================================================
 
-    // ========================================================
-    // YEARS
-    // ========================================================
+if (
+    text === "annualy" ||
+    text === "annuelly" ||
+    text === "annuel" ||
+    text === "year"
+) {
+    return {
+        valid: true,
+        frequency_text: "Annual",
+        frequency_type: "monthly",
+        frequency_value: 12
+    };
+}
 
-    const yearMatch =
-        text.match(
-            /(\d+(?:\.\d+)?)\s*(?:year|years|yr|yrs)/
-        );
 
+// ========================================================
+// YEAR-BASED FREQUENCY
+//
+// Examples:
+// 2 years  = 24 months
+// 3 years  = 36 months
+// 4 years  = 48 months
+// 5 years  = 60 months
+// every 3 years
+// ========================================================
+
+const yearMatch =
+    text.match(
+        /(?:every\s*)?(\d+)\s*years?/
+    );
+
+if (yearMatch) {
+
+    const years =
+        Number(yearMatch[1]);
 
     if (
-        yearMatch
+        Number.isFinite(years) &&
+        years > 0
     ) {
 
-        const years =
-            Number(
-                yearMatch[
-                    1
-                ]
-            );
+        const months =
+            years * 12;
 
-
-        if (
-            years >
-            0
-        ) {
-
-            return {
-
-                valid:
-                    true,
-
-                frequency_text:
-                    original,
-
-                frequency_type:
-                    "monthly",
-
-                frequency_value:
-                    years *
-                    12
-            };
-        }
+        return {
+            valid: true,
+            frequency_text:
+                `${years} ${years === 1 ? "year" : "years"}`,
+            frequency_type: "monthly",
+            frequency_value: months
+        };
     }
-
-
+}
     // ========================================================
-    // MONTHS
+    // MULTI-YEAR CALENDAR FREQUENCY
+    //
+    // Examples:
+    // 24 months
+    // 36 months
+    // every 24 months
     // ========================================================
 
     const monthMatch =
         text.match(
-            /(\d+(?:\.\d+)?)\s*(?:month|months|mo|mos)/
+            /(?:every\s*)?(\d+)\s*months?/
         );
 
 
@@ -983,8 +1138,11 @@ function parseFrequency(
 
 
         if (
+            Number.isFinite(
+                months
+            ) &&
             months >
-            0
+                0
         ) {
 
             return {
@@ -993,7 +1151,7 @@ function parseFrequency(
                     true,
 
                 frequency_text:
-                    original,
+                    `${months} months`,
 
                 frequency_type:
                     "monthly",
@@ -1006,12 +1164,20 @@ function parseFrequency(
 
 
     // ========================================================
-    // HOURS
+    // HOUR-BASED FREQUENCY
+    //
+    // Supports:
+    // 200 hr
+    // 300 hrs
+    // 500 hour
+    // 1000 hours
+    // 2,000 hr
+    // 6000hrs
     // ========================================================
 
     const hourMatch =
         text.match(
-            /([\d,]+(?:\.\d+)?)\s*(?:hr|hrs|hour|hours|h)\b/
+            /(\d[\d,]*)\s*(hr|hrs|hour|hours)\b/
         );
 
 
@@ -1032,8 +1198,11 @@ function parseFrequency(
 
 
         if (
+            Number.isFinite(
+                hours
+            ) &&
             hours >
-            0
+                0
         ) {
 
             return {
@@ -1042,7 +1211,7 @@ function parseFrequency(
                     true,
 
                 frequency_text:
-                    original,
+                    `${hours} hr`,
 
                 frequency_type:
                     "hours",
@@ -1055,11 +1224,18 @@ function parseFrequency(
 
 
     // ========================================================
-    // PURE NUMBER = HOURS
+    // NUMBER ONLY
+    //
+    // If Excel contains only a number such as:
+    // 500
+    // 1000
+    // 2000
+    //
+    // Treat as hour-based frequency.
     // ========================================================
 
     if (
-        /^[\d,]+(?:\.\d+)?$/
+        /^\d[\d,]*$/
             .test(
                 text
             )
@@ -1067,16 +1243,20 @@ function parseFrequency(
 
         const hours =
             Number(
-                text.replace(
-                    /,/g,
-                    ""
-                )
+                text
+                    .replace(
+                        /,/g,
+                        ""
+                    )
             );
 
 
         if (
+            Number.isFinite(
+                hours
+            ) &&
             hours >
-            0
+                0
         ) {
 
             return {
@@ -1085,7 +1265,7 @@ function parseFrequency(
                     true,
 
                 frequency_text:
-                    original,
+                    `${hours} hr`,
 
                 frequency_type:
                     "hours",
@@ -1096,6 +1276,10 @@ function parseFrequency(
         }
     }
 
+
+    // ========================================================
+    // UNKNOWN
+    // ========================================================
 
     return {
 
@@ -1106,8 +1290,6 @@ function parseFrequency(
             `Unknown frequency: ${original}`
     };
 }
-
-
 // ============================================================
 // READ EXCEL
 // ============================================================
@@ -1913,20 +2095,16 @@ async function buildImportPreview(
                 !machine
             ) {
 
-                errorCount++;
-
-
                 preview.push({
 
                     action:
-                        "Error",
+                        "New Machine",
 
                     ...row,
 
                     validation:
-                        `Machine not found in ${line.line_name}`
+                        `Machine ${row.machine_code || row.machine_no || row.machine_name} will be created in ${line.line_name}`
                 });
-
 
                 continue;
             }
