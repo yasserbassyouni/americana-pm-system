@@ -4620,7 +4620,49 @@ async function initializeDatabase() {
         await pool.query(
             schema
         );
+// ============================================================
+// ENSURE PRODUCTION LINES EXIST
+// ============================================================
 
+const productionLines = [
+    "Cookies Line",
+    "Roll Cake Line",
+    "Layer Cake Line",
+    "Mini Cookies Line",
+    "Pound Cake Line",
+    "Pizza Line"
+];
+
+for (
+    const lineName
+    of productionLines
+) {
+
+    await pool.query(
+        `
+        INSERT INTO production_lines
+        (
+            line_name
+        )
+        VALUES
+        (
+            $1
+        )
+        ON CONFLICT
+        (
+            line_name
+        )
+        DO NOTHING
+        `,
+        [
+            lineName
+        ]
+    );
+}
+
+console.log(
+    "Production lines initialized successfully"
+);
 
         console.log(
             "Database tables initialized successfully"
