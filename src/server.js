@@ -3890,7 +3890,7 @@ app.get(
             // =================================================
 
             const annualResult =
-                await pool.query(
+                await client.query(
                     `
                     SELECT
 
