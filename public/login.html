@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Login - Preventive Maintenance System
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="login.css"
+    >
+
+</head>
+
+
+<body>
+
+    <div class="login-page">
+
+        <div class="login-container">
+
+            <!-- ============================================== -->
+            <!-- COMPANY HEADER -->
+            <!-- ============================================== -->
+
+            <div class="login-header">
+
+                <div class="company-badge">
+                    NFC
+                </div>
+
+                <h1>
+                    National Food Company
+                </h1>
+
+                <h2>
+                    Americana Cake
+                </h2>
+
+                <p>
+                    Preventive Maintenance System
+                </p>
+
+            </div>
+
+
+            <!-- ============================================== -->
+            <!-- LOGIN FORM -->
+            <!-- ============================================== -->
+
+            <form
+                id="loginForm"
+                class="login-form"
+            >
+
+                <div class="form-title">
+
+                    <h3>
+                        Sign In
+                    </h3>
+
+                    <p>
+                        Enter your account details to continue
+                    </p>
+
+                </div>
+
+
+                <!-- USERNAME -->
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        placeholder="Enter username"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Enter password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            id="togglePassword"
+                            class="password-toggle"
+                            type="button"
+                            title="Show password"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ERROR MESSAGE -->
+
+                <div
+                    id="loginMessage"
+                    class="login-message hidden"
+                ></div>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button
+                    id="loginButton"
+                    class="login-button"
+                    type="submit"
+                >
+
+                    <span id="loginButtonText">
+                        Sign In
+                    </span>
+
+                    <span
+                        id="loginLoading"
+                        class="loading hidden"
+                    >
+                        Signing in...
+                    </span>
+
+                </button>
+
+            </form>
+
+
+            <!-- ============================================== -->
+            <!-- FOOTER -->
+            <!-- ============================================== -->
+
+            <div class="login-footer">
+
+                <p>
+                    Engineering & Maintenance Department
+                </p>
+
+                <span>
+                    Preventive Maintenance Management System
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="login.js"></script>
+
+</body>
+
+</html>

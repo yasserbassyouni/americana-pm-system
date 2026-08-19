@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        User Management - PM System
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="users.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- ================================================== -->
+    <!-- HEADER -->
+    <!-- ================================================== -->
+
+    <header class="users-header">
+
+        <div>
+
+            <h1>
+                National Food Company - Americana Cake
+            </h1>
+
+            <p>
+                Preventive Maintenance System
+            </p>
+
+        </div>
+
+
+        <div class="header-actions">
+
+            <div id="currentAdminName">
+                Administrator
+            </div>
+
+
+            <button
+                id="backToPM"
+                class="secondary-button"
+                type="button"
+            >
+                ← PM System
+            </button>
+
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+                type="button"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================================================== -->
+    <!-- MAIN -->
+    <!-- ================================================== -->
+
+    <main class="main-container">
+
+
+        <!-- ================================================== -->
+        <!-- TITLE -->
+        <!-- ================================================== -->
+
+        <section class="page-title">
+
+            <div>
+
+                <h2>
+                    User Management
+                </h2>
+
+                <p>
+                    Create and manage PM System user accounts
+                </p>
+
+            </div>
+
+
+            <button
+                id="openAddUser"
+                class="primary-button"
+                type="button"
+            >
+                + Add New User
+            </button>
+
+        </section>
+
+
+
+        <!-- ================================================== -->
+        <!-- SUMMARY -->
+        <!-- ================================================== -->
+
+        <section class="summary-grid">
+
+            <div class="summary-card">
+
+                <span>
+                    Total Users
+                </span>
+
+                <strong id="totalUsers">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Active Users
+                </span>
+
+                <strong id="activeUsers">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Technicians
+                </span>
+
+                <strong id="technicianUsers">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Supervisors
+                </span>
+
+                <strong id="supervisorUsers">
+                    0
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================================================== -->
+        <!-- USERS TABLE -->
+        <!-- ================================================== -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h3>
+                        System Users
+                    </h3>
+
+                    <p>
+                        Active and inactive accounts
+                    </p>
+
+                </div>
+
+
+                <input
+                    id="userSearch"
+                    type="text"
+                    placeholder="Search user..."
+                >
+
+            </div>
+
+
+            <div
+                id="pageMessage"
+                class="page-message"
+            ></div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Full Name
+                            </th>
+
+                            <th>
+                                Username
+                            </th>
+
+                            <th>
+                                Role
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Last Login
+                            </th>
+
+                            <th>
+                                Created
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="usersTableBody">
+
+                        <tr>
+
+                            <td colspan="7">
+                                Loading users...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================================================== -->
+    <!-- ADD USER MODAL -->
+    <!-- ================================================== -->
+
+    <div
+        id="userModal"
+        class="modal hidden"
+    >
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Add New User
+                    </h2>
+
+                    <p>
+                        Create a PM System account
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="closeUserModal"
+                    class="close-button"
+                    type="button"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <form id="newUserForm">
+
+                <div class="modal-body">
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="form-group">
+
+                        <label for="newFullName">
+                            Full Name
+                        </label>
+
+
+                        <input
+                            id="newFullName"
+                            type="text"
+                            placeholder="Example: Ahmed Ali"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- USERNAME -->
+
+                    <div class="form-group">
+
+                        <label for="newUsername">
+                            Username
+                        </label>
+
+
+                        <input
+                            id="newUsername"
+                            type="text"
+                            placeholder="Example: ahmed"
+                            autocomplete="off"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="newPassword">
+                            Password
+                        </label>
+
+
+                        <div class="password-wrapper">
+
+                            <input
+                                id="newPassword"
+                                type="password"
+                                placeholder="Minimum 8 characters"
+                                autocomplete="new-password"
+                                required
+                            >
+
+
+                            <button
+                                id="showNewPassword"
+                                class="show-password-button"
+                                type="button"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="confirmNewPassword">
+                            Confirm Password
+                        </label>
+
+
+                        <input
+                            id="confirmNewPassword"
+                            type="password"
+                            placeholder="Enter password again"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- ROLE -->
+
+                    <div class="form-group">
+
+                        <label for="newUserRole">
+                            User Role
+                        </label>
+
+
+                        <select
+                            id="newUserRole"
+                            required
+                        >
+
+                            <option value="technician">
+                                Technician
+                            </option>
+
+                            <option value="supervisor">
+                                Supervisor
+                            </option>
+
+                            <option value="viewer">
+                                Viewer
+                            </option>
+
+                            <option value="admin">
+                                Administrator
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- ROLE INFORMATION -->
+
+                    <div class="role-information">
+
+                        <strong>
+                            Role Access
+                        </strong>
+
+
+                        <div id="roleDescription">
+
+                            Technician can view PM schedules and
+                            Complete / Defer maintenance tasks.
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- MESSAGE -->
+
+                    <div
+                        id="modalMessage"
+                        class="modal-message"
+                    ></div>
+
+                </div>
+
+
+
+                <div class="modal-footer">
+
+                    <button
+                        id="createUserButton"
+                        class="primary-button"
+                        type="submit"
+                    >
+                        Create User
+                    </button>
+
+
+                    <button
+                        id="cancelUserButton"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="users.js"></script>
+
+</body>
+
+</html>

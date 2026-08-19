@@ -1,0 +1,2389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Preventive Maintenance System
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ================================================== -->
+    <!-- HEADER -->
+    <!-- ================================================== -->
+
+   <header class="top-header">
+
+    <!-- ================================================== -->
+    <!-- COMPANY INFORMATION -->
+    <!-- ================================================== -->
+
+    <div class="company-info">
+
+        <h1>
+            National Food Company - Americana Cake
+        </h1>
+
+        <p>
+            Preventive Maintenance System
+        </p>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- WEEK NAVIGATION -->
+    <!-- ================================================== -->
+
+    <div class="week-control">
+
+        <!-- PREVIOUS WEEK -->
+
+        <button
+            id="previousWeek"
+            class="week-nav-button"
+            type="button"
+            title="Previous Week"
+        >
+            ◀
+        </button>
+
+
+        <!-- WEEK INFORMATION -->
+
+        <div class="week-display">
+
+            <div class="week-main-info">
+
+                <div class="week-number-box">
+
+                    <span class="week-label">
+                        Week
+                    </span>
+
+                    <strong id="currentWeek">
+                        34
+                    </strong>
+
+                </div>
+
+
+                <div class="week-year-box">
+
+                    <span class="week-label">
+                        Year
+                    </span>
+
+                    <strong id="currentYear">
+                        2026
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- WEEK START / END DATE -->
+
+            <div
+                id="currentWeekDates"
+                class="week-date-range"
+            >
+                17 Aug 2026 - 23 Aug 2026
+            </div>
+
+        </div>
+
+
+        <!-- NEXT WEEK -->
+
+        <button
+            id="nextWeek"
+            class="week-nav-button"
+            type="button"
+            title="Next Week"
+        >
+            ▶
+        </button>
+
+    </div>
+
+</header>
+
+
+
+    <!-- ================================================== -->
+    <!-- MAIN NAVIGATION -->
+    <!-- ================================================== -->
+
+    <nav class="main-nav">
+
+        <button
+            id="dashboardNav"
+            class="nav-button active"
+            type="button"
+        >
+            Dashboard
+        </button>
+
+
+        <button
+            id="scheduleNav"
+            class="nav-button"
+            type="button"
+        >
+            PM Schedule
+        </button>
+
+
+        <button
+            id="annualPlanNav"
+            class="nav-button"
+            type="button"
+        >
+            Annual Plan
+        </button>
+
+
+        <button
+            id="reportsNav"
+            class="nav-button"
+            type="button"
+        >
+            Reports
+        </button>
+
+
+        <button
+            id="calendarNav"
+            class="nav-button"
+            type="button"
+        >
+            PM Calendar
+        </button>
+
+
+        <button
+            id="importNav"
+            class="nav-button"
+            type="button"
+        >
+            Import Excel
+        </button>
+
+    </nav>
+
+
+
+    <!-- ================================================== -->
+    <!-- MAIN -->
+    <!-- ================================================== -->
+
+    <main class="main-container">
+
+
+        <!-- ================================================== -->
+        <!-- DASHBOARD VIEW -->
+        <!-- ================================================== -->
+
+        <section
+            id="dashboardView"
+            class="view-section"
+        >
+
+
+            <!-- SUMMARY -->
+
+            <section class="summary-grid">
+
+                <div class="summary-card pending-card">
+
+                    <div class="summary-label">
+                        Pending
+                    </div>
+
+                    <div
+                        id="pendingCount"
+                        class="summary-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card completed-card">
+
+                    <div class="summary-label">
+                        Completed
+                    </div>
+
+                    <div
+                        id="completedCount"
+                        class="summary-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card deferred-card">
+
+                    <div class="summary-label">
+                        Deferred
+                    </div>
+
+                    <div
+                        id="deferredCount"
+                        class="summary-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card total-card">
+
+                    <div class="summary-label">
+                        Total PM
+                    </div>
+
+                    <div
+                        id="totalCount"
+                        class="summary-number"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================================================== -->
+            <!-- PRODUCTION LINES -->
+            <!-- ================================================== -->
+
+            <section class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Production Lines
+                        </h2>
+
+                        <p>
+                            Select a production line
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="lineButtons"
+                    class="line-grid"
+                ></div>
+
+            </section>
+
+
+
+            <!-- ================================================== -->
+            <!-- MACHINES -->
+            <!-- ================================================== -->
+
+            <section
+                id="machineSection"
+                class="panel hidden"
+            >
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2 id="selectedLineTitle">
+                            Production Line
+                        </h2>
+
+                        <p>
+                            Select a machine
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        id="backToLines"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        ← Back to Lines
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="machineGrid"
+                    class="machine-grid"
+                ></div>
+
+            </section>
+
+
+
+            <!-- ================================================== -->
+            <!-- PM TASKS -->
+            <!-- ================================================== -->
+
+            <section
+                id="pmSection"
+                class="panel hidden"
+            >
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2 id="selectedMachineTitle">
+                            Machine
+                        </h2>
+
+                        <p id="selectedMachineInfo"></p>
+
+                    </div>
+
+
+                    <button
+                        id="backToMachines"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        ← Back to Machines
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="pmList"
+                    class="pm-list"
+                ></div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- ================================================== -->
+        <!-- WEEKLY PM SCHEDULE -->
+        <!-- ================================================== -->
+
+        <section
+            id="scheduleView"
+            class="view-section hidden"
+        >
+
+            <section class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Full PM Schedule
+                        </h2>
+
+                        <p>
+                            Weekly preventive maintenance schedule
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FILTERS -->
+
+                <div class="schedule-filters">
+
+                    <select id="scheduleLineFilter">
+
+                        <option value="">
+                            All Production Lines
+                        </option>
+
+                    </select>
+
+
+                    <select id="scheduleStatusFilter">
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Completed">
+                            Completed
+                        </option>
+
+                        <option value="Deferred">
+                            Deferred
+                        </option>
+
+                    </select>
+
+
+                    <select id="scheduleFrequencyFilter">
+
+                        <option value="">
+                            All Frequencies
+                        </option>
+
+                    </select>
+
+
+                    <input
+                        id="scheduleSearch"
+                        type="text"
+                        placeholder="Search machine, part or PM task..."
+                    >
+
+                </div>
+
+
+
+                <!-- TABLE -->
+
+                <div class="table-wrapper">
+
+                    <table class="schedule-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Line</th>
+                                <th>Machine</th>
+                                <th>Section</th>
+                                <th>Part</th>
+                                <th>Maintenance</th>
+                                <th>Frequency</th>
+                                <th>Status</th>
+                                <th>Technician</th>
+                                <th>Completion Date</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="scheduleTableBody">
+
+                            <tr>
+
+                                <td colspan="9">
+                                    Loading PM schedule...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- ================================================== -->
+        <!-- ANNUAL PLAN VIEW -->
+        <!-- ================================================== -->
+
+        <section
+            id="annualPlanView"
+            class="view-section hidden"
+        >
+
+            <section class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Annual Preventive Maintenance Plan
+                        </h2>
+
+                        <p>
+                            Complete yearly PM master schedule
+                        </p>
+
+                    </div>
+
+
+                    <div class="annual-actions">
+
+                        <select id="annualYearSelect">
+
+                            <option value="2026">
+                                2026
+                            </option>
+
+                            <option value="2027">
+                                2027
+                            </option>
+
+                            <option value="2028">
+                                2028
+                            </option>
+
+                            <option value="2029">
+                                2029
+                            </option>
+
+                            <option value="2030">
+                                2030
+                            </option>
+
+                        </select>
+
+
+                        <button
+                            id="exportAnnualExcel"
+                            class="primary-button"
+                            type="button"
+                        >
+                            Export Excel
+                        </button>
+
+
+                        <button
+                            id="exportAnnualPdf"
+                            class="secondary-button"
+                            type="button"
+                        >
+                            Export PDF
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ANNUAL SUMMARY -->
+
+                <div class="summary-grid">
+
+                    <div class="summary-card total-card">
+
+                        <div class="summary-label">
+                            Annual Planned
+                        </div>
+
+                        <div
+                            id="annualTotal"
+                            class="summary-number"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-card completed-card">
+
+                        <div class="summary-label">
+                            Completed
+                        </div>
+
+                        <div
+                            id="annualCompleted"
+                            class="summary-number"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-card pending-card">
+
+                        <div class="summary-label">
+                            Pending
+                        </div>
+
+                        <div
+                            id="annualPending"
+                            class="summary-number"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-card deferred-card">
+
+                        <div class="summary-label">
+                            Deferred
+                        </div>
+
+                        <div
+                            id="annualDeferred"
+                            class="summary-number"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FILTERS -->
+
+                <div class="schedule-filters annual-filter-grid">
+
+                    <select id="annualLineFilter">
+
+                        <option value="">
+                            All Production Lines
+                        </option>
+
+                    </select>
+
+
+                    <select id="annualWeekFilter">
+
+                        <option value="">
+                            All Weeks
+                        </option>
+
+                    </select>
+
+
+                    <select id="annualStatusFilter">
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Completed">
+                            Completed
+                        </option>
+
+                        <option value="Deferred">
+                            Deferred
+                        </option>
+
+                    </select>
+
+
+                    <select id="annualFrequencyFilter">
+
+                        <option value="">
+                            All Frequencies
+                        </option>
+
+                    </select>
+
+
+                    <input
+                        id="annualSearch"
+                        type="text"
+                        placeholder="Search machine, part or PM task..."
+                    >
+
+                </div>
+
+
+
+                <!-- TABLE -->
+
+                <div class="table-wrapper">
+
+                    <table class="schedule-table annual-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Week</th>
+                                <th>Line</th>
+                                <th>Machine</th>
+                                <th>Section</th>
+                                <th>Part</th>
+                                <th>Maintenance</th>
+                                <th>Frequency</th>
+                                <th>Status</th>
+                                <th>Technician</th>
+                                <th>Action Date</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="annualPlanTableBody">
+
+                            <tr>
+
+                                <td colspan="10">
+                                    Select Annual Plan to load data.
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- ================================================== -->
+        <!-- REPORTS VIEW -->
+        <!-- ================================================== -->
+
+        <section
+            id="reportsView"
+            class="view-section hidden"
+        >
+
+            <section class="panel">
+
+
+                <!-- REPORT HEADER -->
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            PM Performance Report
+                        </h2>
+
+                        <p>
+                            Weekly, monthly, YTD and full-year PM adherence
+                        </p>
+
+                    </div>
+
+
+                    <div class="annual-actions">
+
+                        <select id="reportYearSelect">
+
+                            <option value="2026">
+                                2026
+                            </option>
+
+                            <option value="2027">
+                                2027
+                            </option>
+
+                            <option value="2028">
+                                2028
+                            </option>
+
+                            <option value="2029">
+                                2029
+                            </option>
+
+                            <option value="2030">
+                                2030
+                            </option>
+
+                        </select>
+
+
+                        <button
+                            id="exportReportExcel"
+                            class="primary-button"
+                            type="button"
+                        >
+                            Export Excel
+                        </button>
+
+
+                        <button
+                            id="exportReportPdf"
+                            class="secondary-button"
+                            type="button"
+                        >
+                            Export PDF
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- YTD PERFORMANCE -->
+                <!-- ================================================== -->
+
+                <div class="report-section-title">
+
+                    <div>
+
+                        <h3>
+                            Year-To-Date Performance
+                        </h3>
+
+                        <p>
+                            PM performance from Week 1 through the current reporting week
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="report-summary-grid report-summary-five">
+
+                    <div class="report-card">
+
+                        <span>
+                            YTD Planned
+                        </span>
+
+                        <strong id="reportYtdPlanned">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>
+                            YTD Completed
+                        </span>
+
+                        <strong id="reportYtdCompleted">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>
+                            YTD Pending
+                        </span>
+
+                        <strong id="reportYtdPending">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>
+                            YTD Deferred
+                        </span>
+
+                        <strong id="reportYtdDeferred">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card adherence-report-card">
+
+                        <span>
+                            YTD Adherence
+                        </span>
+
+                        <strong id="reportYtdAdherence">
+                            0%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- FULL YEAR PERFORMANCE -->
+                <!-- ================================================== -->
+
+                <div class="report-section-title">
+
+                    <div>
+
+                        <h3>
+                            Full-Year Performance
+                        </h3>
+
+                        <p>
+                            Performance against the complete annual PM plan
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="report-summary-grid report-summary-five">
+
+                    <div class="report-card">
+
+                        <span>
+                            Full-Year Planned
+                        </span>
+
+                        <strong id="reportAnnualPlanned">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>
+                            Full-Year Completed
+                        </span>
+
+                        <strong id="reportAnnualCompleted">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>
+                            Full-Year Pending
+                        </span>
+
+                        <strong id="reportAnnualPending">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>
+                            Full-Year Deferred
+                        </span>
+
+                        <strong id="reportAnnualDeferred">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card adherence-report-card">
+
+                        <span>
+                            Full-Year Adherence
+                        </span>
+
+                        <strong id="reportAnnualAdherence">
+                            0%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- WEEKLY ADHERENCE -->
+                <!-- ================================================== -->
+
+                <div class="report-section-title">
+
+                    <div>
+
+                        <h3>
+                            Weekly PM Adherence
+                        </h3>
+
+                        <p>
+                            Completed PM ÷ Planned PM × 100
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="schedule-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Week</th>
+                                <th>Planned</th>
+                                <th>Completed</th>
+                                <th>Pending</th>
+                                <th>Deferred</th>
+                                <th>Adherence %</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="weeklyReportTableBody">
+
+                            <tr>
+
+                                <td colspan="6">
+                                    Loading weekly report...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- MONTHLY ADHERENCE -->
+                <!-- ================================================== -->
+
+                <div class="report-section-title">
+
+                    <div>
+
+                        <h3>
+                            Monthly PM Adherence
+                        </h3>
+
+                        <p>
+                            Based on the planned PM week
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="schedule-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Month</th>
+                                <th>Planned</th>
+                                <th>Completed</th>
+                                <th>Pending</th>
+                                <th>Deferred</th>
+                                <th>Adherence %</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="monthlyReportTableBody">
+
+                            <tr>
+
+                                <td colspan="6">
+                                    Loading monthly report...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- LINE PERFORMANCE -->
+                <!-- ================================================== -->
+
+                <div class="report-section-title">
+
+                    <div>
+
+                        <h3>
+                            Production Line Performance
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="schedule-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Production Line</th>
+                                <th>Planned</th>
+                                <th>Completed</th>
+                                <th>Pending</th>
+                                <th>Deferred</th>
+                                <th>Adherence %</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="reportLineTableBody">
+
+                            <tr>
+
+                                <td colspan="6">
+                                    Loading line report...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- DETAILED PM ACTIONS -->
+                <!-- ================================================== -->
+
+                <div class="report-section-title report-actions-title">
+
+                    <div>
+
+                        <h3>
+                            Detailed PM Actions
+                        </h3>
+
+                        <p>
+                            Filter by line, machine, week and status
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="schedule-filters report-filter-grid">
+
+                    <select id="reportLineFilter">
+
+                        <option value="">
+                            All Production Lines
+                        </option>
+
+                    </select>
+
+
+                    <select id="reportMachineFilter">
+
+                        <option value="">
+                            All Machines
+                        </option>
+
+                    </select>
+
+
+                    <select id="reportStatusFilter">
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Completed">
+                            Completed
+                        </option>
+
+                        <option value="Deferred">
+                            Deferred
+                        </option>
+
+                    </select>
+
+
+                    <select id="reportWeekFilter">
+
+                        <option value="">
+                            All Weeks
+                        </option>
+
+                    </select>
+
+
+                    <input
+                        id="reportSearch"
+                        type="text"
+                        placeholder="Search machine, technician, part or task..."
+                    >
+
+                </div>
+
+
+
+                <div class="table-wrapper">
+
+                    <table class="schedule-table report-actions-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Week</th>
+                                <th>Line</th>
+                                <th>Machine</th>
+                                <th>Part</th>
+                                <th>PM Task</th>
+                                <th>Frequency</th>
+                                <th>Status</th>
+                                <th>Technician</th>
+                                <th>Action Date</th>
+                                <th>Deferred Reason</th>
+                                <th>Notes</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="reportActionsTableBody">
+
+                            <tr>
+
+                                <td colspan="11">
+                                    Loading PM actions...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- ================================================== -->
+        <!-- PM CALENDAR MATRIX -->
+        <!-- ================================================== -->
+
+        <section
+            id="calendarView"
+            class="view-section hidden"
+        >
+
+            <section class="panel">
+
+
+                <!-- HEADER -->
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            PM Calendar Matrix
+                        </h2>
+
+                        <p>
+                            Annual PM calendar by machine, task and week
+                        </p>
+
+                    </div>
+
+
+                    <div class="annual-actions">
+
+                        <button
+                            id="exportCalendarExcel"
+                            class="primary-button"
+                            type="button"
+                        >
+                            Export Excel
+                        </button>
+
+
+                        <button
+                            id="exportCalendarPdf"
+                            class="secondary-button"
+                            type="button"
+                        >
+                            Export PDF
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- CALENDAR FILTERS -->
+                <!-- ================================================== -->
+
+                <div class="calendar-filter-panel">
+
+                    <div class="calendar-filter-grid">
+
+
+                        <!-- YEAR -->
+
+                        <div class="calendar-filter-item">
+
+                            <label for="calendarYearFilter">
+                                Year
+                            </label>
+
+                            <select id="calendarYearFilter">
+
+                                <option value="2026">
+                                    2026
+                                </option>
+
+                                <option value="2027">
+                                    2027
+                                </option>
+
+                                <option value="2028">
+                                    2028
+                                </option>
+
+                                <option value="2029">
+                                    2029
+                                </option>
+
+                                <option value="2030">
+                                    2030
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- LINE -->
+
+                        <div class="calendar-filter-item">
+
+                            <label for="calendarLineFilter">
+                                Production Line
+                            </label>
+
+                            <select id="calendarLineFilter">
+
+                                <option value="">
+                                    All Production Lines
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- MACHINE -->
+
+                        <div class="calendar-filter-item">
+
+                            <label for="calendarMachineFilter">
+                                Machine
+                            </label>
+
+                            <select id="calendarMachineFilter">
+
+                                <option value="">
+                                    All Machines
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- FREQUENCY -->
+
+                        <div class="calendar-filter-item">
+
+                            <label for="calendarFrequencyFilter">
+                                Frequency
+                            </label>
+
+                            <select id="calendarFrequencyFilter">
+
+                                <option value="">
+                                    All Frequencies
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- MONTH -->
+
+                        <div class="calendar-filter-item">
+
+                            <label for="calendarMonthFilter">
+                                Month
+                            </label>
+
+                            <select id="calendarMonthFilter">
+
+                                <option value="">
+                                    All Months
+                                </option>
+
+                                <option value="1">
+                                    January
+                                </option>
+
+                                <option value="2">
+                                    February
+                                </option>
+
+                                <option value="3">
+                                    March
+                                </option>
+
+                                <option value="4">
+                                    April
+                                </option>
+
+                                <option value="5">
+                                    May
+                                </option>
+
+                                <option value="6">
+                                    June
+                                </option>
+
+                                <option value="7">
+                                    July
+                                </option>
+
+                                <option value="8">
+                                    August
+                                </option>
+
+                                <option value="9">
+                                    September
+                                </option>
+
+                                <option value="10">
+                                    October
+                                </option>
+
+                                <option value="11">
+                                    November
+                                </option>
+
+                                <option value="12">
+                                    December
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- WEEK FROM -->
+
+                        <div class="calendar-filter-item">
+
+                            <label for="calendarWeekFrom">
+                                Week From
+                            </label>
+
+                            <select id="calendarWeekFrom"></select>
+
+                        </div>
+
+
+
+                        <!-- WEEK TO -->
+
+                        <div class="calendar-filter-item">
+
+                            <label for="calendarWeekTo">
+                                Week To
+                            </label>
+
+                            <select id="calendarWeekTo"></select>
+
+                        </div>
+
+
+
+                        <!-- SEARCH -->
+
+                        <div class="calendar-filter-item calendar-search-item">
+
+                            <label for="calendarSearch">
+                                Search
+                            </label>
+
+                            <input
+                                id="calendarSearch"
+                                type="text"
+                                placeholder="Machine, part or PM task..."
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="calendar-filter-actions">
+
+                        <button
+                            id="applyCalendarFilters"
+                            class="primary-button"
+                            type="button"
+                        >
+                            Apply Filters
+                        </button>
+
+
+                        <button
+                            id="resetCalendarFilters"
+                            class="secondary-button"
+                            type="button"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- SELECTED RANGE INFORMATION -->
+                <!-- ================================================== -->
+
+                <div class="calendar-range-info">
+
+                    <span>
+                        Selected Range:
+                    </span>
+
+                    <strong id="calendarRangeLabel">
+                        Week 1 - Week 52
+                    </strong>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- RANGE KPI -->
+                <!-- ================================================== -->
+
+                <div class="report-summary-grid report-summary-five">
+
+                    <div class="report-card">
+
+                        <span>
+                            Planned
+                        </span>
+
+                        <strong id="calendarPlanned">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>
+                            Completed
+                        </span>
+
+                        <strong id="calendarCompleted">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>
+                            Pending
+                        </span>
+
+                        <strong id="calendarPending">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card">
+
+                        <span>
+                            Deferred
+                        </span>
+
+                        <strong id="calendarDeferred">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-card adherence-report-card">
+
+                        <span>
+                            Adherence
+                        </span>
+
+                        <strong id="calendarAdherence">
+                            0%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- STATUS LEGEND -->
+                <!-- ================================================== -->
+
+                <div class="calendar-legend">
+
+                    <span class="calendar-legend-item">
+
+                        <span class="calendar-status-dot completed-dot"></span>
+
+                        Completed
+
+                    </span>
+
+
+                    <span class="calendar-legend-item">
+
+                        <span class="calendar-status-dot pending-dot"></span>
+
+                        Pending
+
+                    </span>
+
+
+                    <span class="calendar-legend-item">
+
+                        <span class="calendar-status-dot deferred-dot"></span>
+
+                        Deferred
+
+                    </span>
+
+
+                    <span class="calendar-legend-item">
+
+                        <span class="calendar-status-dot notplanned-dot"></span>
+
+                        Not Planned
+
+                    </span>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- PM MATRIX -->
+                <!-- ================================================== -->
+
+                <div class="calendar-table-wrapper">
+
+                    <table
+                        id="calendarMatrixTable"
+                        class="calendar-matrix-table"
+                    >
+
+                        <thead id="calendarMatrixHead">
+
+                            <tr>
+
+                                <th>
+                                    Line
+                                </th>
+
+                                <th>
+                                    Machine
+                                </th>
+
+                                <th>
+                                    Part
+                                </th>
+
+                                <th>
+                                    PM Task
+                                </th>
+
+                                <th>
+                                    Frequency
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="calendarMatrixBody">
+
+                            <tr>
+
+                                <td
+                                    colspan="5"
+                                    style="text-align:center;"
+                                >
+                                    Select filters to load PM Calendar.
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- ================================================== -->
+        <!-- IMPORT EXCEL -->
+        <!-- ================================================== -->
+
+        <section
+            id="importView"
+            class="view-section hidden"
+        >
+
+            <section class="panel">
+
+
+                <!-- HEADER -->
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Import / Update PM Master
+                        </h2>
+
+                        <p>
+                            Upload an updated Excel PM master without deleting maintenance history
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- IMPORTANT INFORMATION -->
+                <!-- ================================================== -->
+
+                <div class="import-information">
+
+                    <h3>
+                        Safe PM Master Synchronization
+                    </h3>
+
+                    <p>
+                        Upload the updated PM Excel file whenever tasks,
+                        machines or frequencies are changed.
+                    </p>
+
+
+                    <ul>
+
+                        <li>
+                            New PM tasks will be added.
+                        </li>
+
+                        <li>
+                            Existing PM tasks can be updated.
+                        </li>
+
+                        <li>
+                            Existing PM history will not be deleted.
+                        </li>
+
+                        <li>
+                            Completed and deferred PM records will remain.
+                        </li>
+
+                        <li>
+                            Removed PM master tasks can be marked inactive.
+                        </li>
+
+                        <li>
+                            Future PM schedules will use the updated master.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- FILE UPLOAD -->
+                <!-- ================================================== -->
+
+                <div class="import-upload-area">
+
+                    <div class="import-upload-icon">
+                        XLSX
+                    </div>
+
+
+                    <h3>
+                        Select PM Excel File
+                    </h3>
+
+
+                    <p>
+                        Supported format: .xlsx or .xls
+                    </p>
+
+
+                    <input
+                        id="pmExcelFile"
+                        type="file"
+                        accept=".xlsx,.xls"
+                    >
+
+
+                    <div
+                        id="selectedExcelFileName"
+                        class="selected-file-name"
+                    >
+                        No file selected
+                    </div>
+
+
+                    <div class="import-button-row">
+
+                        <button
+                            id="previewExcelImport"
+                            class="secondary-button"
+                            type="button"
+                        >
+                            Preview & Validate
+                        </button>
+
+
+                        <button
+                            id="confirmExcelImport"
+                            class="primary-button"
+                            type="button"
+                            disabled
+                        >
+                            Import / Update PM Master
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- IMPORT SUMMARY -->
+                <!-- ================================================== -->
+
+                <div
+                    id="importSummarySection"
+                    class="hidden"
+                >
+
+                    <div class="report-section-title">
+
+                        <div>
+
+                            <h3>
+                                Import Validation Summary
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="import-summary-grid">
+
+                        <div class="import-summary-card">
+
+                            <span>
+                                Excel Rows
+                            </span>
+
+                            <strong id="importTotalRows">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="import-summary-card">
+
+                            <span>
+                                New Tasks
+                            </span>
+
+                            <strong id="importNewTasks">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="import-summary-card">
+
+                            <span>
+                                Updated
+                            </span>
+
+                            <strong id="importUpdatedTasks">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="import-summary-card">
+
+                            <span>
+                                Unchanged
+                            </span>
+
+                            <strong id="importUnchangedTasks">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="import-summary-card">
+
+                            <span>
+                                Inactive
+                            </span>
+
+                            <strong id="importInactiveTasks">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="import-summary-card">
+
+                            <span>
+                                Errors
+                            </span>
+
+                            <strong id="importErrorCount">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================== -->
+                <!-- IMPORT MESSAGE -->
+                <!-- ================================================== -->
+
+                <div
+                    id="importMessage"
+                    class="import-message"
+                ></div>
+
+
+
+                <!-- ================================================== -->
+                <!-- PREVIEW TABLE -->
+                <!-- ================================================== -->
+
+                <div
+                    id="importPreviewSection"
+                    class="hidden"
+                >
+
+                    <div class="report-section-title">
+
+                        <div>
+
+                            <h3>
+                                Excel Preview
+                            </h3>
+
+                            <p>
+                                Review changes before confirming the import
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="schedule-table import-preview-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Action
+                                    </th>
+
+                                    <th>
+                                        Line
+                                    </th>
+
+                                    <th>
+                                        Machine
+                                    </th>
+
+                                    <th>
+                                        Section
+                                    </th>
+
+                                    <th>
+                                        Part
+                                    </th>
+
+                                    <th>
+                                        PM Task
+                                    </th>
+
+                                    <th>
+                                        Frequency
+                                    </th>
+
+                                    <th>
+                                        Validation
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="importPreviewTableBody">
+
+                                <tr>
+
+                                    <td colspan="8">
+                                        No Excel file preview available.
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ================================================== -->
+    <!-- PM ACTION MODAL -->
+    <!-- ================================================== -->
+
+    <div
+        id="pmModal"
+        class="modal hidden"
+    >
+
+        <div class="modal-overlay"></div>
+
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="modalTitle">
+                        PM Action
+                    </h2>
+
+                    <p id="modalTask"></p>
+
+                </div>
+
+
+                <button
+                    id="closeModal"
+                    class="close-button"
+                    type="button"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+
+                <!-- TECHNICIAN -->
+
+                <div class="form-group">
+
+                    <label for="technicianName">
+                        Technician Name
+                    </label>
+
+                    <input
+                        id="technicianName"
+                        type="text"
+                        placeholder="Enter technician name"
+                    >
+
+                </div>
+
+
+
+                <!-- DEFERRED REASON -->
+
+                <div
+                    id="deferredReasonGroup"
+                    class="form-group hidden"
+                >
+
+                    <label for="deferredReason">
+                        Deferred Reason
+                    </label>
+
+
+                    <select id="deferredReason">
+
+                        <option value="">
+                            Select reason
+                        </option>
+
+                        <option value="Production running">
+                            Production running
+                        </option>
+
+                        <option value="Machine unavailable">
+                            Machine unavailable
+                        </option>
+
+                        <option value="Spare part unavailable">
+                            Spare part unavailable
+                        </option>
+
+                        <option value="Technician unavailable">
+                            Technician unavailable
+                        </option>
+
+                        <option value="Waiting for production">
+                            Waiting for production
+                        </option>
+
+                        <option value="Safety condition">
+                            Safety condition
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- NOTES -->
+
+                <div class="form-group">
+
+                    <label for="pmNotes">
+                        Notes
+                    </label>
+
+                    <textarea
+                        id="pmNotes"
+                        placeholder="Enter maintenance notes"
+                    ></textarea>
+
+                </div>
+
+
+                <div
+                    id="modalMessage"
+                    class="modal-message"
+                ></div>
+
+            </div>
+
+
+
+            <!-- MODAL FOOTER -->
+
+            <div class="modal-footer">
+
+                <button
+                    id="confirmAction"
+                    class="primary-button"
+                    type="button"
+                >
+                    Confirm
+                </button>
+
+
+                <button
+                    id="cancelAction"
+                    class="secondary-button"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================================== -->
+    <!-- JAVASCRIPT -->
+    <!-- ================================================== -->
+
+    <script src="app.js"></script>
+
+<script src="app.js"></script>
+<script src="auth-session.js"></script>
+</body>
+
+</html><script src="app.js"></script>
+<script src="auth-session.js"></script>
