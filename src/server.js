@@ -2091,23 +2091,27 @@ async function buildImportPreview(
                 );
 
 
-            if (
-                !machine
-            ) {
+          if (
+    !machine
+) {
 
-                preview.push({
+    newTasks++;
 
-                    action:
-                        "New Machine",
+    operations.push({
+        type: "insert_new_machine_task",
+        line_id: line.id,
+        row: row
+    });
 
-                    ...row,
+    preview.push({
+        action: "New",
+        ...row,
+        validation:
+            `Machine ${row.machine_code || row.machine_no || row.machine_name} will be created in ${line.line_name} and PM task will be added.`
+    });
 
-                    validation:
-                        `Machine ${row.machine_code || row.machine_no || row.machine_name} will be created in ${line.line_name}`
-                });
-
-                continue;
-            }
+    continue;
+}
 
 
             const existing =
@@ -2495,7 +2499,145 @@ async function applyImportOperations(
             const operation
             of operations
         ) {
+// =================================================
+// CREATE MISSING MACHINE + PM TASK
+// =================================================
 
+if (
+    operation.type ===
+    "insert_new_machine_task"
+) {
+
+    const row =
+        operation.row;
+
+
+    const machineCode =
+        String(
+            row.machine_code ||
+            row.machine_no ||
+            row.machine_name ||
+            ""
+        ).trim();
+
+
+    const machineName =
+        String(
+            row.machine_name ||
+            row.machine_code ||
+            row.machine_no ||
+            ""
+        ).trim();
+
+
+    if (
+        !machineCode ||
+        !machineName
+    ) {
+
+        throw new Error(
+            `Cannot create machine for Excel row ${row.excel_row || ""}`
+        );
+    }
+
+
+    const machineResult =
+        await client.query(
+            `
+            INSERT INTO machines
+            (
+                production_line_id,
+                section,
+                machine_no,
+                machine_name,
+                machine_code,
+                machine_type
+            )
+
+            VALUES
+            (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6
+            )
+
+            ON CONFLICT
+            (
+                machine_code
+            )
+
+            DO UPDATE SET
+                production_line_id =
+                    EXCLUDED.production_line_id,
+
+                section =
+                    EXCLUDED.section,
+
+                machine_name =
+                    EXCLUDED.machine_name,
+
+                updated_at =
+                    CURRENT_TIMESTAMP
+
+            RETURNING id
+            `,
+            [
+                operation.line_id,
+                row.section || null,
+                machineCode,
+                machineName,
+                machineCode,
+                null
+            ]
+        );
+
+
+    const machineId =
+        machineResult.rows[0].id;
+
+
+    await client.query(
+        `
+        INSERT INTO pm_tasks
+        (
+            machine_id,
+            part_name,
+            maintenance_task,
+            frequency_text,
+            frequency_type,
+            frequency_value,
+            active
+        )
+
+        VALUES
+        (
+            $1,
+            $2,
+            $3,
+            $4,
+            $5,
+            $6,
+            TRUE
+        )
+        `,
+        [
+            machineId,
+            row.part_name || null,
+            row.maintenance_task,
+            row.frequency_text,
+            row.frequency_type,
+            row.frequency_value
+        ]
+    );
+
+
+    inserted++;
+
+    continue;
+}
             // =================================================
             // INSERT
             // =================================================
