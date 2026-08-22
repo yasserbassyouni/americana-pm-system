@@ -4866,6 +4866,76 @@ app.get("/api/debug/pm-duplicates", async (req, res) => {
         });
     }
 });
+
+// ============================================================
+// ADMIN - CLEAN DUPLICATE PM SCHEDULE RECORDS
+// Keeps one record for each PM task + year + week
+// Priority: Completed > Deferred > Pending
+// ============================================================
+
+app.post(
+    "/api/admin/cleanup-duplicate-schedules",
+    requireRole("admin"),
+    async (req, res) => {
+
+        try {
+
+            const result = await pool.query(`
+                WITH ranked AS
+                (
+                    SELECT
+                        id,
+
+                        ROW_NUMBER() OVER
+                        (
+                            PARTITION BY
+                                pm_task_id,
+                                planned_year,
+                                planned_week
+
+                            ORDER BY
+                                CASE status
+                                    WHEN 'Completed' THEN 1
+                                    WHEN 'Deferred' THEN 2
+                                    ELSE 3
+                                END,
+                                id
+                        ) AS rn
+
+                    FROM pm_schedule
+                )
+
+                DELETE FROM pm_schedule
+
+                WHERE id IN
+                (
+                    SELECT id
+                    FROM ranked
+                    WHERE rn > 1
+                )
+
+                RETURNING id
+            `);
+
+            res.json({
+                success: true,
+                deleted_duplicates: result.rowCount
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Duplicate schedule cleanup failed:",
+                error
+            );
+
+            res.status(500).json({
+                success: false,
+                error: error.message
+            });
+        }
+    }
+);
 app.listen(
     PORT,
     async () => {
