@@ -4832,7 +4832,40 @@ const PORT =
     process.env.PORT ||
     3000;
 
+// ============================================================
+// TEMPORARY PM DUPLICATE DIAGNOSTIC
+// ============================================================
 
+app.get("/api/debug/pm-duplicates", async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT
+                planned_year,
+                planned_week,
+                pm_task_id,
+                COUNT(*) AS copies
+            FROM pm_schedule
+            GROUP BY
+                planned_year,
+                planned_week,
+                pm_task_id
+            HAVING COUNT(*) > 1
+            ORDER BY copies DESC, planned_week
+            LIMIT 100
+        `);
+
+        res.json({
+            duplicateGroups: result.rows.length,
+            duplicates: result.rows
+        });
+    } catch (error) {
+        console.error("Duplicate diagnostic error:", error);
+
+        res.status(500).json({
+            error: error.message
+        });
+    }
+});
 app.listen(
     PORT,
     async () => {
