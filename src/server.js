@@ -4987,8 +4987,9 @@ const productionLines = [
     "Layer Cake Line",
     "Mini Cookies Line",
     "Pound Cake Line",
-    "Pizza Line"
+    "Cup Cake Line"
 ];
+
 
 for (
     const lineName
@@ -5001,14 +5002,17 @@ for (
         (
             line_name
         )
+
         VALUES
         (
             $1
         )
+
         ON CONFLICT
         (
             line_name
         )
+
         DO NOTHING
         `,
         [
@@ -5017,13 +5021,15 @@ for (
     );
 }
 
+
 console.log(
     "Production lines initialized successfully"
 );
 
-        console.log(
-            "Database tables initialized successfully"
-        );
+
+console.log(
+    "Database tables initialized successfully"
+);
 
 
     } catch (
@@ -5039,7 +5045,6 @@ console.log(
         throw error;
     }
 }
-
 
 // ============================================================
 // START SERVER
