@@ -10,11 +10,12 @@ CREATE TABLE IF NOT EXISTS machines (
     production_line_id INTEGER REFERENCES production_lines(id) ON DELETE CASCADE,
     section VARCHAR(150),
     machine_no VARCHAR(100),
-    machine_name VARCHAR(200) NOT NULL,
-    machine_code VARCHAR(200) UNIQUE NOT NULL,
-    machine_type VARCHAR(150),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    machine_code VARCHAR(200) NOT NULL,
+machine_type VARCHAR(150),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+UNIQUE (production_line_id, machine_code)
 );
 
 

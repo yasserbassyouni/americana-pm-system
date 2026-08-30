@@ -207,6 +207,11 @@ function setupEventListeners() {
             renderScheduleTable
         );
 
+byId("scheduleCommentFilter")
+    .addEventListener(
+        "change",
+        renderScheduleTable
+    );
 
     byId("scheduleSearch")
         .addEventListener(
@@ -326,7 +331,11 @@ function setupEventListeners() {
             "change",
             renderReportActions
         );
-
+byId("reportCommentFilter")
+    .addEventListener(
+        "change",
+        renderReports
+    );
 
     byId("reportWeekFilter")
         .addEventListener(
@@ -1770,6 +1779,11 @@ function renderScheduleTable() {
             "scheduleFrequencyFilter"
         ).value;
 
+         const commentFilter =
+        byId(
+            "scheduleCommentFilter"
+        ).value;   
+
 
     const search =
         byId(
@@ -1823,7 +1837,38 @@ function renderScheduleTable() {
                     frequency
             );
     }
+if (
+    commentFilter ===
+    "with"
+) {
 
+    rows =
+        rows.filter(
+            item =>
+                String(
+                    item.notes ||
+                    ""
+                ).trim() !==
+                ""
+        );
+}
+
+
+if (
+    commentFilter ===
+    "without"
+) {
+
+    rows =
+        rows.filter(
+            item =>
+                String(
+                    item.notes ||
+                    ""
+                ).trim() ===
+                ""
+        );
+}
 
     if (
         search
@@ -1854,7 +1899,7 @@ function renderScheduleTable() {
             <tr>
 
                 <td
-                    colspan="9"
+                    colspan="10"
                     style="text-align:center;"
                 >
                     No PM records found.
@@ -1962,6 +2007,13 @@ function renderScheduleTable() {
                     "-"
                 )}
             </td>
+            
+            <td>
+    ${escapeHtml(
+        item.notes ||
+        "-"
+    )}
+</td>
 
 
             <td>
@@ -2507,6 +2559,12 @@ function getReportScopeRows() {
         ).value;
 
 
+    const commentFilter =
+        byId(
+            "reportCommentFilter"
+        ).value;
+
+
     return annualPlanData
         .filter(
             item => {
@@ -2535,11 +2593,38 @@ function getReportScopeRows() {
                 }
 
 
+                const hasComment =
+                    Boolean(
+                        String(
+                            item.notes ||
+                            item.deferred_reason ||
+                            ""
+                        ).trim()
+                    );
+
+
+                if (
+                    commentFilter === "with" &&
+                    !hasComment
+                ) {
+
+                    return false;
+                }
+
+
+                if (
+                    commentFilter === "without" &&
+                    hasComment
+                ) {
+
+                    return false;
+                }
+
+
                 return true;
             }
         );
 }
-
 
 // ============================================================
 // REPORTS
@@ -2559,7 +2644,6 @@ function renderReports() {
 
     renderReportActions();
 }
-
 
 // ============================================================
 // YTD SUMMARY
@@ -2617,7 +2701,7 @@ function getYtdRows() {
 
 
     const scope =
-        getReportScopeRows();
+        getFilteredReportActions();
 
 
     return scope
@@ -2698,8 +2782,6 @@ function renderYtdSummary() {
         adherence
     );
 }
-
-
 // ============================================================
 // FULL YEAR SUMMARY
 // ============================================================
@@ -2707,7 +2789,7 @@ function renderYtdSummary() {
 function renderFullYearSummary() {
 
     const rows =
-        getReportScopeRows();
+        getFilteredReportActions();
 
 
     const total =
@@ -2772,14 +2854,13 @@ function renderFullYearSummary() {
     );
 }
 
-
 // ============================================================
 // WEEKLY SUMMARY
 // ============================================================
 
 function getWeeklySummary(
     rows =
-        getReportScopeRows()
+        getFilteredReportActions()
 ) {
 
     const reportYear =
@@ -2795,6 +2876,17 @@ function getWeeklySummary(
 
     const result =
         [];
+
+
+    const hasActiveFilter =
+        Boolean(
+            byId("reportLineFilter").value ||
+            byId("reportMachineFilter").value ||
+            byId("reportStatusFilter").value ||
+            byId("reportCommentFilter").value ||
+            byId("reportWeekFilter").value ||
+            byId("reportSearch").value.trim()
+        );
 
 
     for (
@@ -2815,6 +2907,17 @@ function getWeeklySummary(
 
         const planned =
             weekRows.length;
+
+
+        // When report filters are active,
+        // do not show empty weeks.
+        if (
+            hasActiveFilter &&
+            planned === 0
+        ) {
+
+            continue;
+        }
 
 
         const completed =
@@ -2861,7 +2964,6 @@ function getWeeklySummary(
 
     return result;
 }
-
 
 // ============================================================
 // WEEKLY REPORT
@@ -2941,7 +3043,7 @@ function renderWeeklyReport() {
 
 function getMonthlySummary(
     rows =
-        getReportScopeRows()
+        getFilteredReportActions()
 ) {
 
     const reportYear =
@@ -2951,6 +3053,17 @@ function getMonthlySummary(
 
     const result =
         [];
+
+
+    const hasActiveFilter =
+        Boolean(
+            byId("reportLineFilter").value ||
+            byId("reportMachineFilter").value ||
+            byId("reportStatusFilter").value ||
+            byId("reportCommentFilter").value ||
+            byId("reportWeekFilter").value ||
+            byId("reportSearch").value.trim()
+        );
 
 
     for (
@@ -2974,6 +3087,16 @@ function getMonthlySummary(
 
         const planned =
             monthRows.length;
+
+
+        // Hide empty months when filters are active
+        if (
+            hasActiveFilter &&
+            planned === 0
+        ) {
+
+            continue;
+        }
 
 
         const completed =
@@ -3025,7 +3148,6 @@ function getMonthlySummary(
 
     return result;
 }
-
 
 // ============================================================
 // MONTHLY REPORT
@@ -7338,12 +7460,7 @@ function closeModal() {
 
 async function confirmPMAction() {
 
-    const technician =
-        byId(
-            "technicianName"
-        )
-            .value
-            .trim();
+    
 
 
     const notes =
@@ -7366,15 +7483,7 @@ async function confirmPMAction() {
         );
 
 
-    if (
-        !technician
-    ) {
-
-        message.textContent =
-            "Please enter technician name.";
-
-        return;
-    }
+    
 
 
     if (
@@ -7414,12 +7523,8 @@ async function confirmPMAction() {
 
 
         const body = {
-
-            technician_name:
-                technician,
-
-            notes
-        };
+    notes
+};
 
 
         if (

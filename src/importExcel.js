@@ -71,7 +71,7 @@ async function importExcel() {
                 )
                 VALUES ($1, $2, $3, $4, $5, $6)
 
-                ON CONFLICT (machine_code)
+                ON CONFLICT (production_line_id, machine_code)
                 DO UPDATE SET
                     production_line_id = EXCLUDED.production_line_id,
                     section = EXCLUDED.section,

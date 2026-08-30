@@ -470,7 +470,21 @@
                         </option>
 
                     </select>
+<select id="scheduleCommentFilter">
 
+    <option value="">
+        All Comments
+    </option>
+
+    <option value="with">
+        With Comment
+    </option>
+
+    <option value="without">
+        No Comment
+    </option>
+
+</select>
 
                     <input
                         id="scheduleSearch"
@@ -500,6 +514,7 @@
                                 <th>Frequency</th>
                                 <th>Status</th>
                                 <th>Technician</th>
+                                <th>Comment</th>
                                 <th>Completion Date</th>
 
                             </tr>
@@ -511,7 +526,7 @@
 
                             <tr>
 
-                                <td colspan="9">
+                                <td colspan="10">
                                     Loading PM schedule...
                                 </td>
 
@@ -1280,7 +1295,21 @@
                         </option>
 
                     </select>
+<select id="reportCommentFilter">
 
+    <option value="">
+        All Comments
+    </option>
+
+    <option value="with">
+        With Comment
+    </option>
+
+    <option value="without">
+        No Comment
+    </option>
+
+</select>
 
                     <select id="reportWeekFilter">
 
@@ -2251,21 +2280,7 @@
             <div class="modal-body">
 
 
-                <!-- TECHNICIAN -->
-
-                <div class="form-group">
-
-                    <label for="technicianName">
-                        Technician Name
-                    </label>
-
-                    <input
-                        id="technicianName"
-                        type="text"
-                        placeholder="Enter technician name"
-                    >
-
-                </div>
+               
 
 
 
@@ -2379,11 +2394,9 @@
     <!-- JAVASCRIPT -->
     <!-- ================================================== -->
 
-    <script src="app.js"></script>
 
 <script src="app.js"></script>
 <script src="auth-session.js"></script>
 </body>
 
-</html><script src="app.js"></script>
-<script src="auth-session.js"></script>
+</html>

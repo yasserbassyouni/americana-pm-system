@@ -497,7 +497,7 @@ function shouldScheduleTask(
 
         if (
             value >= 500 &&
-            value <= 2000
+            value < 2000
         ) {
 
             return (
@@ -518,7 +518,7 @@ function shouldScheduleTask(
         // ----------------------------------------------------
 
         if (
-            value > 2000 &&
+            value >= 2000 &&
             value <= 3000
         ) {
 
@@ -847,29 +847,42 @@ async function generateWeekSchedule(
 
 
         await client.query(
-            `
-            INSERT INTO pm_schedule
-            (
-                pm_task_id,
-                planned_year,
-                planned_week,
-                status
-            )
+    `
+    INSERT INTO pm_schedule
+    (
+        pm_task_id,
+        planned_year,
+        planned_week,
+        status
+    )
 
-            VALUES
-            (
-                $1,
-                $2,
-                $3,
-                'Pending'
-            )
-            `,
-            [
-                task.id,
-                year,
-                week
-            ]
-        );
+    SELECT
+        $1,
+        $2,
+        $3,
+        'Pending'
+
+    WHERE NOT EXISTS
+    (
+        SELECT 1
+        FROM pm_schedule
+
+        WHERE
+            pm_task_id = $1
+
+        AND
+            planned_year = $2
+
+        AND
+            planned_week = $3
+    )
+    `,
+    [
+        task.id,
+        year,
+        week
+    ]
+);
 
 
         created++;

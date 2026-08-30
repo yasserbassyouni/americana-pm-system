@@ -98,8 +98,14 @@ const {
 
 const app =
     express();
-
-
+app.get("/api/test123", (req, res) => {
+    res.json({
+        success: true,
+        message: "TEST ROUTE IS WORKING"
+    });
+});
+app.get("/api/debug/machines", async (req, res) => {
+});
 // ============================================================
 // GENERAL MIDDLEWARE
 // ============================================================
@@ -1880,9 +1886,32 @@ function findMachine(
     return null;
 }
 
-
 // ============================================================
 // FIND EXISTING PM TASK
+// ============================================================
+//
+// IMPORTANT:
+//
+// One machine can legitimately have:
+//
+// Greasing | 40 hr
+// Greasing | 1000 hr
+// Greasing | 6000 hr
+//
+// These are DIFFERENT PM tasks.
+//
+// Therefore:
+//
+// 1. First find same Machine + Part + Maintenance.
+// 2. Then look for the SAME frequency.
+// 3. Prefer an ACTIVE exact match.
+// 4. If exact frequency exists but is inactive,
+//    return it so it can be reactivated.
+// 5. Only consider a frequency change when there is
+//    ONE unambiguous PM candidate.
+//
+// This prevents one PM frequency from being incorrectly
+// compared with another PM on the same machine.
 // ============================================================
 
 function findExistingTask(
@@ -1903,29 +1932,181 @@ function findExistingTask(
         );
 
 
-    return master.tasks.find(
-        task =>
+    const importedFrequencyType =
+        normalizeText(
+            excelRow.frequency_type
+        );
 
-            Number(
-                task.machine_id
-            ) ===
-            Number(
-                machineId
-            ) &&
 
-            normalizeText(
-                task.part_name
-            ) ===
-            part &&
+    const importedFrequencyValue =
+        Number(
+            excelRow.frequency_value
+        );
 
-            normalizeText(
-                task.maintenance_task
-            ) ===
-            maintenance
-    ) ||
-    null;
+
+    // ============================================================
+    // FIND ALL PM TASKS WITH SAME BASIC IDENTITY
+    //
+    // Machine + Part + Maintenance
+    // ============================================================
+
+    const candidates =
+        master.tasks.filter(
+            task =>
+
+                Number(
+                    task.machine_id
+                ) ===
+                Number(
+                    machineId
+                ) &&
+
+                normalizeText(
+                    task.part_name
+                ) ===
+                part &&
+
+                normalizeText(
+                    task.maintenance_task
+                ) ===
+                maintenance
+        );
+
+
+    // ============================================================
+    // NOTHING EXISTS
+    // ============================================================
+
+    if (
+        candidates.length ===
+        0
+    ) {
+
+        return null;
+    }
+
+
+    // ============================================================
+    // FIND SAME FREQUENCY
+    //
+    // Example:
+    //
+    // Excel = 1000 hr
+    //
+    // Database:
+    // 40 hr
+    // 1000 hr  <-- correct match
+    // 6000 hr
+    //
+    // ============================================================
+
+    const exactFrequencyMatches =
+        candidates.filter(
+            task => {
+
+                const taskFrequencyType =
+                    normalizeText(
+                        task.frequency_type
+                    );
+
+
+                const taskFrequencyValue =
+                    Number(
+                        task.frequency_value
+                    );
+
+
+                return (
+                    taskFrequencyType ===
+                    importedFrequencyType
+                ) &&
+                (
+                    taskFrequencyValue ===
+                    importedFrequencyValue
+                );
+            }
+        );
+
+
+    // ============================================================
+    // PREFER ACTIVE EXACT MATCH
+    // ============================================================
+
+    const activeExactMatch =
+        exactFrequencyMatches.find(
+            task =>
+                task.active === true ||
+                String(
+                    task.active
+                ).toLowerCase() ===
+                "true"
+        );
+
+
+    if (
+        activeExactMatch
+    ) {
+
+        return activeExactMatch;
+    }
+
+
+    // ============================================================
+    // EXACT FREQUENCY EXISTS BUT IS INACTIVE
+    //
+    // Return it so existing import logic can reactivate it.
+    // ============================================================
+
+    if (
+        exactFrequencyMatches.length >
+        0
+    ) {
+
+        return exactFrequencyMatches[0];
+    }
+
+
+    // ============================================================
+    // POSSIBLE REAL FREQUENCY CHANGE
+    //
+    // We only treat it as a frequency change when there is
+    // exactly ONE possible existing PM.
+    //
+    // Example:
+    //
+    // Database:
+    // Greasing | 1000 hr
+    //
+    // Excel:
+    // Greasing | 2000 hr
+    //
+    // Only one candidate exists, therefore this can safely
+    // be interpreted as a frequency change.
+    // ============================================================
+
+    if (
+        candidates.length ===
+        1
+    ) {
+
+        return candidates[0];
+    }
+
+
+    // ============================================================
+    // AMBIGUOUS
+    //
+    // More than one PM has the same machine + part +
+    // maintenance description, but none has the imported
+    // frequency.
+    //
+    // DO NOT guess which PM was changed.
+    //
+    // Returning null is safer than modifying the wrong PM.
+    // ============================================================
+
+    return null;
 }
-
 
 // ============================================================
 // CHECK FREQUENCY CHANGE
@@ -2565,24 +2746,23 @@ if (
             )
 
             ON CONFLICT
-            (
-                machine_code
-            )
+(
+    production_line_id,
+    machine_code
+)
 
-            DO UPDATE SET
-                production_line_id =
-                    EXCLUDED.production_line_id,
+DO UPDATE SET
 
-                section =
-                    EXCLUDED.section,
+    section =
+        EXCLUDED.section,
 
-                machine_name =
-                    EXCLUDED.machine_name,
+    machine_name =
+        EXCLUDED.machine_name,
 
-                updated_at =
-                    CURRENT_TIMESTAMP
+    updated_at =
+        CURRENT_TIMESTAMP
 
-            RETURNING id
+RETURNING id
             `,
             [
                 operation.line_id,
@@ -2780,7 +2960,6 @@ if (
                 continue;
             }
 
-
             // =================================================
             // CREATE NEW VERSION
             // =================================================
@@ -2790,17 +2969,18 @@ if (
                 "version"
             ) {
 
+                // Keep the old PM task for historical records,
+                // but stop using it for future planning.
                 await client.query(
                     `
                     UPDATE pm_tasks
 
                     SET
-                        active =
-                            FALSE
+                        active = FALSE,
+                        updated_at = CURRENT_TIMESTAMP
 
                     WHERE
-                        id =
-                            $1
+                        id = $1
                     `,
                     [
                         operation.old_task_id
@@ -2808,12 +2988,18 @@ if (
                 );
 
 
+                // Remove ONLY future Pending schedule records
+                // belonging to the old PM version.
+                //
+                // Completed and Deferred history remains.
                 await removeFuturePendingSchedules(
                     client,
                     operation.old_task_id
                 );
 
 
+                // Create the new PM task version with
+                // the new frequency from Excel.
                 await client.query(
                     `
                     INSERT INTO pm_tasks
@@ -2862,6 +3048,75 @@ if (
         }
 
 
+        // ============================================================
+        // SYNCHRONIZE PM PLAN AFTER EXCEL IMPORT
+        // ============================================================
+        //
+        // Excel is the PM master.
+        //
+        // After import:
+        //
+        // 1. Existing unchanged PM tasks stay unchanged.
+        //
+        // 2. New PM tasks are added to the remaining
+        //    current-year schedule.
+        //
+        // 3. Frequency changes use the new active PM version.
+        //
+        // 4. Completed history is NOT deleted.
+        //
+        // 5. Deferred history is NOT deleted.
+        //
+        // 6. Existing schedule rows are protected from duplicates
+        //    by the schedule generation logic / database protection.
+        //
+        // 7. We start from the CURRENT WEEK.
+        //    We do NOT create fake historical Pending PMs
+        //    for weeks before the Excel import.
+        // ============================================================
+
+        const now =
+            new Date();
+
+
+        const currentYear =
+            now.getFullYear();
+
+
+        const currentWeek =
+            getISOWeekNumber(
+                now
+            );
+
+
+        // ============================================================
+        // GENERATE / SYNCHRONIZE REMAINING CURRENT YEAR
+        // ============================================================
+
+        for (
+            let week =
+                Math.max(
+                    1,
+                    currentWeek
+                );
+
+            week <= 52;
+
+            week++
+        ) {
+
+            await generateWeekSchedule(
+                client,
+                currentYear,
+                week
+            );
+        }
+
+
+        // ============================================================
+        // COMMIT EXCEL IMPORT + SCHEDULE UPDATE
+        // ============================================================
+
         await client.query(
             "COMMIT"
         );
@@ -2873,13 +3128,28 @@ if (
 
             updated,
 
-            inactive
+            inactive,
+
+            schedule_updated: true,
+
+            schedule_year:
+                currentYear,
+
+            schedule_from_week:
+                currentWeek
         };
 
 
     } catch (
         error
     ) {
+
+        // ============================================================
+        // SOMETHING FAILED
+        //
+        // Roll back the COMPLETE import.
+        // This prevents a half-imported PM master.
+        // ============================================================
 
         await client.query(
             "ROLLBACK"
@@ -2894,8 +3164,6 @@ if (
         client.release();
     }
 }
-
-
 // ============================================================
 // CLEAN OLD EXCEL PREVIEWS
 // ============================================================
@@ -2988,7 +3256,39 @@ app.get(
 // ============================================================
 // STATISTICS
 // ============================================================
+// =====================================================
+// DEBUG - SHOW ALL MACHINES AND THEIR PRODUCTION LINES
+// =====================================================
 
+app.get("/api/debug/machines", async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT
+                m.id,
+                m.machine_code,
+                m.machine_name,
+                m.section,
+                m.production_line_id,
+                l.line_name
+            FROM machines m
+            LEFT JOIN production_lines l
+                ON l.id = m.production_line_id
+            ORDER BY
+                l.line_name,
+                m.machine_code,
+                m.id
+        `);
+
+        res.json(result.rows);
+
+    } catch (error) {
+        console.error("Debug machines failed:", error);
+
+        res.status(500).json({
+            error: error.message
+        });
+    }
+});
 app.get(
     "/api/stats",
     async (
@@ -3829,73 +4129,33 @@ app.get(
 // ANNUAL PLAN
 // ============================================================
 
+// ============================================================
+// ANNUAL PLAN
+// READ ONLY - DOES NOT GENERATE SCHEDULE
+// ============================================================
+
 app.get(
     "/api/annual-plan",
-    async (
-        req,
-        res
-    ) => {
+    async (req, res) => {
 
         const year =
-            Number(
-                req.query.year
-            );
+            Number(req.query.year);
 
-
-        if (
-            !year
-        ) {
-
+        if (!year) {
             return res
-                .status(
-                    400
-                )
+                .status(400)
                 .json({
-
-                    error:
-                        "year is required."
+                    error: "year is required."
                 });
         }
 
-
-        const client =
-            await pool.connect();
-
-
         try {
 
-            // =================================================
-            // GENERATE MISSING PM RECORDS
-            // =================================================
-
-            await client.query(
-                "BEGIN"
-            );
-
-
-            const generation =
-                await generateFullYear(
-                    client,
-                    year
-                );
-
-
-            await client.query(
-                "COMMIT"
-            );
-
-
-            // =================================================
-            // LOAD COMPLETE ANNUAL PLAN
-            // =================================================
-
             const annualResult =
-                await client.query(
+                await pool.query(
                     `
                     SELECT
-
                         s.id,
-
                         s.planned_year,
                         s.planned_week,
 
@@ -3921,27 +4181,19 @@ app.get(
                         s.deferred_reason,
                         s.notes
 
-                    FROM
-                        pm_schedule s
+                    FROM pm_schedule s
 
                     JOIN pm_tasks t
-                        ON
-                            s.pm_task_id =
-                            t.id
+                        ON s.pm_task_id = t.id
 
                     JOIN machines m
-                        ON
-                            t.machine_id =
-                            m.id
+                        ON t.machine_id = m.id
 
                     JOIN production_lines l
-                        ON
-                            m.production_line_id =
-                            l.id
+                        ON m.production_line_id = l.id
 
                     WHERE
-                        s.planned_year =
-                            $1
+                        s.planned_year = $1
 
                     ORDER BY
                         s.planned_week,
@@ -3950,94 +4202,57 @@ app.get(
                         m.machine_code,
                         t.id
                     `,
-                    [
-                        year
-                    ]
+                    [year]
                 );
-
 
             const rows =
                 annualResult.rows;
 
-
             res.json({
-
                 year,
 
                 summary: {
-
                     total:
                         rows.length,
 
                     completed:
                         rows.filter(
                             item =>
-                                item.status ===
-                                "Completed"
+                                item.status === "Completed"
                         ).length,
 
                     pending:
                         rows.filter(
                             item =>
-                                item.status ===
-                                "Pending"
+                                item.status === "Pending"
                         ).length,
 
                     deferred:
                         rows.filter(
                             item =>
-                                item.status ===
-                                "Deferred"
+                                item.status === "Deferred"
                         ).length
                 },
 
-                generation,
+                generation: null,
 
                 schedule:
                     rows
             });
 
-
-        } catch (
-            error
-        ) {
-
-            try {
-
-                await client.query(
-                    "ROLLBACK"
-                );
-
-            } catch (
-                rollbackError
-            ) {
-
-                console.error(
-                    rollbackError
-                );
-            }
-
+        } catch (error) {
 
             console.error(
                 "Annual plan failed:",
                 error
             );
 
-
             res
-                .status(
-                    500
-                )
+                .status(500)
                 .json({
-
                     error:
                         error.message
                 });
-
-
-        } finally {
-
-            client.release();
         }
     }
 );
@@ -4072,11 +4287,12 @@ app.put(
 
 
             const technicianName =
-                String(
-                    req.body.technician_name ||
-                    ""
-                )
-                    .trim();
+    String(
+        req.session?.user?.name ||
+        req.session?.user?.full_name ||
+        req.session?.user?.username ||
+        ""
+    ).trim();
 
 
             const notes =
@@ -4228,11 +4444,12 @@ app.put(
 
 
             const technicianName =
-                String(
-                    req.body.technician_name ||
-                    ""
-                )
-                    .trim();
+    String(
+        req.session?.user?.name ||
+        req.session?.user?.full_name ||
+        req.session?.user?.username ||
+        ""
+    ).trim();
 
 
             const deferredReason =
@@ -4979,20 +5196,62 @@ app.listen(
         // DATABASE
         // ====================================================
 
-        try {
+       try {
 
-            await initializeDatabase();
+    await initializeDatabase();
+await pool.query(`
+    CREATE UNIQUE INDEX IF NOT EXISTS
+        pm_schedule_task_year_week_unique
 
-        } catch (
-            error
-        ) {
+    ON pm_schedule
+    (
+        pm_task_id,
+        planned_year,
+        planned_week
+    );
+`);
 
-            console.error(
-                "Server database initialization error:",
-                error
+console.log(
+    "PM schedule duplicate protection ready"
+);
+// Remove old global machine-code constraint
+await pool.query(`
+    ALTER TABLE machines
+    DROP CONSTRAINT IF EXISTS machines_machine_code_key;
+`);
+
+await pool.query(`
+    DO $$
+    BEGIN
+        IF NOT EXISTS (
+            SELECT 1
+            FROM pg_constraint
+            WHERE conname = 'machines_line_code_unique'
+        ) THEN
+
+            ALTER TABLE machines
+            ADD CONSTRAINT machines_line_code_unique
+            UNIQUE (
+                production_line_id,
+                machine_code
             );
-        }
 
+        END IF;
+    END
+    $$;
+`);
+
+console.log(
+    "Machine line + machine code unique constraint ready"
+);
+
+} catch (error) {
+
+    console.error(
+        "Server database initialization error:",
+        error
+    );
+}
 
         // ====================================================
         // ADMIN ACCOUNT
