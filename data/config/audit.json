@@ -1,5 +1,150 @@
 [
   {
+    "time": "2026-09-23T12:19:38.579Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-23T12:19:37.627Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-23T12:18:28.609Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "DELETE",
+      "path": "/api/pm-master/lines/Cookies"
+    }
+  },
+  {
+    "time": "2026-09-23T12:18:28.605Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_LINE_DELETE",
+    "details": {
+      "line": "Cookies",
+      "mode": "folder",
+      "usage": {
+        "annualYears": [
+          2026
+        ],
+        "annualFiles": 1,
+        "monthlyFiles": 12,
+        "tasks": 135
+      },
+      "annualDeleted": 2,
+      "monthlyDeleted": 12,
+      "foldersDeleted": 1,
+      "purgedTasks": 135
+    }
+  },
+  {
+    "time": "2026-09-23T12:18:19.460Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "DELETE",
+      "path": "/api/pm-master/lines/Line%2001"
+    }
+  },
+  {
+    "time": "2026-09-23T12:18:19.456Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_LINE_DELETE",
+    "details": {
+      "line": "Line 01",
+      "mode": "folder",
+      "usage": {
+        "annualYears": [
+          2026
+        ],
+        "annualFiles": 1,
+        "monthlyFiles": 12,
+        "tasks": 0
+      },
+      "annualDeleted": 2,
+      "monthlyDeleted": 12,
+      "foldersDeleted": 1,
+      "purgedTasks": 0
+    }
+  },
+  {
+    "time": "2026-09-23T12:17:40.644Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-23T12:17:37.628Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-23T12:17:37.626Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-23T12:16:41.964Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-23T12:16:40.322Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-23T12:16:37.536Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-23T12:14:14.053Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
     "time": "2026-09-23T12:05:06.936Z",
     "user": "Admin",
     "role": "Admin",

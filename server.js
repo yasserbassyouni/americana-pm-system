@@ -6,10 +6,7 @@ const ExcelJS = require('exceljs');
 const nodemailer = require('nodemailer');
 
 const app = express();
-const PORT = Number(process.env.PORT || 3050);
-const HOST = process.env.HOST || '0.0.0.0';
-const PUBLIC_URL = process.env.PUBLIC_URL || '';
-app.set('trust proxy', 1);
+const PORT = process.env.PORT || 3050;
 const BUILD_VERSION='V1.4.2';
 
 const ANNUAL_DIR = path.join(process.env.PM_DATA_ROOT || path.join(__dirname,'data'), 'annual');
@@ -511,18 +508,6 @@ function audit(action, user, details={}) {
   writeJson('audit.json', list.slice(0,2000));
 }
 
-
-// Basic online-safe headers. HTTPS is normally terminated by the hosting platform/reverse proxy.
-app.use((req,res,next)=>{
-  res.setHeader('X-Content-Type-Options','nosniff');
-  res.setHeader('X-Frame-Options','SAMEORIGIN');
-  res.setHeader('Referrer-Policy','same-origin');
-  if(req.secure || String(req.headers['x-forwarded-proto']||'').toLowerCase()==='https'){
-    res.setHeader('Strict-Transport-Security','max-age=31536000; includeSubDomains');
-  }
-  next();
-});
-app.get('/health',(req,res)=>res.status(200).json({ok:true,build:BUILD_VERSION}));
 
 app.use(express.json());
 let requestQueue122=Promise.resolve();
@@ -6052,12 +6037,11 @@ console.log('[MONTHLY STORAGE]', monthlyStorageOrganize);
     if(rollover.length)console.log('[YEAR PLANNER AUTO ROLLOVER]',rollover);
   }catch(e){console.error('[YEAR PLANNER AUTO ROLLOVER ERROR]',e.message);}
 
-app.listen(PORT,HOST,()=>{
+app.listen(PORT,()=>{
   const w=getWeek(getPmDate());
   console.log('====================================================');
   console.log(' SMART PM SERVER - V1.4.2 LOGIN CLEANUP');
-  console.log(` Listening on ${HOST}:${PORT}`);
-  if(PUBLIC_URL) console.log(` Public URL: ${PUBLIC_URL}`);
+  console.log(` http://localhost:${PORT}`);
   console.log(' Login: admin / 1234   or   tech1 / 1234');
   console.log(` Test: ${TEST_LINE} | ${fmtDate(w.start)} -> ${fmtDate(w.end)}`);
   console.log(' Done = 6 + Username + Execution Date');
