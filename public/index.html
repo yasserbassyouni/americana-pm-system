@@ -81,5 +81,9 @@ async function load(){
   }
 }
 async function logout(){try{await api('/api/logout',{method:'POST',body:'{}'})}catch(_){}localStorage.clear();location='login.html'}
-document.getElementById('navYear').addEventListener('change',refreshWeeks);document.getElementById('navMonth').addEventListener('change',refreshWeeks);document.getElementById('navWeek').addEventListener('change',setPeriod);load().catch(e=>document.getElementById('err').innerHTML='<div class=error>'+e.message+'</div>');
+document.getElementById('navYear').addEventListener('change',refreshWeeks);document.getElementById('navMonth').addEventListener('change',refreshWeeks);document.getElementById('navWeek').addEventListener('change',setPeriod);load().catch(e=>{
+  console.error('DASHBOARD LOAD ERROR:', e);
+  const err = document.getElementById('err');
+  if (err) err.innerHTML='<div class=error>'+e.message+'</div>';
+});
 </script><script src="branding-client.js"></script><script src="i18n.js"></script></body></html>
