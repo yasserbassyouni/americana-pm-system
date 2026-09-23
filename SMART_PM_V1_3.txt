@@ -1,0 +1,12 @@
+Smart PM V1.3.0 - Multi-Year PM Planning
+
+New:
+- Multi-Year PM Planner in Settings.
+- Preview a future year before building it.
+- Build any future Annual PM year from an approved previous System Master year.
+- Planning is recalculated for the target year's real Friday calendar using task frequency / first PM date / running-hours rules.
+- Auto rollover on server start: if the current year does not exist, build it from the latest prior approved year.
+- Existing target years are never overwritten automatically.
+- Manual overwrite archives replaced target tasks and rebuilds existing monthly files while preserving execution history.
+- Done/User/Execution Date are never copied into a new Annual year.
+- Old uploaded Annual Excel remains supported through Import / Migrate Excel; once imported, it becomes a System Master source year for future planning.

@@ -1,0 +1,11 @@
+.pm-lang-control{display:inline-flex;align-items:center;gap:7px;margin-inline-start:8px}
+.pm-lang-control label{font-size:12px;font-weight:700;opacity:.9}
+.pm-lang-select{border:1px solid rgba(0,0,0,.16);border-radius:8px;padding:8px 10px;background:#fff;color:#222;font-weight:700;cursor:pointer;min-width:150px;max-width:220px}
+header .pm-lang-select,.top .pm-lang-select{box-shadow:0 1px 4px rgba(0,0,0,.08)}
+html[dir="rtl"] body{direction:rtl;text-align:right}
+html[dir="rtl"] input,html[dir="rtl"] select,html[dir="rtl"] textarea{direction:rtl;text-align:right}
+html[dir="rtl"] input[type="email"],html[dir="rtl"] input[type="url"],html[dir="rtl"] input[type="number"],html[dir="rtl"] input[type="time"]{direction:ltr;text-align:left}
+html[dir="rtl"] table{direction:rtl}
+html[dir="rtl"] .nav,html[dir="rtl"] .actions,html[dir="rtl"] .bar,html[dir="rtl"] .top-inner{direction:rtl}
+html[dir="rtl"] .pm-lang-control{margin-inline-start:0;margin-inline-end:8px}
+@media(max-width:600px){.pm-lang-control{margin:0}.pm-lang-select{min-width:96px;padding:7px 8px}}

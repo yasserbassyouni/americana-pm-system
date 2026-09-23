@@ -1,0 +1,444 @@
+{
+  "lines": [
+    {
+      "name": "Line 01",
+      "enabled": true,
+      "machines": [],
+      "createdYear": 2026,
+      "fresh122": true,
+      "annualSource": "blank_auto",
+      "annualTemplateLine": "Smart PM Blank Annual",
+      "monthlySource": "blank_auto",
+      "templateLine": "Smart PM Blank Monthly"
+    },
+    {
+      "name": "Cookies",
+      "enabled": true,
+      "machines": [
+        {
+          "section": "Mixer",
+          "machineNo": "C1",
+          "machineName": "Mixer",
+          "machineIdentified": "C1 Mixer",
+          "type": "Diosna",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Forming",
+          "machineNo": "C2",
+          "machineName": "Egg wash",
+          "machineIdentified": "C2 Egg wash",
+          "type": "Meinke",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Forming",
+          "machineNo": "C3",
+          "machineName": "Sprinkler unit",
+          "machineIdentified": "C3 Sprinkler unit",
+          "type": "Meinke",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Forming",
+          "machineNo": "C4",
+          "machineName": "Rotary shape machine",
+          "machineIdentified": "C4 Rotary shape machine",
+          "type": "Buhler",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Forming",
+          "machineNo": "C5",
+          "machineName": "Vanilla ring machine",
+          "machineIdentified": "C5 Vanilla ring machine",
+          "type": "Buhler",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Forming",
+          "machineNo": "C6",
+          "machineName": "Wire cut 1",
+          "machineIdentified": "C6 Wire cut 1",
+          "type": "Meinke",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Forming",
+          "machineNo": "C7",
+          "machineName": "Wire cut 2",
+          "machineIdentified": "C7 Wire cut 2",
+          "type": "Meinke",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Baking",
+          "machineNo": "C8",
+          "machineName": "oven",
+          "machineIdentified": "C8 oven",
+          "type": "Meinke/Buhler",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Conveyor",
+          "machineNo": "C9",
+          "machineName": "Wire mesh conveyor",
+          "machineIdentified": "C9 Wire mesh conveyor",
+          "type": "Meinke/Buhler",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Conveyor",
+          "machineNo": "C10",
+          "machineName": "Conveyor1",
+          "machineIdentified": "C10 Conveyor1",
+          "type": "Local",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Conveyor",
+          "machineNo": "C11",
+          "machineName": "Conveyor2",
+          "machineIdentified": "C11 Conveyor2",
+          "type": "Local",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Conveyor",
+          "machineNo": "C12",
+          "machineName": "Conveyor3",
+          "machineIdentified": "C12 Conveyor3",
+          "type": "Local",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Conveyor",
+          "machineNo": "C13",
+          "machineName": "Conveyor4",
+          "machineIdentified": "C13 Conveyor4",
+          "type": "Local",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Conveyor",
+          "machineNo": "C14",
+          "machineName": "Conveyor5",
+          "machineIdentified": "C14 Conveyor5",
+          "type": "Local",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Conveyor",
+          "machineNo": "C15",
+          "machineName": "Conveyor6",
+          "machineIdentified": "C15 Conveyor6",
+          "type": "Local",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Conveyor",
+          "machineNo": "C16",
+          "machineName": "Conveyor7",
+          "machineIdentified": "C16 Conveyor7",
+          "type": "Local",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Packaging",
+          "machineNo": "C17",
+          "machineName": "Flow pack mashine1",
+          "machineIdentified": "C17 Flow pack mashine1",
+          "type": "cavana 01",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Packaging",
+          "machineNo": "C18",
+          "machineName": "Flow pack mashine2",
+          "machineIdentified": "C18 Flow pack mashine2",
+          "type": "Cavana05",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Packaging",
+          "machineNo": "C19",
+          "machineName": "Tape machine",
+          "machineIdentified": "C19 Tape machine",
+          "type": "Shur",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Packaging",
+          "machineNo": "C20",
+          "machineName": "Conveyor8",
+          "machineIdentified": "C20 Conveyor8",
+          "type": "Local",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Packaging",
+          "machineNo": "C21",
+          "machineName": "Conveyor9",
+          "machineIdentified": "C21 Conveyor9",
+          "type": "Local",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Packaging",
+          "machineNo": "C22",
+          "machineName": "Conveyor10",
+          "machineIdentified": "C22 Conveyor10",
+          "type": "Local",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Packaging",
+          "machineNo": "C23",
+          "machineName": "Metal detector",
+          "machineIdentified": "C23 Metal detector",
+          "type": "Loma system",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Packaging",
+          "machineNo": "C24",
+          "machineName": "Check weir",
+          "machineIdentified": "C24 Check weir",
+          "type": "Loma system",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Packaging",
+          "machineNo": "C25",
+          "machineName": "Carton Sealer",
+          "machineIdentified": "C25 Carton Sealer",
+          "type": "siat",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Packaging",
+          "machineNo": "C26",
+          "machineName": "Conveyor",
+          "machineIdentified": "C26 Conveyor",
+          "type": "Zultec",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        }
+      ],
+      "createdYear": 2026,
+      "fresh122": false,
+      "annualSource": "blank_auto",
+      "annualTemplateLine": "Smart PM Blank Annual",
+      "monthlySource": "blank_auto",
+      "templateLine": "Smart PM Blank Monthly"
+    },
+    {
+      "name": "Preparation",
+      "enabled": true,
+      "machines": [
+        {
+          "section": "Preparation",
+          "machineNo": "P01",
+          "machineName": "Microwave",
+          "machineIdentified": "P01 Microwave",
+          "type": "Amtek",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P02",
+          "machineName": "Elevator",
+          "machineIdentified": "P02 Elevator",
+          "type": "Bonner",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P03",
+          "machineName": "Belt Loader",
+          "machineIdentified": "P03 Belt Loader",
+          "type": "Helligns",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P04",
+          "machineName": "X-Ray",
+          "machineIdentified": "P04 X-Ray",
+          "type": "Marel",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P05",
+          "machineName": "DSI 01",
+          "machineIdentified": "P05 DSI 01",
+          "type": "Marel",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P06",
+          "machineName": "Grinder",
+          "machineIdentified": "P06 Grinder",
+          "type": "Marel",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P07",
+          "machineName": "Screw Loader",
+          "machineIdentified": "P07 Screw Loader",
+          "type": "Marel",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P08",
+          "machineName": "Minced Mixer",
+          "machineIdentified": "P08 Minced Mixer",
+          "type": "Marel",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P13",
+          "machineName": "DSI 01",
+          "machineIdentified": "P13 DSI 01",
+          "type": "Bonner",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P18",
+          "machineName": "DSI 02",
+          "machineIdentified": "P18 DSI 02",
+          "type": "Bonner",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P19",
+          "machineName": "Tumbler 01",
+          "machineIdentified": "P19 Tumbler 01",
+          "type": "Bonner",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P20",
+          "machineName": "Tumbler 02",
+          "machineIdentified": "P20 Tumbler 02",
+          "type": "Bonner",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P21",
+          "machineName": "Tumbler 03",
+          "machineIdentified": "P21 Tumbler 03",
+          "type": "Bonner",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P22",
+          "machineName": "Tumbler 04",
+          "machineIdentified": "P22 Tumbler 04",
+          "type": "Bonner",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P23",
+          "machineName": "Tumbler 05",
+          "machineIdentified": "P23 Tumbler 05",
+          "type": "Bonner",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P24",
+          "machineName": "Tumbler 06",
+          "machineIdentified": "P24 Tumbler 06",
+          "type": "Bonner",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        },
+        {
+          "section": "Preparation",
+          "machineNo": "P25",
+          "machineName": "Injector",
+          "machineIdentified": "P25 Injector",
+          "type": "GEA",
+          "manufacturer": "",
+          "expectedWeeklyHours": 120,
+          "enabled": true
+        }
+      ],
+      "createdYear": 2026,
+      "fresh122": false,
+      "annualSource": "blank_auto",
+      "annualTemplateLine": "Smart PM Blank Annual",
+      "monthlySource": "blank_auto",
+      "templateLine": "Smart PM Blank Monthly"
+    }
+  ],
+  "removedLines": []
+}

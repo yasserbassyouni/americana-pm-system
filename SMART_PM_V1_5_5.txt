@@ -1,0 +1,9 @@
+Smart PM Maintenance V1.5.5
+Annual Plan all-machines review fix
+
+- Annual Plans now lists every configured machine, including machines with 0 PM tasks.
+- Machine count is based on Machine Management, not only machines that have tasks.
+- Task count and planned occurrences remain based on actual PM tasks.
+- A machine with zero tasks opens in-place and shows: No PM Tasks assigned to this machine.
+- Zero-task machines can still be reviewed and marked Reviewed by opening then closing them.
+- No PM scheduling, Running Hours, Excel, or Year Planner calculation logic changed.

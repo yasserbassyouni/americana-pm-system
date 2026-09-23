@@ -1,0 +1,4 @@
+Smart PM V1.3.1
+- Year Planner checkbox alignment fixed.
+- Legacy calculation methods normalized for multi-year planning.
+- Running Hours / PLC Hours imported plans without Expected Weekly Hours preserve approved source-week pattern instead of false Invalid Calculation Method warnings.

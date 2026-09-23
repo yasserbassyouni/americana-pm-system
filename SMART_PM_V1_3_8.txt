@@ -1,0 +1,6 @@
+Smart PM V1.3.8 - Year Build Verification
+Based on stable V1.3.7.
+- Build is blocked while Preview has warnings.
+- After Build, persisted task/occurrence counts are compared with Preview.
+- Annual Excel file existence is verified before reporting success.
+- No changes to Year Planner calculation logic.

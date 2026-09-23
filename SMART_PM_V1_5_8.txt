@@ -1,0 +1,10 @@
+Smart PM V1.5.8 - Grouped Machine Rows
+
+Based on V1.5.7.
+Applied merged machine display to repeated Machine + Tasks tables:
+- Task Management
+- Monthly Task Management
+- PM execution line table
+
+Machine metadata (Section, Machine No., Machine Name, Machine Identified, Type) is shown once using rowspan for all tasks of the same machine.
+Planning calculations, Excel logic, PM logic, Running Hours, Annual Review and Year Planner calculations are unchanged.

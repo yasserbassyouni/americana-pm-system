@@ -1,0 +1,4 @@
+SMART PM V1.2.0 - CLEAN BASE
+Activated: 2026-09-12
+No production lines, machines, PM tasks, execution history, uploaded Excel files, or runtime backups are included.
+System templates, branding, users, email configuration, and application settings are retained.

@@ -1,0 +1,33 @@
+{
+  "accounts": [
+    {
+      "id": "gmail-main",
+      "name": "Gmail Main",
+      "enabled": false,
+      "isDefault": true,
+      "smtpHost": "smtp.gmail.com",
+      "smtpPort": 587,
+      "secure": false,
+      "smtpUser": "",
+      "smtpPassword": "",
+      "fromName": "Smart PM Maintenance"
+    }
+  ],
+  "fallbackEnabled": true,
+  "weekly": {
+    "enabled": true,
+    "to": "",
+    "cc": "",
+    "bcc": "",
+    "subject": "PM Weekly Report - {{company}} - {{week}}",
+    "message": "Please find attached the weekly preventive maintenance Excel report."
+  },
+  "monthly": {
+    "enabled": true,
+    "to": "",
+    "cc": "",
+    "bcc": "",
+    "subject": "PM Monthly Report - {{company}} - {{month}}",
+    "message": "Please find attached the final monthly preventive maintenance Excel report."
+  }
+}

@@ -1,0 +1,8 @@
+Smart PM V1.3.3 - Machine Running Hours Profile
+
+- Added Expected Running Hours / Week to Machine Management (default 120 hr/week).
+- New Running Hours / PLC Hours tasks inherit the machine hours automatically by default.
+- A task can disable inheritance and use its own hours/week override.
+- Year Planner uses the machine hours automatically when a task inherits them.
+- Changing a machine's hours/week recalculates inherited Running Hours task schedules for future planning years already stored.
+- Existing legacy/imported tasks with no Expected Weekly Hours automatically inherit the machine profile.

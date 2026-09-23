@@ -1,0 +1,18 @@
+SMART PM - FINAL V1 / STEP143
+Final review completed 2026-09-12.
+
+Verified / cleaned:
+- Production Lines: one place for line management; duplicate machine/task controls remain removed.
+- Machine Management and Annual/Monthly Task Management remain separate.
+- Safer line deletion modes retained: system only / Excel / complete folder.
+- Excel migration tested against packaged Cookies 2026 workbook: 135 tasks migrated with stable IDs.
+- Annual and Monthly rebuild, Done/Undo persistence, machine rename, line rename, task delete, duplicate descriptions, restart persistence tested.
+- Excel write backups are stored under data/backups/excel_writes, not beside live Annual/Monthly files.
+- Legacy inline .backup_before_write files in this package were moved to the backup area.
+- Branding client cache version unified to STEP143 to avoid mixed old/new header scripts.
+- Server build banner/version updated to FINAL V1 / STEP143.
+- Automated regression suite passes completely.
+
+Important:
+Keep backups. Do not edit JSON data files manually while the server is running.
+Use the application's delete/import/management pages for normal operations.

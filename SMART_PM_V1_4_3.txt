@@ -1,0 +1,4 @@
+Smart PM Maintenance V1.4.3
+Login language placement fix.
+Removed workflow-guide CSS/JS from login page and pinned language selector inside the login card.
+No PM logic changed.

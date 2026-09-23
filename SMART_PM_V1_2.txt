@@ -1,0 +1,7 @@
+Smart PM V1.2.0 - Multi-Language
+
+Languages included:
+English, Arabic, French, German, Spanish, Italian, Turkish, Urdu, Hindi, Bengali, Bahasa Indonesia, Filipino, Chinese, Portuguese, Russian.
+
+Arabic and Urdu automatically use RTL. Other languages use LTR.
+The language is saved per browser/device. PM line, machine and task names remain exactly as entered by the user.

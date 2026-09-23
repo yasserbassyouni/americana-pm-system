@@ -1,0 +1,215 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PM Lines & Machines</title>
+<style>*{box-sizing:border-box}body{font-family:Arial;margin:0;background:#f4f6f9;color:#1f2937}header{background:#c40000;color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center}main{max-width:1180px;margin:24px auto;padding:0 16px}.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:18px;box-shadow:0 2px 10px #0001}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}label{font-weight:bold;font-size:13px}input,select,button{width:100%;padding:10px;margin-top:5px;border:1px solid #ccc;border-radius:7px}button{background:#c40000;color:#fff;border:0;font-weight:bold;cursor:pointer}.secondary{background:#555}.green{background:#147a35}.orange{background:#9a5b00}.danger{background:#8b0000}.line{border:1px solid #d7dce3;border-radius:12px;margin-top:12px;background:#fff;overflow:hidden}.line[open]{box-shadow:0 3px 14px #00000010}.line.off{opacity:.78;border-style:dashed}.line-summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;background:#fafafa}.line-summary::-webkit-details-marker{display:none}.line-summary:hover{background:#f3f6f9}.line-summary-main{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.line-summary-right{display:flex;align-items:center;gap:10px;color:#666;font-size:13px}.chev{font-size:18px;transition:transform .2s}.line[open] .chev{transform:rotate(180deg)}.line-body{padding:14px 16px 16px;border-top:1px solid #e5e7eb}.line-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #eee}.line-toolbar button{width:auto;margin:0;padding:8px 12px}.line-toolbar .danger-zone{margin-left:auto}.machine{padding:10px 12px;background:#f7f7f7;border-radius:8px;margin:7px 0;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}.machine.off{opacity:.6}.actions{display:flex;gap:7px;flex-wrap:wrap}.actions button{width:auto;margin:0;padding:8px 11px}.machine-menu{position:relative}.machine-menu>summary{list-style:none;background:#374151;color:white;padding:8px 12px;border-radius:7px;font-weight:bold;cursor:pointer;user-select:none}.machine-menu>summary::-webkit-details-marker{display:none}.machine-menu[open]>summary{background:#111827}.machine-menu-box{position:absolute;right:0;top:42px;z-index:12;min-width:180px;background:#fff;border:1px solid #d1d5db;border-radius:9px;padding:8px;box-shadow:0 8px 24px #0003}.machine-menu-box button{display:block;width:100%;margin:4px 0;text-align:left}.delete-options{display:grid;grid-template-columns:1fr;gap:9px;margin-top:12px}.delete-options button{margin:0;text-align:left;padding:12px 14px}.delete-options small{display:block;margin-top:3px;color:inherit;opacity:.9}.danger-note{background:#fff0f0;border:1px solid #ef4444;color:#7f1d1d;padding:10px;border-radius:8px;margin:10px 0}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:bold}.active{background:#dcfce7;color:#166534}.inactive{background:#fee2e2;color:#991b1b}.muted,small{color:#666}.modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;z-index:30}.box{background:#fff;width:min(650px,94vw);max-height:92vh;overflow:auto;border-radius:12px;padding:20px}.warning{background:#fff6df;border:1px solid #e7c879;padding:10px;border-radius:8px;margin:10px 0}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:750px){.grid,.two{grid-template-columns:1fr}.machine{grid-template-columns:1fr}.actions button{flex:1}}</style><link rel="stylesheet" href="i18n.css"><link rel="stylesheet" href="workflow-guide.css">
+</head>
+<body><header><b>PM Lines & Machines</b><button class="secondary" style="width:auto" onclick="location.href='/settings.html'">← Settings</button></header><main>
+<div class="card"><h2>Add Production Line</h2>
+<div class="grid">
+<label>Line Name<input id="lineName"></label>
+<label>Annual Year<input id="lineYear" type="number"></label>
+<label>Annual Excel Source<select id="annualSource">
+<option value="blank_auto">Automatic Blank Annual (Recommended)</option>
+<option value="new_from_template">Create New from Existing Layout</option>
+<option value="copy_existing">Copy Existing Annual Excel</option>
+<option value="upload">Upload Annual Excel from Device</option>
+</select></label>
+<label id="annualTemplateWrap">Existing Annual Excel<select id="annualTemplateLine"></select></label>
+<label id="annualUploadWrap" style="display:none">Upload Annual .xlsx<input id="annualUploadFile" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><small id="annualUploadStatus"></small></label>
+</div>
+<hr style="border:0;border-top:1px solid #eee;margin:18px 0">
+<h3>Monthly Excel Template</h3>
+<div class="grid">
+<label>Monthly Template Source<select id="monthlySource">
+<option value="blank_auto">Automatic Blank Monthly (Recommended)</option>
+<option value="system_template">Use Existing System Template</option>
+<option value="upload">Upload Monthly Template from Device</option>
+</select></label>
+<label id="monthlyTemplateWrap">Existing Monthly Template<select id="monthlyTemplateLine"></select></label>
+<label id="monthlyUploadWrap" style="display:none">Upload Monthly .xlsx<input id="monthlyUploadFile" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><small id="monthlyUploadStatus"></small></label>
+</div>
+<div class="card" style="margin-top:14px;background:#f8fbff;border:1px solid #dbeafe">
+<h3 style="margin-top:0">Blank Excel Templates</h3>
+<div class="muted" style="margin-bottom:10px">These files are generated directly from the same system code used when a new line or month is created.</div>
+<div class="actions">
+<button type="button" class="green" onclick="downloadBlankAnnual()">Download Blank Annual</button>
+<button type="button" class="secondary" onclick="downloadBlankMonthly()">Download Blank Monthly</button>
+</div>
+</div>
+
+<div class="warning"><b>Recommended:</b> choose Automatic Blank Annual + Automatic Blank Monthly. The new files contain no machine names, machine numbers, tasks or PM entries; everything is filled by the program.<br>The Monthly template includes a dedicated <b>Executed By / Execution Date</b> area for each PM week. Upload/copy options remain available when needed.</div>
+<button onclick="addLine()">Add Line</button></div>
+<div class="card" style="background:#f8fbff;border:1px solid #dbeafe"><h2 style="margin-top:0">Management</h2><div class="muted">Keep each job in one place to avoid duplicate controls and accidental changes.</div><div class="actions" style="margin-top:12px"><button type="button" class="green" onclick="location.href='machine-management.html'">Machine Management</button><button type="button" onclick="location.href='task-management.html'">Annual PM Tasks</button><button type="button" class="secondary" onclick="location.href='monthly-task-management.html'">Monthly PM Tasks</button></div></div>
+<div class="card"><h2>Lines / Machines</h2><div class="warning"><b>Safer view:</b> production lines are collapsed by default. Click a line to open its machines and controls. Delete controls are hidden inside the opened line to reduce accidental changes.<br><br><b>Delete options:</b> you can keep all Excel files, delete Annual + Monthly Excel while keeping the folder, or delete the line folder completely.</div><div id="list"></div></div></main>
+
+<div class="modal" id="lineEditModal"><div class="box"><h3>Edit Line</h3><label>Line Name<input id="editLineName"></label>
+<div class="warning"><b>Annual Excel = Master Plan.</b> Renaming the line updates Annual Excel/template. Old Monthly history is preserved with its old name.</div>
+<label><input id="lineApplyCurrentMonthly" type="checkbox" style="width:auto"> Also apply the new line name to an existing Monthly workbook</label>
+<label>Existing Monthly Excel<select id="lineMonthlySelect"><option value="">No Monthly Excel selected</option></select></label>
+<small id="lineMonthlyStatus"></small>
+<div class="two"><button class="green" onclick="saveLineEdit()">Save</button><button class="secondary" onclick="closeModal('lineEditModal')">Cancel</button></div></div></div>
+<div class="modal" id="deleteModal"><div class="box"><h3 id="deleteTitle">Delete</h3><div id="deleteText" class="warning"></div><div id="lineDeleteOptions" class="delete-options" style="display:none"><button class="orange" id="deleteSystemBtn">Remove from System Only<small>Keep Annual, Monthly and the line folder.</small></button><button class="danger" id="deleteExcelBtn">Delete Annual + Monthly Excel<small>Remove Excel files but keep the line folder.</small></button><button class="danger" id="deleteFolderBtn">Delete Line Completely<small>Remove system data, Annual, Monthly and the line folder.</small></button></div><button class="secondary" onclick="closeModal('deleteModal')">Cancel</button></div></div>
+
+<script>
+const token=localStorage.pmToken;
+if(!token)location.href='login.html';
+const me=JSON.parse(localStorage.pmUser||'{}');
+if(String(me.role||'').toLowerCase()!=='admin')location.href='index.html';
+async function api(u,o={}){o.headers={...(o.headers||{}),'Content-Type':'application/json','Authorization':'Bearer '+token};const r=await fetch(u,o),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||'Error');return j}
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function closeModal(id){document.getElementById(id).style.display='none'}
+
+async function loadMonthlyChoices(line,selectEl,statusEl){
+ try{
+  const j=await api('/api/pm-master/lines/'+encodeURIComponent(line)+'/monthly-files');
+  const files=j.files||[];
+  selectEl.innerHTML='<option value="">Select Existing Monthly Excel</option>'+files.map(x=>`<option value="${x.year}-${String(x.month).padStart(2,'0')}">${String(x.month).padStart(2,'0')}/${x.year} — ${esc(x.file)}</option>`).join('');
+  if(!files.length){
+    selectEl.innerHTML='<option value="">No Monthly Excel created yet</option>';
+    selectEl.disabled=true;
+    if(statusEl)statusEl.textContent='No Monthly Excel exists for this line. Create it first using “Create Current Monthly Excel”.';
+    return false;
+  }
+  selectEl.disabled=false;
+  if(statusEl)statusEl.textContent='';
+  return true;
+ }catch(e){
+  selectEl.innerHTML='<option value="">Unable to load Monthly Excel</option>';
+  selectEl.disabled=true;if(statusEl)statusEl.textContent=e.message;return false;
+ }
+}
+function selectedMonthlyValue(selectEl){
+ const v=String(selectEl.value||'');
+ const m=v.match(/^(\d{4})-(\d{2})$/);
+ return m?{year:Number(m[1]),month:Number(m[2])}:null;
+}
+
+let master={lines:[]},editingLine='',editingMachine=null,deleteContext=null;
+
+let annualUploadToken='',monthlyUploadToken='';
+async function uploadXlsx(file,statusEl){
+ if(!file)throw Error('Select an .xlsx file');
+ if(!/\.xlsx$/i.test(file.name))throw Error('Only .xlsx files are accepted');
+ statusEl.textContent='Uploading...';
+ const r=await fetch('/api/pm-master/upload-xlsx',{
+   method:'POST',
+   headers:{'Authorization':'Bearer '+token,'Content-Type':'application/octet-stream','X-File-Name':file.name},
+   body:await file.arrayBuffer()
+ });
+ const j=await r.json().catch(()=>({}));
+ if(!r.ok)throw Error(j.error||'Upload failed');
+ statusEl.textContent='Ready: '+file.name;
+ return j.token;
+}
+async function loadExcelSources(){
+ try{
+  const j=await api('/api/pm-master/excel-sources?year='+Number(lineYear.value||new Date().getFullYear()));
+  annualTemplateLine.innerHTML=(j.annual||[]).map(x=>`<option value="${esc(x.line)}">${esc(x.file)}</option>`).join('')||'<option value="">No Annual Excel found</option>';
+  monthlyTemplateLine.innerHTML=(j.monthlyTemplates||[]).map(x=>`<option value="${esc(x.line)}">${esc(x.file)}</option>`).join('')||'<option value="">No Monthly template found</option>';
+ }catch(e){
+  annualTemplateLine.innerHTML='<option value="">Unable to load Annual files</option>';
+  monthlyTemplateLine.innerHTML='<option value="">Unable to load Monthly templates</option>';
+ }
+}
+function refreshExcelSourceUi(){
+ annualTemplateWrap.style.display=(annualSource.value==='new_from_template'||annualSource.value==='copy_existing')?'block':'none';
+ annualUploadWrap.style.display=annualSource.value==='upload'?'block':'none';
+ monthlyTemplateWrap.style.display=monthlySource.value==='system_template'?'block':'none';
+ monthlyUploadWrap.style.display=monthlySource.value==='upload'?'block':'none';
+}
+annualSource.onchange=refreshExcelSourceUi;monthlySource.onchange=refreshExcelSourceUi;
+annualUploadFile.onchange=async()=>{try{annualUploadToken=await uploadXlsx(annualUploadFile.files[0],annualUploadStatus)}catch(e){annualUploadToken='';annualUploadStatus.textContent=e.message}};
+monthlyUploadFile.onchange=async()=>{try{monthlyUploadToken=await uploadXlsx(monthlyUploadFile.files[0],monthlyUploadStatus)}catch(e){monthlyUploadToken='';monthlyUploadStatus.textContent=e.message}};
+
+async function load(){
+ master=await api('/api/pm-master');const names=master.lines.map(x=>x.name);
+ await loadExcelSources();
+ const requestedLine=new URLSearchParams(location.search).get('line')||'';
+ list.innerHTML=master.lines.map(l=>`<details class="line ${l.enabled===false?'off':''}" data-line-name="${esc(l.name)}"><summary class="line-summary"><div class="line-summary-main"><b style="font-size:18px">${esc(l.name)}</b><span class="badge ${l.enabled===false?'inactive':'active'}">${l.enabled===false?'Inactive':'Active'}</span></div><div class="line-summary-right"><span>${(l.machines||[]).length} machine(s)</span><span class="chev">⌄</span></div></summary><div class="line-body"><div class="line-toolbar"><button onclick="openLineEdit('${encodeURIComponent(l.name)}')">Edit Line</button>${l.enabled===false?`<button class="green" onclick="setLineActive('${encodeURIComponent(l.name)}',true)">Activate</button>`:`<button class="orange" onclick="setLineActive('${encodeURIComponent(l.name)}',false)">Deactivate</button>`}<button class="green" onclick="location.href='/machine-management.html?line=${encodeURIComponent(l.name)}'">Manage Machines</button><button onclick="location.href='/task-management.html?line=${encodeURIComponent(l.name)}'">Manage Annual Tasks</button><button class="secondary" onclick="createMonth('${encodeURIComponent(l.name)}')">Create Current Monthly Excel</button><button class="danger danger-zone" onclick="openLineDelete('${encodeURIComponent(l.name)}')">Delete Line…</button></div>
+ <div>${(l.machines||[]).map(m=>`<div class="machine ${m.enabled===false?'off':''}"><div><b>${esc(m.machineNo)}</b> — ${esc(m.machineName)} ${m.machineIdentified?'— '+esc(m.machineIdentified):''} ${m.section?' | '+esc(m.section):''} <span class="badge ${m.enabled===false?'inactive':'active'}">${m.enabled===false?'Inactive':'Active'}</span></div><button class="secondary" style="width:auto;margin:0" onclick="location.href='/machine-management.html?line=${encodeURIComponent(l.name)}'">Machine Management</button></div>`).join('')||'<small>No machines yet</small>'}</div></div></details>`).join('');
+ if(requestedLine){
+   const card=[...list.querySelectorAll('.line')].find(x=>x.dataset.lineName===requestedLine);
+   if(card){card.open=true;card.style.outline='3px solid #0a7';card.scrollIntoView({behavior:'smooth',block:'center'});}
+ }
+}
+
+async function downloadProtectedExcel(url,filename){
+ try{
+  const r=await fetch(url,{headers:{'Authorization':'Bearer '+token}});
+  if(!r.ok){
+    let m='Download failed';
+    try{const x=await r.json();m=x.error||m}catch(_){}
+    throw Error(m);
+  }
+  const blob=await r.blob();
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+ }catch(e){alert(e.message)}
+}
+function downloadBlankAnnual(){
+ const y=Number(lineYear.value||new Date().getFullYear());
+ const name=(lineName.value||'Smart_PM_BLANK_ANNUAL').trim();
+ downloadProtectedExcel('/api/templates/annual?year='+encodeURIComponent(y)+'&line='+encodeURIComponent(lineName.value||''),name+'_'+y+'.xlsx');
+}
+function downloadBlankMonthly(){
+ const y=Number(lineYear.value||new Date().getFullYear());
+ const m=new Date().getMonth()+1;
+ const name=(lineName.value||'Smart_PM_BLANK_MONTHLY').trim();
+ downloadProtectedExcel('/api/templates/monthly?year='+encodeURIComponent(y)+'&month='+encodeURIComponent(m)+'&line='+encodeURIComponent(lineName.value||''),name+'_'+y+'_'+String(m).padStart(2,'0')+'.xlsx');
+}
+
+async function addLine(){try{
+ if(!lineName.value.trim())throw Error('Enter Line Name.');
+ if(annualSource.value==='upload'&&!annualUploadToken)throw Error('Upload Annual Excel first.');
+ if(monthlySource.value==='upload'&&!monthlyUploadToken)throw Error('Upload Monthly Template first.');
+ const r=await api('/api/pm-master/lines',{method:'POST',body:JSON.stringify({
+   name:lineName.value,year:Number(lineYear.value),
+   annualSource:annualSource.value,annualTemplateLine:annualTemplateLine.value,annualUploadToken,
+   monthlySource:monthlySource.value,monthlyTemplateLine:monthlyTemplateLine.value,monthlyUploadToken
+ })});
+ const createdYear=Number(lineYear.value||new Date().getFullYear());
+ annualUploadToken='';monthlyUploadToken='';annualUploadFile.value='';monthlyUploadFile.value='';
+ annualUploadStatus.textContent='';monthlyUploadStatus.textContent='';lineName.value='';
+ // Keep the newly-created line as the active setup context.
+ localStorage.setItem('pmSetupLine',r.line);
+ localStorage.setItem('pmSetupYear',String(createdYear));
+ localStorage.removeItem(`pmFlowReviewed:${r.line}:${createdYear}`);
+
+ // Excel-import mode keeps its own guided import cycle.
+ if((localStorage.getItem('pmSetupMode')||'manual')==='import'){
+   location.href='/excel-migration.html?line='+encodeURIComponent(r.line)+'&year='+createdYear+'&autoflow=1';
+   return;
+ }
+
+ // CLEAN MANUAL CYCLE:
+ // Create Line -> Create Current Month Excel -> Add Machines.
+ // Do not continue to Machine Management if the monthly Excel could not be created.
+ const monthResult=await api('/api/pm-master/lines/'+encodeURIComponent(r.line)+'/create-current-month',{method:'POST',body:'{}'});
+ alert(`Line created successfully.\nCurrent Monthly Excel: ${monthResult.alreadyExists?'already exists':'created successfully'}.\nNext step: Add Machines.`);
+ location.href='/machine-management.html?line='+encodeURIComponent(r.line)+'&year='+createdYear+'&setup=1';
+ return;
+}catch(e){alert(e.message)}}
+async function createMonth(line){try{const r=await api('/api/pm-master/lines/'+line+'/create-current-month',{method:'POST',body:'{}'});alert(r.alreadyExists?'Current Monthly Excel already exists.':'Current Monthly Excel created from the Annual Master Plan. It will now be available on Dashboard and in Monthly selectors.');await load()}catch(e){alert(e.message)}}
+async function openLineEdit(encoded){const name=decodeURIComponent(encoded);editingLine=name;editLineName.value=name;
+ lineApplyCurrentMonthly.checked=false;lineMonthlyStatus.textContent='';await loadMonthlyChoices(name,lineMonthlySelect,lineMonthlyStatus);lineEditModal.style.display='flex'}
+async function saveLineEdit(){try{
+ if(lineApplyCurrentMonthly.checked&&!selectedMonthlyValue(lineMonthlySelect))throw Error('Select an existing Monthly Excel first.');
+ const r=await api('/api/pm-master/lines/'+encodeURIComponent(editingLine),{method:'PUT',body:JSON.stringify({
+   name:editLineName.value,applyCurrentMonthly:lineApplyCurrentMonthly.checked,
+   monthlyYear:selectedMonthlyValue(lineMonthlySelect)?.year||0,
+   monthlyMonth:selectedMonthlyValue(lineMonthlySelect)?.month||0
+ })});
+ closeModal('lineEditModal');
+ alert(`Line updated. Annual Master updated.${r.currentMonthlyUpdated?' Selected Monthly updated.':' Old Monthly history preserved.'}`);
+ await load()
+}catch(e){alert(e.message)}}
+async function setLineActive(encoded,on){const name=decodeURIComponent(encoded);if(!confirm(`${on?'Activate':'Deactivate'} line ${name}? Excel files and history will not be deleted.`))return;try{await api('/api/pm-master/lines/'+encodeURIComponent(name)+'/'+(on?'activate':'deactivate'),{method:'POST',body:'{}'});await load()}catch(e){alert(e.message)}}
+async function openLineDelete(encoded){const line=decodeURIComponent(encoded);deleteContext={kind:'line',line};let usage={};try{usage=await api('/api/pm-master/lines/'+encodeURIComponent(line)+'/usage')}catch(_){}deleteTitle.textContent='Delete Line — '+line;deleteText.innerHTML=`Annual tasks: <b>${usage.tasks??'?'}</b><br>Annual Excel files: <b>${usage.annualFiles??'?'}</b><br>Monthly Excel files: <b>${usage.monthlyFiles??'?'}</b><br><br>Select exactly what should be removed. The complete-delete option requires a second confirmation.`;lineDeleteOptions.style.display='grid';deleteSystemBtn.onclick=()=>deleteLine('system');deleteExcelBtn.onclick=()=>deleteLine('excel');deleteFolderBtn.onclick=()=>deleteLine('folder');deleteModal.style.display='flex'}
+async function deleteLine(mode){const line=deleteContext.line;let msg='';if(mode==='system')msg=`Remove ${line} from the active system only?\n\nAnnual, Monthly and the line folder will be kept.`;if(mode==='excel')msg=`Delete ${line} from the system AND permanently delete its Annual + Monthly Excel files?\n\nThe line folder itself will remain.`;if(mode==='folder')msg=`DANGER: Permanently delete ${line}, all Annual + Monthly Excel files, and the entire line folder?\n\nThis cannot be undone.`;if(!confirm(msg))return;if(mode==='folder'){const typed=prompt(`Final confirmation: type the line name exactly to delete everything:\n\n${line}`);if(typed!==line){alert('Line name did not match. Nothing was deleted.');return}}try{const r=await api('/api/pm-master/lines/'+encodeURIComponent(line),{method:'DELETE',body:JSON.stringify({mode})});closeModal('deleteModal');alert(mode==='system'?'Line removed from system. Excel files and folder were kept.':mode==='excel'?`Line removed. Deleted ${r.annualDeleted||0} Annual/template file(s) and ${r.monthlyDeleted||0} Monthly file(s). Folder kept.`:`Line completely deleted. Annual, Monthly and line folder removed.`);await load()}catch(e){alert(e.message)}}
+lineYear.value=new Date().getFullYear();
+lineYear.onchange=()=>{loadExcelSources()};
+refreshExcelSourceUi();
+load().catch(e=>alert(e.message));
+</script><script src="branding-client.js?v=143"></script><script src="i18n.js?v=130"></script>
+<script src="workflow-guide.js?v=141"></script></body></html>

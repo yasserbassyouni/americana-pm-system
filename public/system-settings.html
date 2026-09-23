@@ -1,0 +1,87 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>System</title><link rel="stylesheet" href="settings.css"><link rel="stylesheet" href="i18n.css"><link rel="stylesheet" href="workflow-guide.css">
+</head><body><header class="top"><div class="bar"><h2>Schedule & System</h2><button class="btn" onclick="location.href='settings.html'">← Settings</button></div></header><main class="wrap"><div class="panel">
+<div class="row"><label>Timezone<select id="timezone">
+<option value="Asia/Riyadh">Asia/Riyadh — Saudi Arabia</option>
+<option value="Africa/Cairo">Africa/Cairo — Egypt</option>
+<option value="Asia/Dubai">Asia/Dubai — UAE</option>
+<option value="Asia/Kuwait">Asia/Kuwait — Kuwait</option>
+<option value="Asia/Qatar">Asia/Qatar — Qatar</option>
+<option value="Asia/Bahrain">Asia/Bahrain — Bahrain</option>
+<option value="Europe/London">Europe/London — United Kingdom</option>
+<option value="UTC">UTC</option>
+</select></label><label>Week Starts<select id="weekStartDay"><option>Friday</option></select></label><label>Thursday Close Time<input id="weeklyCloseTime" type="time"></label><label>Friday Prepare Time<input id="newWeekPrepareTime" type="time"></label><label>Auto Logout (minutes)<input id="autoLogoutMinutes" type="number"></label></div>
+<div class="row"><label>Weekly Email<select id="weeklyEmailEnabled"><option value="true">Enabled</option><option value="false">Disabled</option></select></label><label>Monthly Email<select id="monthlyEmailEnabled"><option value="true">Enabled</option><option value="false">Disabled</option></select></label><label>Technician Undo<select id="allowTechnicianUndo"><option value="false">No</option><option value="true">Yes</option></select></label></div>
+<button class="btn red" onclick="save()">Save</button></div>
+<div class="panel">
+<h3>Schedule Test</h3>
+<p class="muted">Test the real schedule logic without changing the Windows date or time. Thursday Close can send real email using the current Email Settings.</p>
+<div class="row">
+<label>Test Date<input id="scheduleTestDate" type="date"></label>
+<label>Thursday Close Test<button class="btn red" type="button" onclick="testThursdayClose()">Run Thursday Close</button></label>
+<label>Friday Prepare Test<button class="btn red" type="button" onclick="testFridayPrepare()">Run Friday Prepare</button></label>
+</div>
+<div id="scheduleTestResult" class="muted" style="margin-top:10px"></div>
+</div>
+<div class="panel">
+<h3>Monthly Excel Creator Test</h3>
+<p class="muted">Creates one monthly Excel file per line from the Annual PM. If the file already exists it will not overwrite it.</p>
+<div class="row">
+<label>Year<input id="createYear" type="number" value="2026"></label>
+<label>Month<select id="createMonth">
+<option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option>
+<option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option>
+<option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option>
+</select></label>
+<label>Activate in Dashboard<select id="activateMonth"><option value="true">Yes</option><option value="false">No</option></select></label>
+</div>
+<button class="btn red" onclick="createMonthFiles()">Create Monthly Excel</button>
+<div id="createResult" class="muted" style="margin-top:10px"></div>
+</div>
+</main><script src="settings-common.js"></script><script>
+
+async function createMonthFiles(){
+ const out=document.getElementById('createResult');
+ out.textContent='Creating monthly Excel files...';
+ try{
+  const body={year:Number(createYear.value),month:Number(createMonth.value),activate:activateMonth.value==='true'};
+  const r=await api('/api/monthly/create',{method:'POST',body:JSON.stringify(body)});
+  const created=r.results.filter(x=>x.status==='created').length;
+  const exists=r.results.filter(x=>x.status==='exists').length;
+  const errors=r.results.filter(x=>x.status==='error');
+  out.textContent=`Month ready: ${r.weeks} PM weeks. Created ${created}, already existed ${exists}`+(errors.length?`. Errors: ${errors.map(x=>x.line+': '+x.error).join(' | ')}`:'');
+ }catch(e){out.textContent='Create failed: '+e.message}
+}
+
+
+function testDateValue(){
+ const v=document.getElementById('scheduleTestDate').value;
+ if(!v)throw new Error('Select Test Date first');
+ return v;
+}
+async function testFridayPrepare(){
+ const out=document.getElementById('scheduleTestResult');
+ try{
+  const date=testDateValue();
+  out.textContent='Running Friday Prepare test...';
+  const r=await api('/api/system/test-friday-prepare',{method:'POST',body:JSON.stringify({date})});
+  const created=(r.results||[]).filter(x=>x.status==='created').length;
+  const exists=(r.results||[]).filter(x=>x.status==='exists').length;
+  out.textContent=`Friday Prepare OK — PM month ${String(r.context.month).padStart(2,'0')}/${r.context.year}. Created ${created}, already existed ${exists}. Dashboard month activated.`;
+ }catch(e){out.textContent='Friday Prepare test failed: '+e.message}
+}
+async function testThursdayClose(){
+ const out=document.getElementById('scheduleTestResult');
+ try{
+  const date=testDateValue();
+  if(!confirm('This test can send REAL weekly/monthly email using Email Settings. Continue?'))return;
+  out.textContent='Running Thursday Close test...';
+  const r=await api('/api/system/test-thursday-close',{method:'POST',body:JSON.stringify({date})});
+  const w=r.weekly?.skipped?'Weekly email skipped':'Weekly email sent';
+  const m=r.isPmMonthEnd?(r.monthly?.skipped?'Monthly email skipped':'Monthly email sent'):'Not the final PM Thursday — monthly email not due';
+  out.textContent=`Thursday Close OK — ${w}. ${m}.`;
+ }catch(e){out.textContent='Thursday Close test failed: '+e.message}
+}
+
+async function load(){const x=await api('/api/settings/system');for(const k of ['timezone','weekStartDay','weeklyCloseTime','newWeekPrepareTime','autoLogoutMinutes'])document.getElementById(k).value=x[k]??'';for(const k of ['weeklyEmailEnabled','monthlyEmailEnabled','allowTechnicianUndo'])document.getElementById(k).value=String(!!x[k])}
+async function save(){const x=await api('/api/settings/system');for(const k of ['timezone','weekStartDay','weeklyCloseTime','newWeekPrepareTime'])x[k]=document.getElementById(k).value;x.autoLogoutMinutes=Number(autoLogoutMinutes.value)||30;for(const k of ['weeklyEmailEnabled','monthlyEmailEnabled','allowTechnicianUndo'])x[k]=document.getElementById(k).value==='true';await api('/api/settings/system',{method:'PUT',body:JSON.stringify(x)});alert('Saved')}load();</script><script src="branding-client.js?v=143"></script><script src="i18n.js?v=130"></script>
+<script src="workflow-guide.js?v=141"></script></body></html>

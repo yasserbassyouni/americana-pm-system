@@ -1,0 +1,141 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Machine Management</title><link rel="stylesheet" href="settings.css">
+<style>
+body{background:#f4f6f9}.wrap{max-width:1250px;margin:auto;padding:20px}
+.hero{background:#c40000;color:#fff;padding:18px;border-radius:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hero h2{margin:0 14px 0 0}.btn{padding:9px 13px;border:0;border-radius:7px;cursor:pointer;font-weight:700}
+.dark{background:#333;color:#fff}.green{background:#137a38;color:#fff}.red{background:#c40000;color:#fff}
+.card{background:#fff;border:1px solid #d7dde5;border-radius:12px;padding:16px;margin-top:14px;box-shadow:0 2px 8px #0000000d}
+.filters{display:flex;gap:12px;align-items:end;flex-wrap:wrap}.filters label{font-size:12px;font-weight:700}
+select,input{padding:9px;border:1px solid #bbc3cc;border-radius:7px;min-width:150px}
+.table-shell{overflow:auto;border:1px solid #b8c0c8;border-radius:10px;margin-top:14px}
+table{width:100%;border-collapse:collapse;min-width:850px}th{background:#222;color:white;padding:10px;border:1px solid #555}
+td{padding:9px;border:1px solid #c5ccd4;text-align:center}.muted{color:#667085;font-size:13px}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef2f6;font-weight:700}
+.modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;z-index:50}
+.box{background:white;width:min(620px,94vw);padding:20px;border-radius:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid label{font-size:12px;font-weight:700}.grid input{width:100%;box-sizing:border-box}.full{grid-column:1/-1}
+.warn{background:#fff6df;border:1px solid #e7c879;padding:10px;border-radius:8px;margin-top:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="i18n.css"><link rel="stylesheet" href="workflow-guide.css">
+</head><body>
+<div class="wrap">
+ <div class="hero">
+  <button class="btn dark" onclick="location.href='settings.html'">← Settings</button>
+  <h2>Machine Management</h2>
+  <button class="btn dark" onclick="location.href='task-management.html'">Task Management →</button>
+ </div>
+
+ <div class="card">
+  <div class="filters">
+   <label>Line<br><select id="line"></select></label>
+   <label>Annual Year<br><input id="year" type="number" min="2020" max="2100"></label>
+   <button class="btn dark" id="loadBtn">Load</button>
+   <button class="btn green" id="addBtn">+ Add Machine</button>
+  </div>
+  <div class="muted" style="margin-top:10px">Machine data is managed here only. Running Hours/Week is the machine default used automatically by all Running Hours PM Tasks unless a task has its own override.</div>
+  <div id="msg" class="muted" style="margin-top:8px"></div>
+  <div class="table-shell"><table>
+   <thead><tr><th>Section</th><th>Machine No.</th><th>Machine Name</th><th>Machine Identified</th><th>Type</th><th>Run Hours / Week</th><th>Tasks</th><th>Actions</th></tr></thead>
+   <tbody id="rows"></tbody>
+  </table></div>
+ </div>
+</div>
+
+<div class="modal" id="modal"><div class="box">
+ <h3 id="title">Add Machine</h3>
+ <div class="grid">
+  <label>Section<input id="section"></label>
+  <label>Machine No.<input id="machineNo"></label>
+  <label>Machine Name<input id="machineName"></label>
+  <label>Machine Identified<input id="machineIdentified"></label>
+  <label>Type<input id="type"></label>
+  <label>Expected Running Hours / Week<input id="expectedWeeklyHours" type="number" min="1" step="0.1" value="120"></label>
+  <label class="full"><input type="checkbox" id="applyMonthly" style="width:auto"> Also update selected existing Monthly Excel</label>
+  <label id="monthWrap" class="full" style="display:none">Monthly Excel<select id="monthSelect" style="width:100%;box-sizing:border-box"></select></label>
+ </div>
+ <div class="warn" id="editNote">Editing machine data updates all Annual tasks belonging to this machine. Existing Monthly history is changed only if you explicitly select a Monthly Excel.</div>
+ <div style="display:flex;gap:8px;margin-top:14px"><button class="btn red" id="saveBtn">Save</button><button class="btn dark" onclick="modal.style.display='none'">Cancel</button></div>
+</div></div>
+
+<script>
+const token=localStorage.pmToken;if(!token)location.href='login.html';
+const me=JSON.parse(localStorage.pmUser||'{}');if(String(me.role||'').toLowerCase()!=='admin')location.href='index.html';
+const H={'Authorization':'Bearer '+token};let master=null,editing=null,machines=[];
+const $=id=>document.getElementById(id);
+async function api(url,opt={}){opt.headers={...(opt.headers||{}),...H};if(opt.body)opt.headers['Content-Type']='application/json';const r=await fetch(url,opt);const j=await r.json().catch(()=>({}));if(!r.ok){const e=Error(j.error||'Request failed');e.data=j;throw e}return j}
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('year').value=new Date().getFullYear();
+
+async function loadLines(){
+ master=await api('/api/pm-master');
+ const list=(master.lines||[]).filter(x=>x.enabled!==false);
+ $('line').innerHTML=list.map(x=>`<option value="${esc(x.name)}">${esc(x.name)}</option>`).join('');
+ const requested=new URLSearchParams(location.search).get('line')||'';
+ if(list.some(x=>x.name===requested))$('line').value=requested;
+}
+async function loadMonths(){
+ try{
+  const j=await api(`/api/task-management-months?line=${encodeURIComponent($('line').value)}&year=${$('year').value}`);
+  $('monthSelect').innerHTML='<option value="">Select Monthly Excel</option>'+j.months.map(x=>`<option value="${x.month}">${String(x.month).padStart(2,'0')}/${x.year}</option>`).join('');
+ }catch(_){$('monthSelect').innerHTML='<option value="">No Monthly Excel</option>'}
+}
+async function load(){
+ try{
+  $('msg').textContent='Loading...';
+  const j=await api(`/api/pm-master/excel-machines/${encodeURIComponent($('line').value)}/${$('year').value}`);
+  machines=j.machines||[];
+  $('rows').innerHTML=machines.map(m=>{
+   const type=m.type||(m.types||[]).join(', ');
+   return `<tr><td>${esc(m.section)}</td><td><b>${esc(m.machineNo)}</b></td><td>${esc(m.machineName)}</td><td>${esc(m.machineIdentified)}</td><td>${esc(type)}</td><td><b>${esc(m.expectedWeeklyHours||120)}</b> hr</td><td><span class="badge">${(m.tasks||[]).length}</span></td><td><button class="btn red" onclick="editMachine('${encodeURIComponent(m.machineNo)}')">Edit</button> <button class="btn dark" onclick="deleteMachine('${encodeURIComponent(m.machineNo)}')">Delete</button></td></tr>`
+  }).join('');
+  $('msg').textContent=`${machines.length} machine(s)`;
+ }catch(e){$('msg').textContent=e.message}
+}
+function clearForm(){for(const id of ['section','machineNo','machineName','machineIdentified','type'])$(id).value='';$('expectedWeeklyHours').value=120;$('applyMonthly').checked=false;$('monthWrap').style.display='none'}
+$('addBtn').onclick=async()=>{editing=null;clearForm();$('title').textContent='Add Machine';$('editNote').textContent='Machine will be added immediately to Annual Excel even with zero tasks. Select Monthly Excel if you also want the machine to appear in that existing month.';await loadMonths();$('modal').style.display='flex'};
+window.editMachine=async enc=>{
+ const no=decodeURIComponent(enc),m=machines.find(x=>x.machineNo===no);if(!m)return;
+ editing={oldNo:no};$('title').textContent='Edit Machine';
+ $('section').value=m.section||'';$('machineNo').value=m.machineNo||'';$('machineName').value=m.machineName||'';$('machineIdentified').value=m.machineIdentified||'';$('type').value=m.type||(m.types||[])[0]||'';$('expectedWeeklyHours').value=m.expectedWeeklyHours||120;
+ $('applyMonthly').checked=false;$('monthWrap').style.display='none';$('editNote').textContent='This changes the machine data for every Annual task linked to this machine. Monthly history changes only if you select one Monthly Excel.';
+ await loadMonths();$('modal').style.display='flex';
+};
+$('applyMonthly').onchange=()=>{$('monthWrap').style.display=$('applyMonthly').checked?'block':'none'};
+$('saveBtn').onclick=async()=>{
+ try{
+  const body={year:Number($('year').value),section:$('section').value.trim(),machineNo:$('machineNo').value.trim(),machineName:$('machineName').value.trim(),machineIdentified:$('machineIdentified').value.trim(),type:$('type').value.trim(),expectedWeeklyHours:Number($('expectedWeeklyHours').value||120)};
+  if(!body.machineNo||!body.machineName)throw Error('Machine No. and Machine Name are required.');
+  if(editing){
+   body.applyAnnual=true;body.applyCurrentMonthly=$('applyMonthly').checked;
+   body.monthlyYear=Number($('year').value);body.monthlyMonth=Number($('monthSelect').value||0);
+   if(body.applyCurrentMonthly&&!body.monthlyMonth)throw Error('Select Monthly Excel.');
+   await api(`/api/pm-master/lines/${encodeURIComponent($('line').value)}/machines/${encodeURIComponent(editing.oldNo)}`,{method:'PUT',body:JSON.stringify(body)});
+  }else{
+   body.applyCurrentMonthly=$('applyMonthly').checked;
+   body.monthlyYear=Number($('year').value);
+   body.monthlyMonth=Number($('monthSelect').value||0);
+   if(body.applyCurrentMonthly&&!body.monthlyMonth)throw Error('Select Monthly Excel.');
+   await api(`/api/pm-master/lines/${encodeURIComponent($('line').value)}/machines`,{method:'POST',body:JSON.stringify(body)});
+  }
+  $('modal').style.display='none';await load();alert(editing?'Machine updated.':'Machine added.');window.dispatchEvent(new Event('pm-workflow-refresh'));
+ }catch(e){alert(e.message)}
+};
+window.deleteMachine=async enc=>{
+ const no=decodeURIComponent(enc);
+ try{
+  const u=await api(`/api/pm-master/lines/${encodeURIComponent($('line').value)}/machines/${encodeURIComponent(no)}/usage?year=${$('year').value}`);
+  if(u.annualTasks>0){
+   alert(`Cannot delete ${no}.\n\nThis machine has ${u.annualTasks} Annual PM task(s).\nDelete or move these tasks first from Task Management.`);
+   return;
+  }
+  if(!confirm(`Delete machine ${no} from Machine Management?\n\nNo Annual PM tasks are attached to it.`))return;
+  await api(`/api/pm-master/lines/${encodeURIComponent($('line').value)}/machines/${encodeURIComponent(no)}`,{method:'DELETE',body:JSON.stringify({mode:'system',year:Number($('year').value)})});
+  await load();
+ }catch(e){alert(e.message)}
+};
+$('loadBtn').onclick=load;$('line').onchange=load;$('year').onchange=load;
+(async()=>{await loadLines();if($('line').value)await load()})();
+</script><script src="branding-client.js?v=143"></script><script src="i18n.js?v=130"></script>
+<script src="workflow-guide.js?v=141"></script></body></html>

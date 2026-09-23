@@ -1,0 +1,7 @@
+Smart PM V1.4.1 - Role-aware Technician UI
+
+Based on V1.4.0 Guided Workflow.
+- Setup Steps / Manual Setup / Excel Import / Setup Guide are shown to Admin only.
+- Technician/Supervisor dashboard keeps only normal PM execution controls plus Language and Logout.
+- Settings remains Admin-only and hidden controls are no longer forced visible by Branding CSS.
+- No PM calculation, Excel, Running Hours, or Year Planner logic changed.

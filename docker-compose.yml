@@ -1,0 +1,16 @@
+services:
+  smart-pm:
+    build: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3050
+      PM_DATA_ROOT: /app/data
+      PUBLIC_URL: ${PUBLIC_URL:-}
+    ports:
+      - "3050:3050"
+    volumes:
+      - smart_pm_data:/app/data
+volumes:
+  smart_pm_data:

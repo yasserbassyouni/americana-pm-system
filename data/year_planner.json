@@ -1,0 +1,4 @@
+{
+  "autoRollover": true,
+  "sourceStrategy": "latest_prior"
+}

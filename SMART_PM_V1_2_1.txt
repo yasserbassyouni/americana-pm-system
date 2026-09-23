@@ -1,0 +1,7 @@
+Smart PM V1.2.1 - Multi-Language Clean Base
+
+- No built-in production lines.
+- No line-specific Monthly Excel templates.
+- New lines are created only from the program.
+- General blank Annual/Monthly system templates are preserved.
+- Multi-language system from V1.2.0 is preserved.

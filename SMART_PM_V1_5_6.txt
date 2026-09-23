@@ -1,0 +1,7 @@
+Smart PM V1.5.6 - Dynamic Annual Review Status
+- Annual review counts every configured machine, including machines with 0 PM tasks.
+- Workflow displays Reviewed / Remaining counts.
+- Review Annual Plan is complete only when every current machine is reviewed.
+- Adding a new machine automatically makes Annual Review incomplete again.
+- Review state is tied to each machine's current PM task signature; changing/adding tasks requires that machine to be reviewed again.
+- Build Future Years remains pending until Annual Review is complete.

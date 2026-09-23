@@ -1,0 +1,19 @@
+{
+  "timezone": "Asia/Riyadh",
+  "weekStartDay": "Friday",
+  "weeklyCloseTime": "23:00",
+  "newWeekPrepareTime": "00:15",
+  "weeklyEmailEnabled": true,
+  "monthlyEmailEnabled": true,
+  "autoLogoutMinutes": 30,
+  "allowTechnicianUndo": false,
+  "codeColors": {
+    "1": "#92D050",
+    "2": "#00B0F0",
+    "3": "#0070C0",
+    "4": "#275417",
+    "5": "#002060"
+  },
+  "doneCode": 6,
+  "activePmDate": "2026-07-03"
+}

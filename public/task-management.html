@@ -1,0 +1,464 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PM Task Management</title><link rel="stylesheet" href="settings.css">
+<style>
+.wrap{max-width:1250px;margin:auto;padding:20px}.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+select,input,textarea{padding:9px;border:1px solid #bbb;border-radius:7px}
+.table-shell{overflow:auto;background:#fff;border:1px solid #b8c0c8;border-radius:10px;margin-top:14px}
+table{width:100%;border-collapse:collapse;min-width:1180px;margin:0;table-layout:auto}
+th{padding:10px 8px;border:1px solid #4e555c;background:#222;color:#fff;text-align:center;font-size:13px;white-space:normal}
+td{padding:9px 8px;border:1px solid #b8c0c8;text-align:center;font-size:13px;vertical-align:middle;background:#fff;word-break:break-word}
+td:nth-child(6),td:nth-child(7){text-align:left}
+tr:hover td{background:#f7fafc}
+.btn{padding:9px 13px;border:0;border-radius:7px;cursor:pointer}.edit{background:#c40000;color:#fff}.secondary{background:#333;color:#fff}
+.modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;z-index:20}.box{background:white;width:min(760px,94vw);max-height:92vh;overflow:auto;padding:20px;border-radius:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid label{font-size:12px;font-weight:bold}.grid input,.grid select,.grid textarea{width:100%;box-sizing:border-box}.picknew{display:grid;grid-template-columns:36% 64%;gap:6px}.picknew select{min-width:0}.picknew input{min-width:0}.full{grid-column:1/-1}
+.note{background:#fff6df;border:1px solid #e7c879;padding:10px;border-radius:8px;margin:10px 0}.pmcode{display:inline-block;min-width:34px;padding:6px 10px;border-radius:7px;text-align:center;font-weight:800}
+.code1{background:#92D050;color:#000}.code2{background:#00B0F0;color:#000}.code3{background:#0070C0;color:#fff}.code4{background:#275417;color:#fff}.code5{background:#002060;color:#fff}
+.danger{background:#8b0000;color:#fff}.add{background:#147a35;color:#fff}.machineIdentityField{display:none!important}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+
+/* V1.5.8 grouped machine rows */
+td.machine-merged{vertical-align:middle;background:#f8fafc;font-weight:600}
+tr.machine-group-start td{border-top:2px solid #d9dee7}
+</style><link rel="stylesheet" href="i18n.css"><link rel="stylesheet" href="workflow-guide.css">
+</head><body>
+<div class="wrap">
+<div class="top"><button class="btn secondary" onclick="location.href='settings.html'">← Settings</button><h2>Task Management</h2><button class="btn secondary" onclick="location.href='machine-management.html'">Machines</button><button class="btn secondary" onclick="location.href='monthly-task-management.html'">Monthly Tasks →</button></div>
+<div class="note"><b>Machine data and Task data are separated.</b> Select a machine, then Add/Edit/Delete only its PM Tasks. To change Section, Machine No., Machine Name, Machine Identified or Type, use <b>Machines</b>.</div>
+<div class="top">
+<label>Line <select id="line"></select></label>
+<label>Year <input id="year" type="number" min="2020" max="2100"></label>
+<label>Machine <select id="machine"><option value="">All Machines</option></select></label>
+<button class="btn secondary" id="loadBtn">Load</button><button class="btn add" id="addBtn">+ Add Task</button>
+</div>
+<div id="msg"></div>
+<div class="table-shell"><table><thead><tr><th>Section</th><th>Machine No.</th><th>Machine Name</th><th>Machine Identified</th><th>Type</th><th>Part</th><th>Maintenance Task</th><th>Freq.</th><th>PM Code</th><th>Planned Weeks</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table></div>
+</div>
+
+<div class="modal" id="modal"><div class="box">
+<h3 id="modalTitle">Edit PM Task</h3>
+<div class="note" style="margin-bottom:12px"><b>Machine</b><br><select id="taskMachineSelect" style="width:100%;margin-top:6px"></select><div style="font-size:12px;color:#666;margin-top:5px">Machine identity is read from Machine Management and cannot be edited inside a Task.</div></div>
+<div class="grid">
+<label class="machineIdentityField">Section<div class="picknew"><select id="sectionExisting"><option value="">Existing</option></select><input id="section" placeholder="New / selected Section"></div></label>
+<label class="machineIdentityField">Machine No.<div class="picknew"><select id="machineNoExisting"><option value="">Existing</option></select><input id="machineNo" placeholder="New / selected No."></div></label>
+<label class="machineIdentityField">Machine Name<div class="picknew"><select id="machineNameExisting"><option value="">Existing</option></select><input id="machineName" placeholder="New / selected Name"></div></label>
+<label class="machineIdentityField">Machine Identified<div class="picknew"><select id="machineIdentifiedExisting"><option value="">Existing</option></select><input id="machineIdentified" placeholder="New / selected ID"></div></label>
+<label class="machineIdentityField">Type<div class="picknew"><select id="typeExisting"><option value="">Existing</option></select><input id="type" placeholder="New / selected Type"></div></label>
+<label>Part<input id="part"></label>
+<label class="full">Maintenance Task<textarea id="maintenance" rows="3"></textarea></label>
+<label>Frequency Text<input id="frequency" placeholder="weekly / 3000 hr / etc."></label>
+<label>Calculation Method<select id="calculationMethod">
+<option value="calendar">Calendar</option>
+<option value="hours">Running Hours (manual/estimated)</option>
+<option value="plc_hours">PLC Running Hours (future connection)</option>
+</select></label>
+<label id="calendarFrequencyWrap">Calendar Frequency<select id="calendarFrequency">
+<option value="weekly">Weekly</option>
+<option value="monthly">Monthly</option>
+<option value="quarterly">Quarterly</option>
+<option value="semiannual">Semi Annual</option>
+<option value="annual">Annual</option>
+</select></label>
+<label id="intervalHoursWrap" style="display:none">Interval Hours<input id="intervalHours" type="number" min="1" step="1" placeholder="40 / 500 / 1000 / 2000 / 10000"></label>
+<label id="expectedWeeklyHoursWrap" style="display:none">Expected Running Hours / Week<input id="expectedWeeklyHours" type="number" min="1" step="0.1" value="120"><span style="display:block;margin-top:6px;font-weight:normal"><input id="useMachineExpectedHours" type="checkbox" checked style="width:auto"> Use Machine Running Hours / Week automatically</span></label>
+<label>PM Type / Color<select id="code">
+<option value="1">1 - Weekly / Frequent</option>
+<option value="2">2 - Monthly</option>
+<option value="3">3 - Quarterly</option>
+<option value="4">4 - Semi Annual</option>
+<option value="5">5 - Annual / Long Interval</option>
+</select></label>
+<label class="full" id="calcHint" style="font-weight:normal;color:#555">Calendar planning uses real calendar months, not every 4 weeks.</label>
+<label class="full"><input id="applyCode" type="checkbox" checked> Apply selected PM code/color to all weeks already planned for this task in Annual Excel</label><label class="full" id="recalcWrap" style="display:none"><input id="recalculatePlanning" type="checkbox"> Recalculate Annual planning using Calculation Method + Planning Start Date</label>
+<label id="editFirstPmDateWrap" style="display:none"><span id="editDateLabel">First PM Date</span><input id="editFirstPmDate" type="date"></label><label class="full" id="applyCurrentWrap" style="display:none"><input id="applyCurrent" type="checkbox"> Also apply Edit to Monthly Excel <select id="syncEditMonth"><option value="">Select Month</option></select></label>
+<div class="full" id="newWeeksWrap" style="display:none">
+<b>New Task Planning</b><div class="grid" style="margin-top:8px"><label>Line<select id="addLine"></select></label><label style="display:none">Machine<select id="addMachine"></select></label></div>
+<div class="grid" style="margin-top:8px">
+<label><span id="newDateLabel">First PM Date</span><input id="firstPmDate" type="date"></label>
+<label>Task Position<select id="taskPosition"></select></label>
+<label class="full"><input id="addCurrentMonthly" type="checkbox" style="width:auto"> Also add to Existing Monthly Excel <select id="syncAddMonth"><option value="">Select Month</option></select></label>
+</div>
+<div class="muted" style="margin-top:8px">Select Line → Section → Machine Name → Machine No. → Machine Identified → Type → Task Position. The new task is inserted inside the selected Type group and Excel merged cells are rebuilt to keep the original layout.</div>
+</div>
+</div>
+<div class="note">Cross-sync is optional. If not selected, Annual and Monthly remain independent. Monthly Done/User/Date is preserved on Edit.</div>
+<div class="top"><button class="btn edit" id="save">Save Changes</button><button class="btn secondary" id="cancel">Cancel</button></div>
+</div></div>
+
+<script>
+const token=localStorage.pmToken;if(!token)location.href='login.html';
+const me=JSON.parse(localStorage.pmUser||'{}');if(String(me.role||'').toLowerCase()!=='admin')location.href='index.html';
+const H={'Authorization':'Bearer '+token};let data=null,current=null,mode='edit',currentPeriod=null;
+
+function refreshCalcUi(){
+ const cm=document.getElementById('calculationMethod');
+ const cf=document.getElementById('calendarFrequency');
+ const ih=document.getElementById('intervalHours');
+ const wh=document.getElementById('expectedWeeklyHours');
+ const inherit=document.getElementById('useMachineExpectedHours');
+ const codeEl=document.getElementById('code');
+ const calWrap=document.getElementById('calendarFrequencyWrap');
+ const intWrap=document.getElementById('intervalHoursWrap');
+ const hrsWrap=document.getElementById('expectedWeeklyHoursWrap');
+ const hint=document.getElementById('calcHint');
+ if(!cm||!cf||!ih||!wh||!codeEl)return;
+ const m=cm.value;
+ if(inherit){wh.disabled=(m!=='calendar'&&inherit.checked);}
+ if(calWrap)calWrap.style.display=m==='calendar'?'block':'none';
+ if(intWrap)intWrap.style.display=m==='calendar'?'none':'block';
+ if(hrsWrap)hrsWrap.style.display=m==='calendar'?'none':'block';
+ const newDateLabel=document.getElementById('newDateLabel');
+ const editDateLabel=document.getElementById('editDateLabel');
+ if(newDateLabel)newDateLabel.textContent=m==='calendar'?'First PM Date':'Planning / Counter Start Date';
+ if(editDateLabel)editDateLabel.textContent=m==='calendar'?'First PM Date':'Planning / Counter Start Date';
+ if(m==='calendar'){
+   const map={weekly:1,monthly:2,quarterly:3,semiannual:4,annual:5};
+   codeEl.value=map[cf.value]||1;
+   if(hint)hint.textContent='Calendar planning uses real calendar months. Monthly = once per calendar month, not every 4 weeks.';
+ }else{
+   if(hint)hint.textContent=(m==='plc_hours'?'PLC Hours: ':'Running Hours: ')+'counter starts from the Planning Start Date. Due PM = Interval Hours ÷ Expected Running Hours/Week. Imported Annual files start from 01/01 of the imported year.';
+   const hours=Number(ih.value||0), weekly=Number(wh.value||0);
+   if(hours>0&&weekly>0){
+     const weeks=Math.max(1,Math.ceil(hours/weekly));
+     codeEl.value=weeks<=1?1:weeks<=6?2:weeks<=17?3:weeks<=35?4:5;
+   }
+ }
+}
+document.getElementById('calculationMethod')?.addEventListener('change',refreshCalcUi);
+document.getElementById('calendarFrequency')?.addEventListener('change',refreshCalcUi);
+document.getElementById('intervalHours')?.addEventListener('input',refreshCalcUi);
+document.getElementById('useMachineExpectedHours')?.addEventListener('change',()=>{applySelectedTaskMachine();refreshCalcUi();});
+document.getElementById('expectedWeeklyHours')?.addEventListener('input',refreshCalcUi);
+
+{const q=new URLSearchParams(location.search),qy=Number(q.get('year'));year.value=qy||new Date().getFullYear();}
+
+async function api(url,opt={}){opt.headers={...(opt.headers||{}),...H};if(opt.body)opt.headers['Content-Type']='application/json';const r=await fetch(url,opt);const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||'Request failed');return j}
+
+async function loadSystemLines(){
+  const master=await api('/api/pm-master');
+  const active=(master.lines||[])
+    .filter(x=>x && x.enabled!==false && x.active!==false)
+    .map(x=>String(x.name||'').trim())
+    .filter(Boolean);
+
+  line.innerHTML=active.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+
+  if(!active.length){
+    line.innerHTML='<option value="">No production lines configured</option>';
+    line.disabled=true;
+    if(typeof addBtn!=='undefined')addBtn.disabled=true;
+    if(typeof loadBtn!=='undefined')loadBtn.disabled=true;
+    const m=document.getElementById('msg');
+    if(m)m.textContent='No production lines configured.';
+    return [];
+  }
+
+  line.disabled=false;
+  if(typeof addBtn!=='undefined')addBtn.disabled=false;
+  if(typeof loadBtn!=='undefined')loadBtn.disabled=false;
+
+  const q=new URLSearchParams(location.search).get('line');
+  if(q && active.includes(q)) line.value=q;
+  else if(active.includes('test')) line.value='test';
+  else line.value=active[0];
+
+  return active;
+}
+
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function filtered(){const m=machine.value;return !m?data.tasks:data.tasks.filter(t=>t.machineNo===m)}
+function refreshInsertPositions(){
+ const no=(document.getElementById('machineNo').value||'').trim();
+ const list=(data&&data.tasks?data.tasks:[]).filter(t=>String(t.machineNo||'').trim()===no);
+ insertAfterRow.innerHTML='<option value="">End of selected machine</option>'+list.map(t=>`<option value="${t.row}">After: ${esc(t.part||'Task')} — ${esc(t.maintenance)}</option>`).join('');
+}
+document.getElementById('machineNo').addEventListener('input',refreshInsertPositions);
+
+function render(){
+ const ms=[...new Set(data.tasks.map(t=>t.machineNo).filter(Boolean))].sort();
+ const old=machine.value;machine.innerHTML='<option value="">All Machines</option>'+ms.map(x=>`<option>${esc(x)}</option>`).join('');if(ms.includes(old))machine.value=old;
+ const list=filtered(), groups=[];
+ list.forEach(t=>{let g=groups.find(x=>x.key===String(t.machineNo||''));if(!g){g={key:String(t.machineNo||''),items:[]};groups.push(g)}g.items.push(t)});
+ rows.innerHTML=groups.map(g=>g.items.map((t,i)=>{
+   const span=g.items.length;
+   const machineCells=i===0?`<td class="machine-merged" rowspan="${span}">${esc(t.section||'')}</td><td class="machine-merged" rowspan="${span}"><b>${esc(t.machineNo||'')}</b></td><td class="machine-merged" rowspan="${span}">${esc(t.machineName||'')}</td><td class="machine-merged" rowspan="${span}">${esc(t.machineIdentified||'')}</td><td class="machine-merged" rowspan="${span}">${esc(t.type||'')}</td>`:'';
+   return `<tr class="${i===0?'machine-group-start':''}">${machineCells}<td>${esc(t.part||'')}</td><td>${esc(t.maintenance||'')}</td><td>${esc(t.frequency||'')}</td><td><span class="pmcode code${t.dominantCode}">${t.dominantCode}</span></td><td>${t.plannedWeeks}</td><td><button class="btn edit" onclick="editTask(${t.row})">Edit</button> ${t.isActive!==false?`<button class="btn danger" onclick="deactivateTask(${t.row})">Deactivate</button>`:`<button class="btn edit" onclick="activateTask(${t.row})">Activate</button>`} <button class="btn danger" onclick="deleteTask(${t.row})">Delete</button></td></tr>`;
+ }).join('')).join('');
+}
+async function refreshSyncMonths(){try{const j=await api(`/api/task-management-months?line=${encodeURIComponent(line.value)}&year=${year.value}`);const o='<option value="">Select Month</option>'+j.months.map(x=>`<option value="${x.month}">${String(x.month).padStart(2,'0')}/${x.year}</option>`).join('');syncEditMonth.innerHTML=o;syncAddMonth.innerHTML=o}catch(_){}} 
+async function refreshAddSyncMonths(){
+ try{
+   const target=addLine.value||line.value;
+   const j=await api(`/api/task-management-months?line=${encodeURIComponent(target)}&year=${year.value}`);
+   syncAddMonth.innerHTML='<option value="">Select Existing Monthly</option>'+j.months.map(x=>`<option value="${x.month}">${String(x.month).padStart(2,'0')}/${x.year}</option>`).join('');
+   if(!j.months.length){
+     addCurrentMonthly.checked=false;
+     addCurrentMonthly.disabled=true;
+     syncAddMonth.disabled=true;
+     syncAddMonth.innerHTML='<option value="">Monthly Excel not created yet</option>';
+   }else{
+     addCurrentMonthly.disabled=false;
+     syncAddMonth.disabled=false;
+   }
+ }catch(_){
+   addCurrentMonthly.checked=false;addCurrentMonthly.disabled=true;syncAddMonth.disabled=true;
+   syncAddMonth.innerHTML='<option value="">Monthly Excel not available</option>';
+ }
+}
+
+async function load(){try{await refreshSyncMonths();msg.textContent='Loading...';data=await api(`/api/task-management?line=${encodeURIComponent(line.value)}&year=${year.value}`);msg.textContent=`${data.tasks.length} PM tasks`;render()}catch(e){msg.textContent=e.message}}
+async function editTask(row){
+ mode='edit';current=data.tasks.find(t=>t.row===row);if(!current)return;
+ modalTitle.textContent='Edit Annual PM Task';applyCode.parentElement.style.display='block';applyCurrentWrap.style.display='block';newWeeksWrap.style.display='none';
+ await loadAddMaster();
+ refreshTaskMachineSelector(current.machineNo||'');
+
+ section.value=current.section||''; sectionExisting.value=[...sectionExisting.options].some(o=>o.value===section.value)?section.value:'';
+ refreshMachineNames();
+ machineName.value=current.machineName||''; machineNameExisting.value=[...machineNameExisting.options].some(o=>o.value===machineName.value)?machineName.value:'';
+ refreshMachineNumbers();
+ machineNo.value=current.machineNo||''; machineNoExisting.value=[...machineNoExisting.options].some(o=>o.value===machineNo.value)?machineNo.value:'';
+ if(current.machineNo&&![...addMachine.options].some(o=>o.value===current.machineNo))addMachine.add(new Option(current.machineNo,current.machineNo)); addMachine.value=current.machineNo||'';
+ refreshIdentified();
+ machineIdentified.value=current.machineIdentified||''; machineIdentifiedExisting.value=[...machineIdentifiedExisting.options].some(o=>o.value===machineIdentified.value)?machineIdentified.value:'';
+ refreshTypes();
+ type.value=current.type||''; typeExisting.value=[...typeExisting.options].some(o=>o.value===type.value)?type.value:'';
+
+ part.value=current.part||'';maintenance.value=current.maintenance||'';frequency.value=current.frequency||'';code.value=current.dominantCode||1;
+ // Normal Edit changes text/details only.
+ // PM distribution stays exactly as stored unless Admin explicitly requests a PM code change or recalculation.
+ applyCode.checked=false;applyCurrent.checked=false;recalcWrap.style.display='block';editFirstPmDateWrap.style.display='block';recalculatePlanning.checked=false;
+ const pm=current.planningMeta||{};
+ { const rawMethod=String(pm.calculationMethod||'').toLowerCase();
+ calculationMethod.value=rawMethod.includes('plc')?'plc_hours':(rawMethod.includes('running')||rawMethod==='hours'||/\bhr\b|hour/.test(String(current.frequency||'').toLowerCase()))?'hours':'calendar'; }
+ calendarFrequency.value=pm.calendarFrequency||({1:'weekly',2:'monthly',3:'quarterly',4:'semiannual',5:'annual'}[current.dominantCode]||'weekly');
+ intervalHours.value=pm.intervalHours||'';useMachineExpectedHours.checked=(pm.useMachineExpectedHours===true || !(Number(pm.expectedWeeklyHours)>0));const mm=(excelMachines||[]).find(x=>x.machineNo===current.machineNo);expectedWeeklyHours.value=useMachineExpectedHours.checked?Number(mm?.expectedWeeklyHours||120):Number(pm.expectedWeeklyHours||120);editFirstPmDate.value=(pm.calculationMethod==='hours'||pm.calculationMethod==='plc_hours')?(pm.runningHoursCounterStartDate||pm.firstPmDate||''):(pm.firstPmDate||'');
+ refreshCalcUi();modal.style.display='flex';
+}
+
+let excelMachines=[],excelSections=[];
+
+function refreshTaskMachineSelector(preferred=''){
+ const sel=document.getElementById('taskMachineSelect');
+ if(!sel)return;
+ const list=(excelMachines||[]).filter(m=>m.machineNo);
+ sel.innerHTML=list.map(m=>`<option value="${esc(m.machineNo)}">${esc(m.machineNo)} — ${esc(m.machineName||'')} ${m.machineIdentified?'('+esc(m.machineIdentified)+')':''}</option>`).join('');
+ if(preferred&&list.some(m=>m.machineNo===preferred))sel.value=preferred;
+ else if(machine.value&&list.some(m=>m.machineNo===machine.value))sel.value=machine.value;
+ if(sel.value)applySelectedTaskMachine();
+}
+function applySelectedTaskMachine(){
+ const sel=document.getElementById('taskMachineSelect');
+ const m=(excelMachines||[]).find(x=>x.machineNo===sel?.value);
+ if(!m)return;
+ section.value=m.section||'';
+ machineNo.value=m.machineNo||'';
+ machineName.value=m.machineName||'';
+ machineIdentified.value=m.machineIdentified||'';
+ type.value=m.type||(m.types||[])[0]||'';
+ if(document.getElementById('useMachineExpectedHours')?.checked){document.getElementById('expectedWeeklyHours').value=Number(m.expectedWeeklyHours||120);}
+ if(typeof addMachine!=='undefined'){
+   if(![...addMachine.options].some(o=>o.value===m.machineNo))addMachine.add(new Option(m.machineNo,m.machineNo));
+   addMachine.value=m.machineNo;
+ }
+ refreshTaskPositions();
+}
+document.getElementById('taskMachineSelect')?.addEventListener('change',applySelectedTaskMachine);
+
+
+function setExistingOptions(el,values,placeholder='Existing'){
+ const cur=el.value;
+ const vals=[...new Set((values||[]).filter(v=>v!==undefined&&v!==null&&String(v).trim()!=='').map(v=>String(v)))];
+ el.innerHTML=`<option value="">${placeholder}</option>`+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+ if(vals.includes(cur))el.value=cur;
+}
+
+async function loadAddMaster(){
+ const j=await api('/api/pm-master');
+ addLine.innerHTML=(j.lines||[]).filter(l=>l&&l.enabled!==false&&l.active!==false).map(l=>`<option value="${esc(l.name)}">${esc(l.name)}</option>`).join('');
+ const q=new URLSearchParams(location.search).get('line');
+ if(q&&(j.lines||[]).some(l=>l.name===q))addLine.value=q;
+ else if(line.value&&[...addLine.options].some(o=>o.value===line.value))addLine.value=line.value;
+ await refreshAddMachines();
+}
+
+async function refreshAddMachines(){
+ try{
+  const j=await api(`/api/pm-master/excel-machines/${encodeURIComponent(addLine.value)}/${year.value}`);
+  excelMachines=j.machines||[];
+  excelSections=j.sections||[];
+  setExistingOptions(sectionExisting,excelSections,'Existing Section');
+  refreshMachineNames();
+  refreshTaskMachineSelector(document.getElementById('taskMachineSelect')?.value||'');
+ }catch(e){
+  excelMachines=[];excelSections=[];
+  setExistingOptions(sectionExisting,[],'Existing Section');
+  setExistingOptions(machineNameExisting,[],'Existing Name');
+  setExistingOptions(machineNoExisting,[],'Existing No.');
+  setExistingOptions(machineIdentifiedExisting,[],'Existing ID');
+  setExistingOptions(typeExisting,[],'Existing Type');
+  addMachine.innerHTML='';
+ }
+}
+
+function refreshMachineNames(){
+ const a=[...new Set(excelMachines.filter(m=>!section.value||m.section===section.value).map(m=>m.machineName).filter(Boolean))];
+ setExistingOptions(machineNameExisting,a,'Existing Name');
+ refreshMachineNumbers();
+}
+function refreshMachineNumbers(){
+ const a=excelMachines.filter(m=>(!section.value||m.section===section.value)&&(!machineName.value||m.machineName===machineName.value));
+ setExistingOptions(machineNoExisting,a.map(m=>m.machineNo),'Existing No.');
+ addMachine.innerHTML=a.map(m=>`<option value="${esc(m.machineNo)}">${esc(m.machineNo)}</option>`).join('');
+ refreshIdentified();
+}
+function refreshIdentified(){
+ const a=excelMachines.filter(m=>(!section.value||m.section===section.value)&&(!machineName.value||m.machineName===machineName.value)&&(!machineNo.value||m.machineNo===machineNo.value));
+ setExistingOptions(machineIdentifiedExisting,a.map(m=>m.machineIdentified).filter(Boolean),'Existing ID');
+ refreshTypes();
+}
+function refreshTypes(){
+ const m=excelMachines.find(x=>
+   (!section.value||x.section===section.value)&&
+   (!machineName.value||x.machineName===machineName.value)&&
+   (!machineNo.value||x.machineNo===machineNo.value)&&
+   (!machineIdentified.value||x.machineIdentified===machineIdentified.value)
+ )||excelMachines.find(x=>x.machineNo===machineNo.value);
+ setExistingOptions(typeExisting,m?.types||[],'Existing Type');
+ refreshTaskPositions();
+}
+function fillAddMachine(){
+ const m=excelMachines.find(x=>x.machineNo===machineNo.value&&(!machineName.value||x.machineName===machineName.value)&&(!section.value||x.section===section.value))||
+         excelMachines.find(x=>x.machineNo===machineNo.value);
+ if(!m)return;
+ if(!section.value)section.value=m.section||'';
+ if(!machineName.value)machineName.value=m.machineName||'';
+ if(!machineIdentified.value)machineIdentified.value=m.machineIdentified||'';
+ if(addMachine.options.length){addMachine.value=m.machineNo||''}
+ refreshTypes();
+}
+function refreshTaskPositions(){
+ const m=excelMachines.find(x=>x.machineNo===machineNo.value&&(!machineName.value||x.machineName===machineName.value)&&(!section.value||x.section===section.value))||
+         excelMachines.find(x=>x.machineNo===machineNo.value);
+ const list=(m?.tasks||[]).filter(x=>!type.value||x.type===type.value);
+ taskPosition.innerHTML='';
+ for(let p=1;p<=list.length+1;p++){
+  const o=document.createElement('option');o.value=p;
+  o.textContent=p<=list.length?`Position ${p} — before ${list[p-1].maintenance}`:`Position ${p} — end of ${type.value||'Type'}`;
+  taskPosition.appendChild(o);
+ }
+}
+
+sectionExisting.onchange=()=>{if(sectionExisting.value){section.value=sectionExisting.value} refreshMachineNames()};
+machineNameExisting.onchange=()=>{if(machineNameExisting.value){machineName.value=machineNameExisting.value} refreshMachineNumbers()};
+machineNoExisting.onchange=()=>{if(machineNoExisting.value){machineNo.value=machineNoExisting.value;addMachine.value=machineNoExisting.value} fillAddMachine();refreshIdentified()};
+machineIdentifiedExisting.onchange=()=>{if(machineIdentifiedExisting.value){machineIdentified.value=machineIdentifiedExisting.value} refreshTypes()};
+typeExisting.onchange=()=>{if(typeExisting.value){type.value=typeExisting.value} refreshTaskPositions()};
+
+section.oninput=()=>{sectionExisting.value='';refreshMachineNames()};
+machineName.oninput=()=>{machineNameExisting.value='';refreshMachineNumbers()};
+machineNo.oninput=()=>{machineNoExisting.value='';refreshIdentified()};
+machineIdentified.oninput=()=>{machineIdentifiedExisting.value='';refreshTypes()};
+type.oninput=()=>{typeExisting.value='';refreshTaskPositions()};
+
+addMachine.onchange=()=>{machineNo.value=addMachine.value||'';machineNoExisting.value=addMachine.value||'';fillAddMachine();refreshIdentified()};
+async function openAdd(){
+ await loadAddMaster();
+ refreshTaskMachineSelector(machine.value||'');
+ await refreshAddSyncMonths();
+ mode='add';current=null; section.value='';modalTitle.textContent='Add PM Task';
+ for(const k of ['section','machineNo','machineName','machineIdentified','type','part','maintenance','frequency','sectionExisting','machineNoExisting','machineNameExisting','machineIdentifiedExisting','typeExisting'])document.getElementById(k).value='';
+ applySelectedTaskMachine();
+ code.value=1;calculationMethod.value='calendar';calendarFrequency.value='weekly';intervalHours.value='';useMachineExpectedHours.checked=true;expectedWeeklyHours.value=120;refreshCalcUi();
+ applyCode.checked=true;applyCode.parentElement.style.display='none';recalcWrap.style.display='none';editFirstPmDateWrap.style.display='none';applyCurrentWrap.style.display='none';newWeeksWrap.style.display='block';
+
+ try{
+   currentPeriod=await api('/api/task-management-current-period');
+   currentMonthWeek.innerHTML=currentPeriod.weeks.map(w=>`<option value="${w.index}">${w.label}</option>`).join('');
+   const today=new Date();
+   const selectedYear=Number(year.value)||today.getFullYear();
+   const month=String(today.getMonth()+1).padStart(2,'0');
+   const day=String(today.getDate()).padStart(2,'0');
+   firstPmDate.value=`${selectedYear}-${month}-${day}`;
+ }catch(_){
+   const today=new Date();
+   firstPmDate.value=`${Number(year.value)||today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+ }
+
+ refreshTaskPositions();
+ addCurrentMonthly.checked=false;
+ modal.style.display='flex';
+}
+async function deactivateTask(row){
+ const t=data.tasks.find(x=>x.row===row);if(!t)return;
+ if(!confirm(`Deactivate this PM task?\n\n${t.machineNo} - ${t.maintenance}\n\nThe task will be disabled in the PM system. Annual Excel will not be changed.`))return;
+ try{await api(`/api/task-management/${encodeURIComponent(line.value)}/${year.value}/${row}/deactivate`,{method:'POST',body:JSON.stringify({taskId:t.taskId})});await load();alert('Task deactivated.');}catch(e){alert(e.message)}
+}
+async function activateTask(row){
+ const t=data.tasks.find(x=>x.row===row);if(!t)return;
+ if(!confirm(`Activate this PM task?\n\n${t.machineNo} - ${t.maintenance}\n\nThe task will be enabled again. Annual Excel is unchanged.`))return;
+ try{const r=await api(`/api/task-management/${encodeURIComponent(line.value)}/${year.value}/${row}/activate`,{method:'POST',body:JSON.stringify({taskId:t.taskId})});await load();alert('Task activated.');}catch(e){alert(e.message)}
+}
+async function deleteTask(row){
+ const t=data.tasks.find(x=>x.row===row);if(!t)return;
+ const both=confirm('Press OK = Delete Annual + Monthly.\nPress Cancel = Annual only.');
+ if(!both){if(!confirm('FINAL: Delete from Annual only?'))return;try{await api(`/api/task-management/${encodeURIComponent(line.value)}/${year.value}/${row}`,{method:'DELETE',body:JSON.stringify({taskId:t.taskId})});await load();alert('Deleted from Annual only.')}catch(e){alert(e.message)}return}
+ const mm=Number(prompt('Enter Monthly month number (1-12):','')||0);if(!mm)return;
+ try{const md=await api(`/api/monthly-task-management?line=${encodeURIComponent(line.value)}&year=${year.value}&month=${mm}`);const mt=md.tasks.find(x=>x.taskId===t.taskId);if(!mt)throw Error('Matching task not found in selected Monthly Excel. Nothing deleted.');if(!confirm(`FINAL: Delete from Annual + ${md.file}?`))return;await api(`/api/task-management-both/${encodeURIComponent(line.value)}/${year.value}/${mm}/${mt.row}`,{method:'DELETE',body:JSON.stringify({taskId:t.taskId})});await load();alert('Deleted from Annual + selected Monthly.')}catch(e){alert(e.message)}
+}
+
+addLine.onchange=async()=>{await refreshAddMachines();await refreshAddSyncMonths();};
+
+addBtn.onclick=openAdd;
+save.onclick=async()=>{
+ try{
+  save.disabled=true;
+  applySelectedTaskMachine();
+  const body={taskId:current?.taskId};
+  for(const k of ['part','maintenance','frequency'])body[k]=document.getElementById(k).value;
+  body.machineNo=document.getElementById('taskMachineSelect').value;
+  // Machine identity is intentionally NOT sent as editable task data.
+  // The server resolves Section/Name/Identified/Type from Machine Management.
+  body.code=Number(code.value);
+  body.calculationMethod=calculationMethod.value;
+  body.calendarFrequency=calendarFrequency.value;
+  body.intervalHours=Number(intervalHours.value||0);
+  body.useMachineExpectedHours=useMachineExpectedHours.checked;
+  body.expectedWeeklyHours=body.useMachineExpectedHours?0:Number(expectedWeeklyHours.value||0);
+  if(!body.machineNo||!body.maintenance)throw Error('Machine and Maintenance Task are required.');
+
+  if(mode==='add'){
+    body.firstPmDate=firstPmDate.value;
+    body.addCurrentMonthly=addCurrentMonthly.checked;body.syncMonthlyMonth=Number(syncAddMonth.value||0);if(body.addCurrentMonthly&&!body.syncMonthlyMonth)throw Error('Select Monthly month.');
+    body.taskPosition=Number(taskPosition.value||0);body.insertAfterRow=0;
+    if(!body.firstPmDate)throw Error(body.calculationMethod==='calendar'?'Select First PM Date.':'Select Planning / Counter Start Date.');
+    if(body.calculationMethod!=='calendar' && !(body.intervalHours>0))throw Error('Enter Interval Hours.');
+    if(body.calculationMethod!=='calendar' && !body.useMachineExpectedHours && !(body.expectedWeeklyHours>0))throw Error('Enter Expected Running Hours per Week.');
+    const targetLine=addLine.value; line.value=targetLine; const result=await api(`/api/task-management/${encodeURIComponent(targetLine)}/${year.value}`,{method:'POST',body:JSON.stringify(body)});
+    alert(result.monthlyUpdated?'Task added to Annual Excel and Current Monthly Excel.':'Task added to Annual Master Plan.');
+  }else{
+    body.applyCodeToPlannedWeeks=applyCode.checked;
+    body.recalculatePlanning=recalculatePlanning.checked;
+    if(body.recalculatePlanning){
+      body.firstPmDate=editFirstPmDate.value;
+      if(!body.firstPmDate)throw Error(body.calculationMethod==='calendar'?'Select First PM Date for recalculation.':'Select Planning / Counter Start Date for recalculation.');
+      if(body.calculationMethod!=='calendar' && !(body.intervalHours>0))throw Error('Enter Interval Hours.');
+      if(body.calculationMethod!=='calendar' && !body.useMachineExpectedHours && !(body.expectedWeeklyHours>0))throw Error('Enter Expected Running Hours per Week.');
+    }
+    body.applyCurrentMonth=applyCurrent.checked;body.syncMonthlyMonth=Number(syncEditMonth.value||0);if(body.applyCurrentMonth&&!body.syncMonthlyMonth)throw Error('Select Monthly month.');
+    await api(`/api/task-management/${encodeURIComponent(line.value)}/${year.value}/${current.row}`,{method:'PUT',body:JSON.stringify(body)});
+    alert('Task updated successfully in Annual Master Plan.');
+  }
+  modal.style.display='none';await load();window.dispatchEvent(new Event('pm-workflow-refresh'));
+ }catch(e){alert(e.message)}finally{save.disabled=false}
+}
+cancel.onclick=()=>modal.style.display='none';loadBtn.onclick=load;machine.onchange=()=>data&&render();(async()=>{
+  const active=await loadSystemLines();
+  if(active.length){
+    await loadAddMaster();
+    await load();
+  }
+})();
+</script><script src="branding-client.js?v=133"></script><script src="i18n.js?v=130"></script>
+<script src="workflow-guide.js?v=141"></script></body></html>

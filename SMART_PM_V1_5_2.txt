@@ -1,0 +1,10 @@
+Smart PM V1.5.2 - Annual Plans Clean Page Fix
+
+Changes:
+- Removed System Setup / Workflow cycle from Annual Plans page.
+- Annual Plans now loads production lines from PM Master and planning years from Year Planner.
+- Automatically selects the current/active line and year from URL or saved setup context.
+- Added safe fallback to current working year if planner metadata is temporarily empty.
+- Existing annual tasks load automatically into the table.
+- Successful Annual Plan load marks the line/year as reviewed for the main workflow without showing the workflow on this page.
+- No PM scheduling, Running Hours, Excel, or Year Planner calculation logic changed.

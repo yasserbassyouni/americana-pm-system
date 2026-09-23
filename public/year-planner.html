@@ -1,0 +1,66 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Year Planner</title><link rel="stylesheet" href="settings.css"><link rel="stylesheet" href="i18n.css"><link rel="stylesheet" href="workflow-guide.css">
+<style>
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.status{padding:14px;border-radius:10px;background:#f5f7fa;margin:14px 0}.ok{background:#eaf7ee}.warn{background:#fff7df}.danger{background:#fff0f0}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}.kpi{border:1px solid #ddd;border-radius:10px;padding:12px;background:#fff}.kpi b{display:block;font-size:22px;margin-top:5px}.actions{display:flex;gap:10px;flex-wrap:wrap}.sample{overflow:auto;max-height:330px}.sample table{width:100%;border-collapse:collapse}.sample th,.sample td{padding:8px;border-bottom:1px solid #eee;text-align:left}.rtl .sample th,.rtl .sample td{text-align:right}.switch{display:inline-flex;gap:8px;align-items:center;justify-content:flex-start;width:auto;margin:8px 0}.switch input[type=checkbox]{width:16px;height:16px;min-width:16px;margin:0;flex:0 0 16px}.switch label{display:inline;margin:0;width:auto;max-width:none;line-height:1.25;cursor:pointer;font-weight:600}.note{font-size:13px;color:#666;line-height:1.5}.pill{display:inline-block;padding:3px 8px;border-radius:999px;background:#eef2f7;font-size:12px}.machine-cell{font-weight:700;vertical-align:middle;background:#fafafa;white-space:nowrap}.machine-cell small{display:block;font-weight:400;color:#666;margin-top:3px}.no-task{font-style:italic;color:#777;background:#fafafa}
+</style></head><body>
+<header class="top"><div class="bar"><div><h2>Multi-Year PM Planner</h2><div>Build future Annual PM plans automatically from the approved System Master</div></div><button class="btn" onclick="location.href='settings.html'">← Settings</button></div></header>
+<main class="wrap">
+<div class="card">
+<h3>Build New Year</h3>
+<div class="row">
+<label>Line<select id="line"></select></label>
+<label>Source Year<select id="sourceYear"></select></label>
+<label>Target Year<input id="targetYear" type="number" min="2020" max="2200"></label>
+</div>
+<div class="switch"><input id="overwrite" type="checkbox"><label for="overwrite">Allow overwrite if target year already exists</label></div>
+<div id="status" class="status warn">Select a line and source year, then Preview.</div>
+<div class="actions"><button class="btn" id="previewBtn">Preview Year Plan</button><button class="btn red" id="buildBtn" disabled>Build Annual Year</button></div>
+<div id="summary" class="summary" style="display:none"></div>
+<div id="sample" class="sample"></div>
+</div>
+
+<div class="card">
+<h3>Automatic New-Year Rollover</h3>
+<div class="switch"><input id="autoRollover" type="checkbox"><label for="autoRollover">Automatically build the current year from the latest previous approved year when the server starts</label></div>
+<p class="note">The new year receives Machines, PM Tasks and planning rules only. Done/User/Execution Date are never copied from the previous year. Existing target years are never overwritten automatically.</p>
+<div class="actions"><button class="btn" id="saveAutoBtn">Save Auto Rollover</button><button class="btn" id="runAutoBtn">Run Auto Rollover Now</button></div>
+<div id="autoStatus" class="status" style="display:none"></div>
+</div>
+
+<div class="card">
+<h3>Uploaded Excel Reference</h3>
+<p class="note">For an old Annual Excel reference: import it once into a selected source year. After import, this planner reads its Machines, Tasks, frequency and planning information from System Master and can build any future year from it.</p>
+<button class="btn" onclick="location.href='excel-migration.html'">Import / Migrate Excel</button>
+</div>
+</main>
+<script src="settings-common.js"></script><script>
+const E=id=>document.getElementById(id);let model=null,lastPreview=null;
+function show(msg,type='warn'){E('status').className='status '+type;E('status').innerHTML=msg}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+async function init(){
+ model=await api('/api/year-planner');E('autoRollover').checked=model.settings.autoRollover!==false;
+ E('line').innerHTML=model.lines.map(x=>`<option value="${esc(x.name)}">${esc(x.name)}</option>`).join('');
+ const q=new URLSearchParams(location.search),qLine=q.get('line'); if(qLine&&model.lines.some(x=>x.name===qLine))E('line').value=qLine;
+ E('targetYear').value=Number(q.get('targetYear'))||model.currentYear+1;refreshYears();
+ const qSource=Number(q.get('sourceYear')); if(qSource&&[...E('sourceYear').options].some(o=>Number(o.value)===qSource))E('sourceYear').value=String(qSource);
+ if(!model.lines.length)show('No production lines configured. Add a line and PM Tasks first.','warn');
+}
+function currentLine(){return model?.lines.find(x=>x.name===E('line').value)}
+function refreshYears(){const l=currentLine();const ys=l?.years||[];E('sourceYear').innerHTML=ys.map(y=>`<option value="${y}">${y}</option>`).join('');if(ys.length){E('sourceYear').value=ys[ys.length-1];const t=Math.max(Number(E('targetYear').value)||0,ys[ys.length-1]+1);E('targetYear').value=t}lastPreview=null;E('buildBtn').disabled=true;E('summary').style.display='none';E('sample').innerHTML=''}
+E('line').addEventListener('change',refreshYears);E('sourceYear').addEventListener('change',()=>{lastPreview=null;E('buildBtn').disabled=true});E('targetYear').addEventListener('change',()=>{lastPreview=null;E('buildBtn').disabled=true});
+function previewRows(j){
+ const groups=Array.isArray(j.machinePreview)&&j.machinePreview.length?j.machinePreview:[];
+ if(!groups.length)return (j.sample||[]).map(x=>`<tr><td class="machine-cell">${esc(x.machineNo)}</td><td>${esc(x.maintenance)}</td><td>${esc(x.frequency)}</td><td>${esc(x.firstPmDate)}</td><td>${x.occurrences}</td><td>${x.intervalWeeks||'—'}</td><td>${x.pmCode||'—'}</td><td>${x.warning?'<span class="pill">'+esc(x.warning)+'</span>':'OK'}</td></tr>`).join('');
+ return groups.map(m=>{
+   const ts=Array.isArray(m.tasks)?m.tasks:[];
+   const label=`${esc(m.machineNo)}${m.machineName?`<small>${esc(m.machineName)}</small>`:''}`;
+   if(!ts.length)return `<tr><td class="machine-cell">${label}</td><td class="no-task" colspan="7">0 PM Tasks — No PM Tasks Assigned</td></tr>`;
+   return ts.map((x,i)=>`<tr>${i===0?`<td class="machine-cell" rowspan="${ts.length}">${label}</td>`:''}<td>${esc(x.maintenance)}</td><td>${esc(x.frequency)}</td><td>${esc(x.firstPmDate)}</td><td>${x.occurrences}</td><td>${x.intervalWeeks||'—'}</td><td>${x.pmCode||'—'}</td><td>${x.warning?'<span class="pill">'+esc(x.warning)+'</span>':'OK'}</td></tr>`).join('');
+ }).join('');
+}
+E('previewBtn').onclick=async()=>{try{show('Building preview...');const j=await api('/api/year-planner/preview',{method:'POST',body:JSON.stringify({line:E('line').value,sourceYear:Number(E('sourceYear').value),targetYear:Number(E('targetYear').value)})});lastPreview=j;E('buildBtn').disabled=!!j.warnings.length;show(`Preview ready: ${j.tasks} tasks / ${j.plannedOccurrences} planned PM occurrences.${j.warnings.length?' Fix all warnings before Build.':''}${j.existingTargetTasks||j.targetAnnualExists?' Target year already exists.':''}`,j.warnings.length||j.existingTargetTasks||j.targetAnnualExists?'danger':'ok');E('summary').style.display='grid';E('summary').innerHTML=`<div class="kpi">Machines<b>${j.machines}</b></div><div class="kpi">Tasks<b>${j.tasks}</b></div><div class="kpi">Planned Occurrences<b>${j.plannedOccurrences}</b></div><div class="kpi">Warnings<b>${j.warnings.length}</b></div>`;E('sample').innerHTML=`<table><thead><tr><th>Machine</th><th>Task</th><th>Frequency</th><th>First Due Date</th><th>Occurrences</th><th>Interval (Weeks)</th><th>PM Code</th><th>Status</th></tr></thead><tbody>${previewRows(j)}</tbody></table>`}catch(e){lastPreview=null;E('buildBtn').disabled=true;show(esc(e.message||e),'danger')}};
+E('buildBtn').onclick=async()=>{try{if(!lastPreview)throw Error('Preview first');const overwrite=E('overwrite').checked;if((lastPreview.existingTargetTasks||lastPreview.targetAnnualExists)&&!overwrite)throw Error('Target year already exists. Enable overwrite only if you intend to rebuild it.');if(!confirm(`Build ${E('line').value} PM plan for ${E('targetYear').value} from ${E('sourceYear').value}?\n\nDone/User/Execution Date will NOT be copied.`))return;show('Building Annual year...');const j=await api('/api/year-planner/build',{method:'POST',body:JSON.stringify({line:E('line').value,sourceYear:Number(E('sourceYear').value),targetYear:Number(E('targetYear').value),overwrite})});show(`<b>Year built and verified successfully.</b><br>${esc(j.file)}<br>${j.machines} machines / ${j.tasks} tasks / ${j.plannedOccurrences} planned occurrences<br><b>Verification:</b> ${j.verification?.ok?'OK':'FAILED'} — ${j.verification?.persistedTasks??j.tasks} tasks / ${j.verification?.persistedOccurrences??j.plannedOccurrences} occurrences / Annual Excel ${j.verification?.annualFileExists?'OK':'missing'}`,'ok');await init();lastPreview=null;E('buildBtn').disabled=true}catch(e){show(esc(e.message||e),'danger')}};
+E('saveAutoBtn').onclick=async()=>{try{const j=await api('/api/year-planner/settings',{method:'PUT',body:JSON.stringify({autoRollover:E('autoRollover').checked})});E('autoStatus').style.display='block';E('autoStatus').className='status ok';E('autoStatus').textContent='Auto rollover settings saved.'}catch(e){E('autoStatus').style.display='block';E('autoStatus').className='status danger';E('autoStatus').textContent=e.message}};
+E('runAutoBtn').onclick=async()=>{try{const j=await api('/api/year-planner/auto-run',{method:'POST'});E('autoStatus').style.display='block';E('autoStatus').className='status ok';E('autoStatus').textContent=j.results.length?`Processed ${j.results.length} line(s).`:'No line needed rollover.';await init()}catch(e){E('autoStatus').style.display='block';E('autoStatus').className='status danger';E('autoStatus').textContent=e.message}};
+init().catch(e=>show(esc(e.message||e),'danger'));
+</script><script src="branding-client.js?v=134"></script><script src="i18n.js?v=134"></script><script src="workflow-guide.js?v=141"></script></body></html>

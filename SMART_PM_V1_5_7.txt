@@ -1,0 +1,8 @@
+SMART PM V1.5.7 - FUTURE YEAR MACHINE GROUP PREVIEW
+
+Changes:
+- Year Planner machine count now uses all enabled machines from Machine Management.
+- Machines with 0 PM tasks are included in the Preview and machine count.
+- Preview groups repeated task rows by machine using an HTML rowspan cell.
+- Machines with no tasks show: 0 PM Tasks — No PM Tasks Assigned.
+- PM scheduling, Running Hours, task calculations and Build verification are unchanged.

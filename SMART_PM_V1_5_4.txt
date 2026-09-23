@@ -1,0 +1,11 @@
+Smart PM V1.5.4 - Machine-by-Machine Annual Review
+
+Changes:
+- Annual Plans no longer shows navigation buttons to Task Management / Multi-Year Planner.
+- Annual plan is grouped by machine.
+- Click a machine to expand its PM tasks on the same page.
+- Click the same machine again to close it and mark that machine Reviewed (green).
+- Review progress is shown as Reviewed Machines / Total Machines.
+- Workflow Review Annual Plan is complete only when every machine with active PM tasks in that Line/Year has been reviewed.
+- Opening Annual Plans alone no longer marks the annual plan reviewed.
+- No PM scheduling, Running Hours, Excel, or Year Planner calculation logic changed.

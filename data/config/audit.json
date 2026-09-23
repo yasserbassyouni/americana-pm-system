@@ -1,0 +1,1689 @@
+[
+  {
+    "time": "2026-09-23T12:05:06.936Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-23T11:32:10.489Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-23T11:32:02.781Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-23T10:53:03.758Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-23T10:53:03.235Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-23T10:50:48.969Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-23T10:50:47.896Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-23T10:50:47.893Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-23T10:50:35.737Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-23T10:27:00.493Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-23T10:26:59.216Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-23T10:26:59.213Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-23T10:23:40.398Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-23T10:23:39.582Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-22T15:32:27.437Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/task/Preparation/19/done"
+    }
+  },
+  {
+    "time": "2026-09-22T15:32:27.434Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_DONE",
+    "details": {
+      "line": "Preparation",
+      "row": 19,
+      "pmWeek": "18--24",
+      "executionDate": "22/09/2026",
+      "correctionTime": "2026-09-22T15:32:27.433Z"
+    }
+  },
+  {
+    "time": "2026-09-22T15:32:23.718Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/task/Preparation/11/done"
+    }
+  },
+  {
+    "time": "2026-09-22T15:32:23.717Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_DONE",
+    "details": {
+      "line": "Preparation",
+      "row": 11,
+      "pmWeek": "18--24",
+      "executionDate": "22/09/2026",
+      "correctionTime": "2026-09-22T15:32:23.716Z"
+    }
+  },
+  {
+    "time": "2026-09-22T15:32:16.492Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-22T15:29:06.606Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:31.581Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/task/Preparation/45/done"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:31.580Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "HISTORICAL_PM_DONE",
+    "details": {
+      "line": "Preparation",
+      "row": 45,
+      "pmWeek": "7--13",
+      "executionDate": "12/08/2026",
+      "correctionTime": "2026-09-22T15:28:31.579Z"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:29.574Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/task/Preparation/43/done"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:29.572Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "HISTORICAL_PM_DONE",
+    "details": {
+      "line": "Preparation",
+      "row": 43,
+      "pmWeek": "7--13",
+      "executionDate": "12/08/2026",
+      "correctionTime": "2026-09-22T15:28:29.570Z"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:27.227Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/task/Preparation/41/done"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:27.225Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "HISTORICAL_PM_DONE",
+    "details": {
+      "line": "Preparation",
+      "row": 41,
+      "pmWeek": "7--13",
+      "executionDate": "12/08/2026",
+      "correctionTime": "2026-09-22T15:28:27.224Z"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:25.051Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/task/Preparation/39/done"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:25.050Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "HISTORICAL_PM_DONE",
+    "details": {
+      "line": "Preparation",
+      "row": 39,
+      "pmWeek": "7--13",
+      "executionDate": "12/08/2026",
+      "correctionTime": "2026-09-22T15:28:25.049Z"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:22.831Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/task/Preparation/31/done"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:22.830Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "HISTORICAL_PM_DONE",
+    "details": {
+      "line": "Preparation",
+      "row": 31,
+      "pmWeek": "7--13",
+      "executionDate": "12/08/2026",
+      "correctionTime": "2026-09-22T15:28:22.829Z"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:20.198Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/task/Preparation/23/done"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:20.196Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "HISTORICAL_PM_DONE",
+    "details": {
+      "line": "Preparation",
+      "row": 23,
+      "pmWeek": "7--13",
+      "executionDate": "12/08/2026",
+      "correctionTime": "2026-09-22T15:28:20.195Z"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:17.863Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/task/Preparation/15/done"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:17.861Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "HISTORICAL_PM_DONE",
+    "details": {
+      "line": "Preparation",
+      "row": 15,
+      "pmWeek": "7--13",
+      "executionDate": "12/08/2026",
+      "correctionTime": "2026-09-22T15:28:17.861Z"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:15.089Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/task/Preparation/7/done"
+    }
+  },
+  {
+    "time": "2026-09-22T15:28:15.087Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "HISTORICAL_PM_DONE",
+    "details": {
+      "line": "Preparation",
+      "row": 7,
+      "pmWeek": "7--13",
+      "executionDate": "12/08/2026",
+      "correctionTime": "2026-09-22T15:28:15.085Z"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:48.975Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:35.521Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/12"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:35.519Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 12,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_12.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:34.852Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/11"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:34.850Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 11,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_11.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:34.149Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/10"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:34.147Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 10,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_10.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:33.454Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/9"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:33.451Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 9,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_09.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:32.748Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/8"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:32.745Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 8,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_08.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:32.091Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/7"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:32.089Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 7,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_07.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:31.499Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/6"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:31.497Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 6,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_06.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:30.906Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/5"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:30.905Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 5,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_05.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:30.231Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/4"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:30.229Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 4,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_04.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:29.658Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/3"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:29.656Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 3,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_03.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:29.138Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/2"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:29.136Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 2,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_02.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:28.596Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Preparation/rebuild-monthly/2026/1"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:28.593Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "MONTHLY_REBUILD_FROM_SYSTEM_MASTER",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "month": 1,
+      "result": {
+        "line": "Preparation",
+        "file": "Preparation PM_2026_01.xlsx",
+        "status": "written",
+        "machines": 17,
+        "tasks": 224,
+        "lastRow": 454,
+        "mode": "DETERMINISTIC_SYSTEM_MASTER_RENDER"
+      }
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:28.092Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/excel-migration/convert"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:28.090Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_EXCEL_MIGRATED",
+    "details": {
+      "kind": "annual",
+      "line": "Preparation",
+      "year": 2026,
+      "month": null,
+      "tasks": 224,
+      "target": "Preparation PM 2026.xlsx",
+      "backup": "2026-09-22T15-27-27-214Z_Preparation PM 2026.xlsx"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:26.189Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:26.186Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_LINE_ADD",
+    "details": {
+      "line": "Preparation",
+      "year": 2026,
+      "restoredAnnual": false,
+      "restoredMonthlyTemplate": false,
+      "annualSourceName": "Smart PM Blank Annual",
+      "monthlyTemplateSourceName": "Smart PM Blank Monthly",
+      "monthlyFolder": "D:\\Java Systems\\PM%20System%20-%20Month%20%2B%20Week%20Historical%20Navigation\\data\\monthly_work\\Preparation",
+      "orphanTasksPurged": 0
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:24.977Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/excel-migration/preview"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:24.912Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/upload-xlsx"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:24.911Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_EXCEL_UPLOAD_STAGED",
+    "details": {
+      "original": "Preparation.xlsx",
+      "size": 23231,
+      "token": "43175c2051cfe9c13be8aa9a12de0ad4.xlsx"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:07.227Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:06.220Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm/view"
+    }
+  },
+  {
+    "time": "2026-09-22T15:27:00.238Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T14:35:35.250Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-17T14:35:35.248Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T14:34:55.796Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T14:34:51.991Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:51.987Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T14:34:42.993Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Cookies/create-current-month"
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:42.990Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_MONTHLY_CREATE",
+    "details": {
+      "line": "Cookies",
+      "year": 2026,
+      "month": 9,
+      "file": "Cookies PM_2026_09.xlsx"
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:42.598Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/excel-migration/convert"
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:42.595Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_EXCEL_MIGRATED",
+    "details": {
+      "kind": "annual",
+      "line": "Cookies",
+      "year": 2026,
+      "month": null,
+      "tasks": 135,
+      "target": "Cookies PM 2026.xlsx",
+      "backup": "2026-09-17T14-34-41-781Z_Cookies PM 2026.xlsx"
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:37.406Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/excel-migration/preview"
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:37.170Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/upload-xlsx"
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:37.169Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_EXCEL_UPLOAD_STAGED",
+    "details": {
+      "original": "Cookies%20PM%202026.xlsx",
+      "size": 174319,
+      "token": "158470659b725cb103c874c1e1a4ae33.xlsx"
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:30.860Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines"
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:30.857Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_LINE_ADD",
+    "details": {
+      "line": "Cookies",
+      "year": 2026,
+      "restoredAnnual": false,
+      "restoredMonthlyTemplate": false,
+      "annualSourceName": "Smart PM Blank Annual",
+      "monthlyTemplateSourceName": "Smart PM Blank Monthly",
+      "monthlyFolder": "D:\\Java Systems\\PM System\\data\\monthly_work\\Cookies",
+      "orphanTasksPurged": 0
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:07.612Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T14:34:03.645Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-17T14:34:03.642Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T14:33:50.091Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T06:11:45.721Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-17T06:11:45.719Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T06:11:14.431Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/excel-migration/preview"
+    }
+  },
+  {
+    "time": "2026-09-17T06:11:13.939Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/upload-xlsx"
+    }
+  },
+  {
+    "time": "2026-09-17T06:11:13.934Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_EXCEL_UPLOAD_STAGED",
+    "details": {
+      "original": "Cookies%20PM%202026.xlsx",
+      "size": 174319,
+      "token": "42f19defe01db032fcfa430691949b93.xlsx"
+    }
+  },
+  {
+    "time": "2026-09-17T06:11:00.853Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines"
+    }
+  },
+  {
+    "time": "2026-09-17T06:11:00.848Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_LINE_ADD",
+    "details": {
+      "line": "Line 01",
+      "year": 2026,
+      "restoredAnnual": false,
+      "restoredMonthlyTemplate": false,
+      "annualSourceName": "Smart PM Blank Annual",
+      "monthlyTemplateSourceName": "Smart PM Blank Monthly",
+      "monthlyFolder": "D:\\PM System\\data\\monthly_work\\Line 01",
+      "orphanTasksPurged": 0
+    }
+  },
+  {
+    "time": "2026-09-17T06:09:20.563Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "DELETE",
+      "path": "/api/pm-master/lines/Cookies"
+    }
+  },
+  {
+    "time": "2026-09-17T06:09:20.560Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_LINE_DELETE",
+    "details": {
+      "line": "Cookies",
+      "mode": "folder",
+      "usage": {
+        "annualYears": [
+          2026
+        ],
+        "annualFiles": 1,
+        "monthlyFiles": 1,
+        "tasks": 135
+      },
+      "annualDeleted": 2,
+      "monthlyDeleted": 1,
+      "foldersDeleted": 1,
+      "purgedTasks": 135
+    }
+  },
+  {
+    "time": "2026-09-17T06:08:31.591Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T06:07:42.180Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-17T06:07:42.177Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T06:07:38.652Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T05:50:57.790Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-17T05:50:57.787Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T05:48:33.774Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines/Cookies/create-current-month"
+    }
+  },
+  {
+    "time": "2026-09-17T05:48:33.772Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_MONTHLY_CREATE",
+    "details": {
+      "line": "Cookies",
+      "year": 2026,
+      "month": 9,
+      "file": "Cookies PM_2026_09.xlsx"
+    }
+  },
+  {
+    "time": "2026-09-17T05:48:32.922Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/excel-migration/convert"
+    }
+  },
+  {
+    "time": "2026-09-17T05:48:32.919Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_EXCEL_MIGRATED",
+    "details": {
+      "kind": "annual",
+      "line": "Cookies",
+      "year": 2026,
+      "month": null,
+      "tasks": 135,
+      "target": "Cookies PM 2026.xlsx",
+      "backup": "2026-09-17T05-48-31-449Z_Cookies PM 2026.xlsx"
+    }
+  },
+  {
+    "time": "2026-09-17T05:47:53.233Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/excel-migration/preview"
+    }
+  },
+  {
+    "time": "2026-09-17T05:47:52.754Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/upload-xlsx"
+    }
+  },
+  {
+    "time": "2026-09-17T05:47:52.752Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_EXCEL_UPLOAD_STAGED",
+    "details": {
+      "original": "Cookies%20PM%202026.xlsx",
+      "size": 174319,
+      "token": "5ddff542161347510abdb179713959cc.xlsx"
+    }
+  },
+  {
+    "time": "2026-09-17T05:47:14.656Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-17T05:47:13.375Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-17T05:47:13.372Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-16T19:23:25.669Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/excel-migration/preview"
+    }
+  },
+  {
+    "time": "2026-09-16T19:23:25.536Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/upload-xlsx"
+    }
+  },
+  {
+    "time": "2026-09-16T19:23:25.533Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_EXCEL_UPLOAD_STAGED",
+    "details": {
+      "original": "Cookies%20PM%202026.xlsx",
+      "size": 53968,
+      "token": "37c5a4ee16dfbf14c37135643fb0fcbe.xlsx"
+    }
+  },
+  {
+    "time": "2026-09-16T19:23:14.715Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/pm-master/lines"
+    }
+  },
+  {
+    "time": "2026-09-16T19:23:14.710Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "PM_LINE_ADD",
+    "details": {
+      "line": "Cookies",
+      "year": 2026,
+      "restoredAnnual": false,
+      "restoredMonthlyTemplate": false,
+      "annualSourceName": "Smart PM Blank Annual",
+      "monthlyTemplateSourceName": "Smart PM Blank Monthly",
+      "monthlyFolder": "D:\\PM System\\data\\monthly_work\\Cookies",
+      "orphanTasksPurged": 0
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:54.600Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-16T19:20:49.525Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:49.523Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-16T19:20:42.687Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/settings/branding/logo/2"
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:42.685Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "BRANDING_LOGO_UPLOAD",
+    "details": {
+      "slot": 2,
+      "file": "company_logo2.png",
+      "size": 14184
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:41.300Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/settings/branding/logo/2"
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:41.298Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "BRANDING_LOGO_UPLOAD",
+    "details": {
+      "slot": 2,
+      "file": "company_logo2.png",
+      "size": 14184
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:39.778Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/settings/branding/logo/2"
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:39.776Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "BRANDING_LOGO_UPLOAD",
+    "details": {
+      "slot": 2,
+      "file": "company_logo2.png",
+      "size": 14184
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:27.529Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/settings/branding/logo/1"
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:27.528Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "BRANDING_LOGO_UPLOAD",
+    "details": {
+      "slot": 1,
+      "file": "company_logo1.png",
+      "size": 160954
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:26.044Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/settings/branding/logo/1"
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:26.042Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "BRANDING_LOGO_UPLOAD",
+    "details": {
+      "slot": 1,
+      "file": "company_logo1.png",
+      "size": 160954
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:08.653Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-16T19:20:05.989Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:05.986Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-16T19:20:03.607Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  },
+  {
+    "time": "2026-09-16T19:20:01.555Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/logout"
+    }
+  },
+  {
+    "time": "2026-09-16T19:20:01.553Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGOUT",
+    "details": {}
+  },
+  {
+    "time": "2026-09-16T19:19:26.072Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "PUT",
+      "path": "/api/settings/branding"
+    }
+  },
+  {
+    "time": "2026-09-16T19:19:26.067Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SETTINGS_BRANDING",
+    "details": {
+      "companyName": "Smart PM Maintenance",
+      "factoryName": "",
+      "headerTitle": "Preventive Maintenance System",
+      "textLayout": {
+        "company": {
+          "position": "left",
+          "size": "medium",
+          "enabled": true
+        },
+        "factory": {
+          "position": "left",
+          "size": "small",
+          "enabled": true,
+          "mode": "underCompany"
+        },
+        "pageTitle": {
+          "position": "center",
+          "size": "large",
+          "enabled": true
+        },
+        "headerTitle": {
+          "position": "center",
+          "size": "small",
+          "enabled": true
+        }
+      },
+      "headerZones": {
+        "left": {
+          "logoSlot": 1,
+          "showLogo": true,
+          "showCompany": false,
+          "showFactory": false,
+          "showHeaderTitle": false,
+          "showPageTitle": false,
+          "align": "left",
+          "logoWidth": 200,
+          "logoHeight": 120,
+          "companySize": "medium",
+          "factorySize": "small",
+          "headerTitleSize": "small",
+          "pageTitleSize": "large"
+        },
+        "center": {
+          "logoSlot": 2,
+          "showLogo": false,
+          "showCompany": true,
+          "showFactory": true,
+          "showHeaderTitle": true,
+          "showPageTitle": true,
+          "align": "center",
+          "logoWidth": 92,
+          "logoHeight": 48,
+          "companySize": "medium",
+          "factorySize": "small",
+          "headerTitleSize": "small",
+          "pageTitleSize": "large"
+        },
+        "right": {
+          "logoSlot": 3,
+          "showLogo": true,
+          "showCompany": false,
+          "showFactory": false,
+          "showHeaderTitle": false,
+          "showPageTitle": false,
+          "align": "right",
+          "logoWidth": 92,
+          "logoHeight": 48,
+          "companySize": "medium",
+          "factorySize": "small",
+          "headerTitleSize": "small",
+          "pageTitleSize": "large"
+        }
+      },
+      "excelLogo": {
+        "slot": 1,
+        "width": 160,
+        "height": 100,
+        "autoFitCell": true,
+        "padding": 8
+      },
+      "logos": [
+        {
+          "id": "logo1",
+          "position": "left",
+          "size": "medium",
+          "width": 200,
+          "height": 120,
+          "enabled": true,
+          "hasFile": true
+        },
+        {
+          "id": "logo2",
+          "position": "center",
+          "size": "medium",
+          "width": 92,
+          "height": 48,
+          "enabled": true,
+          "hasFile": true
+        },
+        {
+          "id": "logo3",
+          "position": "right",
+          "size": "medium",
+          "width": 92,
+          "height": 48,
+          "enabled": false,
+          "hasFile": false
+        }
+      ]
+    }
+  },
+  {
+    "time": "2026-09-16T19:19:01.178Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/settings/branding/logo/2"
+    }
+  },
+  {
+    "time": "2026-09-16T19:19:01.175Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "BRANDING_LOGO_UPLOAD",
+    "details": {
+      "slot": 2,
+      "file": "company_logo2.png",
+      "size": 12069
+    }
+  },
+  {
+    "time": "2026-09-16T19:16:01.831Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "SYSTEM_MUTATION",
+    "details": {
+      "method": "POST",
+      "path": "/api/settings/branding/logo/2"
+    }
+  },
+  {
+    "time": "2026-09-16T19:16:01.829Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "BRANDING_LOGO_UPLOAD",
+    "details": {
+      "slot": 2,
+      "file": "company_logo2.png",
+      "size": 12069
+    }
+  },
+  {
+    "time": "2026-09-13T12:26:40.488Z",
+    "user": "Admin",
+    "role": "Admin",
+    "action": "LOGIN",
+    "details": {}
+  }
+]

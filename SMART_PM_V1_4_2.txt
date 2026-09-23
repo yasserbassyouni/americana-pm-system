@@ -1,0 +1,8 @@
+Smart PM V1.4.2 - Login Cleanup & Language Placement
+
+Changes:
+- Removed all test usernames/passwords from the login page.
+- Moved language selector inside the login card.
+- Login page supports RTL/LTR and responsive mobile layout.
+- Added User Login/Login failed translations for supported languages where available.
+- No PM, Running Hours, Year Planner, Excel, or role logic was changed.

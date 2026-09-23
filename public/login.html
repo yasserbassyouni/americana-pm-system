@@ -1,188 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html>
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Login - Preventive Maintenance System
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="login.css"
-    >
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PM Login</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f6f9;min-height:100vh;display:grid;place-items:center;padding:24px}
+.box{width:min(410px,94vw);background:#fff;padding:28px;border-radius:18px;box-shadow:0 12px 35px #0002}
+.pm-login-brand{text-align:center;margin-bottom:20px}
+.pm-login-brand img{display:block;margin:0 auto 10px;max-width:150px;max-height:72px;object-fit:contain}
+.pm-login-company{font-size:24px;font-weight:800;line-height:1.15;color:#111}
+.pm-login-factory{font-size:14px;font-weight:700;margin-top:5px;color:#444}
+.pm-login-subtitle{font-size:13px;margin-top:4px;color:#555}
+.logo{background:#c60000;color:#fff;padding:18px;border-radius:12px;margin-bottom:22px;text-align:center}
+.logo h2{margin:0;font-size:23px}.logo p{margin:6px 0 0}
+.login-language{margin:0 0 18px;padding:12px 14px;background:#f8f9fb;border:1px solid #e1e5ea;border-radius:10px}
+.login-language .pm-lang-control{display:grid!important;grid-template-columns:auto 1fr!important;align-items:center!important;gap:10px!important;margin:0!important;width:100%!important;position:static!important;inset:auto!important;z-index:auto!important;background:transparent!important;border:0!important;border-radius:0!important;padding:0!important;box-shadow:none!important}
+.login-language .pm-lang-control label{font-size:14px;font-weight:700;opacity:1;margin:0}
+.login-language .pm-lang-select{width:100%;min-width:0;max-width:none;padding:10px 12px}
+label{display:block;font-weight:700;margin:12px 0 6px}
+input{width:100%;padding:12px;border:1px solid #ccc;border-radius:9px;font-size:16px;outline:none}
+input:focus{border-color:#c60000;box-shadow:0 0 0 3px rgba(198,0,0,.08)}
+button{width:100%;margin-top:18px;background:#c60000;color:#fff;border:0;border-radius:9px;padding:12px;font-weight:700;font-size:16px;cursor:pointer}
+button:hover{background:#a90000}.err{color:#b60000;margin-top:12px;min-height:18px}
+html[dir="rtl"] .login-language .pm-lang-control{grid-template-columns:1fr auto}
+@media(max-width:520px){body{padding:14px}.box{padding:22px 18px}.login-language .pm-lang-control{grid-template-columns:1fr}.login-language .pm-lang-control label{margin-bottom:2px}}
+</style>
+<link rel="stylesheet" href="i18n.css">
 </head>
-
-
-<body>
-
-    <div class="login-page">
-
-        <div class="login-container">
-
-            <!-- ============================================== -->
-            <!-- COMPANY HEADER -->
-            <!-- ============================================== -->
-
-            <div class="login-header">
-
-                <div class="company-badge">
-                    NFC
-                </div>
-
-                <h1>
-                    National Food Company
-                </h1>
-
-                <h2>
-                    Americana Cake
-                </h2>
-
-                <p>
-                    Preventive Maintenance System
-                </p>
-
-            </div>
-
-
-            <!-- ============================================== -->
-            <!-- LOGIN FORM -->
-            <!-- ============================================== -->
-
-            <form
-                id="loginForm"
-                class="login-form"
-            >
-
-                <div class="form-title">
-
-                    <h3>
-                        Sign In
-                    </h3>
-
-                    <p>
-                        Enter your account details to continue
-                    </p>
-
-                </div>
-
-
-                <!-- USERNAME -->
-
-                <div class="form-group">
-
-                    <label for="username">
-                        Username
-                    </label>
-
-                    <input
-                        id="username"
-                        name="username"
-                        type="text"
-                        placeholder="Enter username"
-                        autocomplete="username"
-                        required
-                    >
-
-                </div>
-
-
-                <!-- PASSWORD -->
-
-                <div class="form-group">
-
-                    <label for="password">
-                        Password
-                    </label>
-
-                    <div class="password-wrapper">
-
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            placeholder="Enter password"
-                            autocomplete="current-password"
-                            required
-                        >
-
-                        <button
-                            id="togglePassword"
-                            class="password-toggle"
-                            type="button"
-                            title="Show password"
-                        >
-                            Show
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ERROR MESSAGE -->
-
-                <div
-                    id="loginMessage"
-                    class="login-message hidden"
-                ></div>
-
-
-                <!-- LOGIN BUTTON -->
-
-                <button
-                    id="loginButton"
-                    class="login-button"
-                    type="submit"
-                >
-
-                    <span id="loginButtonText">
-                        Sign In
-                    </span>
-
-                    <span
-                        id="loginLoading"
-                        class="loading hidden"
-                    >
-                        Signing in...
-                    </span>
-
-                </button>
-
-            </form>
-
-
-            <!-- ============================================== -->
-            <!-- FOOTER -->
-            <!-- ============================================== -->
-
-            <div class="login-footer">
-
-                <p>
-                    Engineering & Maintenance Department
-                </p>
-
-                <span>
-                    Preventive Maintenance Management System
-                </span>
-
-            </div>
-
-        </div>
-
+<body class="pm-login-page">
+<div class="box">
+  <div id="loginBrand" class="pm-login-brand"></div>
+  <div class="logo"><h2>Smart PM Maintenance</h2><p>User Login</p></div>
+  <div class="login-language">
+    <div class="pm-lang-control">
+      <label data-pm-lang-label>Language</label>
+      <select class="pm-lang-select" aria-label="Language" onchange="window.PMI18N&&PMI18N.setLanguage(this.value)">
+        <option value="en">English</option><option value="ar">العربية</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="es">Español</option><option value="it">Italiano</option><option value="tr">Türkçe</option><option value="ur">اردو</option><option value="hi">हिन्दी</option><option value="bn">বাংলা</option><option value="id">Bahasa Indonesia</option><option value="fil">Filipino</option><option value="zh">中文</option><option value="pt">Português</option><option value="ru">Русский</option>
+      </select>
     </div>
-
-
-    <script src="login.js"></script>
-
-</body>
-
+  </div>
+  <label>Username</label><input id="u" autocomplete="username">
+  <label>Password</label><input id="p" type="password" autocomplete="current-password">
+  <button onclick="login()">Login</button>
+  <div id="e" class="err"></div>
+</div>
+<script>
+if(localStorage.pmToken)location.href='index.html';
+async function login(){
+  e.textContent='';
+  const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u.value.trim(),password:p.value})});
+  const j=await r.json();
+  if(!r.ok){e.textContent=j.error||'Login failed';return}
+  localStorage.pmToken=j.token;
+  localStorage.pmUser=JSON.stringify(j.user);
+  location.href='index.html';
+}
+p.addEventListener('keydown',x=>{if(x.key==='Enter')login()});
+</script>
+<script src="branding-client.js?v=143"></script>
+<script src="i18n.js?v=143"></script></body>
 </html>

@@ -1,0 +1,8 @@
+Smart PM V1.5.1 - Workflow Rendering Fix
+
+Fixes:
+- Manual workflow steps always render even when there are no production lines.
+- No-line state now shows Create Line as the current red step and all later steps as pending gray.
+- Added safe fallback rendering so API/status errors cannot leave empty System Setup / Planning boxes.
+- Existing real-data status logic remains: line/machines/tasks become green only when they actually exist.
+- No changes to PM calculations, Running Hours, Excel generation, or Year Planner logic.

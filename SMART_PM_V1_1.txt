@@ -1,0 +1,7 @@
+SMART PM V1.2.0 - BILINGUAL ARABIC / ENGLISH
+
+- Global Arabic/English language selector.
+- Arabic RTL and English LTR.
+- Language preference is saved per browser/device.
+- Dedicated Language Settings page.
+- Existing PM data and Excel generation logic unchanged.

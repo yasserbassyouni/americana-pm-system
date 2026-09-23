@@ -1,0 +1,116 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Email Accounts</title><link rel="stylesheet" href="settings.css">
+<style>.account{border:1px solid #ddd;border-radius:12px;padding:14px;margin-bottom:12px}.account.default{border:2px solid #b60000}.topline{display:flex;justify-content:space-between;align-items:center;gap:10px}.tag{background:#b60000;color:white;border-radius:16px;padding:4px 9px;font-size:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:800px){.two{grid-template-columns:1fr}}</style><link rel="stylesheet" href="i18n.css"><link rel="stylesheet" href="workflow-guide.css">
+</head><body>
+<header class="top"><div class="bar"><div><h2>Email Accounts & Reports</h2><div>Multiple SMTP accounts + Default + Fallback + Test</div></div><button class="btn" onclick="location.href='settings.html'">← Settings</button></div></header>
+<main class="wrap">
+<div class="panel">
+  <div class="topline"><div><h3 style="margin:0">Sending Accounts</h3><p class="muted">You can add Gmail, Outlook, or company SMTP accounts. The server attaches the correct Excel automatically.</p></div><button class="btn red" onclick="addAccount()">+ Add Email Account</button></div>
+  <label style="max-width:320px">Automatic Fallback
+    <select id="fallbackEnabled"><option value="true">Enabled</option><option value="false">Disabled</option></select>
+  </label>
+  <div id="accounts" style="margin-top:14px"></div>
+</div>
+
+<div class="two">
+<div class="panel">
+<h3>Weekly Report Email</h3>
+<label>Enabled<select id="weeklyEnabled"><option value="true">Yes</option><option value="false">No</option></select></label>
+<label>To<input id="weeklyTo" placeholder="maintenance@company.com"></label>
+<label>CC<input id="weeklyCc"></label>
+<label>BCC<input id="weeklyBcc"></label>
+<label>Subject<input id="weeklySubject"></label>
+<label>Message<textarea id="weeklyMessage" rows="4"></textarea></label>
+<p class="muted">The weekly Excel file is selected and attached automatically when the week closes.</p>
+</div>
+
+<div class="panel">
+<h3>Monthly Report Email</h3>
+<label>Enabled<select id="monthlyEnabled"><option value="true">Yes</option><option value="false">No</option></select></label>
+<label>To<input id="monthlyTo"></label>
+<label>CC<input id="monthlyCc"></label>
+<label>BCC<input id="monthlyBcc"></label>
+<label>Subject<input id="monthlySubject"></label>
+<label>Message<textarea id="monthlyMessage" rows="4"></textarea></label>
+<p class="muted">The final monthly Excel is selected and attached automatically after the last PM Thursday of the month.</p>
+</div>
+</div>
+
+
+<div class="panel">
+  <h3>Excel Report Test</h3>
+  <p class="muted">Use these buttons only for testing. The server selects Excel files automatically from data/monthly_work. Enter a PM date so the server knows which month/week to attach.</p>
+  <div class="row">
+    <label>PM Test Date<input type="date" id="reportTestDate" value="2026-07-03"></label>
+    <div style="align-self:end">
+      <button class="btn green" onclick="sendReportNow('weekly')">Send Weekly Excel Now</button>
+      <button class="btn red" onclick="sendReportNow('monthly')">Send Monthly Excel Now</button>
+    </div>
+  </div>
+  <div id="reportMsg" class="muted"></div>
+</div>
+
+<div class="panel"><button class="btn green" onclick="save()">Save Email Settings</button> <span id="msg" class="muted"></span></div>
+</main>
+<script src="settings-common.js"></script><script>
+let cfg={accounts:[],weekly:{},monthly:{}};
+
+function render(){
+ fallbackEnabled.value=String(cfg.fallbackEnabled!==false);
+ accounts.innerHTML=(cfg.accounts||[]).map((a,i)=>`
+ <div class="account ${a.isDefault?'default':''}">
+   <div class="topline"><div><b>${esc(a.name||'Email Account')}</b> ${a.isDefault?'<span class="tag">DEFAULT</span>':''}</div>
+   <div class="actions">
+    <button class="btn gray" onclick="makeDefault(${i})">Set Default</button>
+    <button class="btn green" onclick="testAccount(${i})">Send Test</button>
+    <button class="btn red" onclick="removeAccount(${i})">Delete</button>
+   </div></div>
+   <div class="row">
+    <label>Account Name<input value="${esc(a.name||'')}" oninput="cfg.accounts[${i}].name=this.value"></label>
+    <label>Enabled<select onchange="cfg.accounts[${i}].enabled=this.value==='true'"><option value="true" ${a.enabled?'selected':''}>Yes</option><option value="false" ${!a.enabled?'selected':''}>No</option></select></label>
+    <label>SMTP Host<input value="${esc(a.smtpHost||'')}" oninput="cfg.accounts[${i}].smtpHost=this.value"></label>
+    <label>SMTP Port<input type="number" value="${esc(a.smtpPort||587)}" oninput="cfg.accounts[${i}].smtpPort=Number(this.value)"></label>
+    <label>Secure/TLS<select onchange="cfg.accounts[${i}].secure=this.value==='true'"><option value="false" ${!a.secure?'selected':''}>STARTTLS / Port 587</option><option value="true" ${a.secure?'selected':''}>SSL/TLS / Port 465</option></select></label>
+    <label>SMTP User<input value="${esc(a.smtpUser||'')}" oninput="cfg.accounts[${i}].smtpUser=this.value"></label>
+    <label>SMTP Password<input type="password" value="${esc(a.smtpPassword||'')}" oninput="cfg.accounts[${i}].smtpPassword=this.value" placeholder="App Password"></label>
+    <label>From Name<input value="${esc(a.fromName||'')}" oninput="cfg.accounts[${i}].fromName=this.value"></label>
+   </div>
+ </div>`).join('');
+ weeklyEnabled.value=String(cfg.weekly?.enabled!==false); weeklyTo.value=cfg.weekly?.to||''; weeklyCc.value=cfg.weekly?.cc||''; weeklyBcc.value=cfg.weekly?.bcc||''; weeklySubject.value=cfg.weekly?.subject||''; weeklyMessage.value=cfg.weekly?.message||'';
+ monthlyEnabled.value=String(cfg.monthly?.enabled!==false); monthlyTo.value=cfg.monthly?.to||''; monthlyCc.value=cfg.monthly?.cc||''; monthlyBcc.value=cfg.monthly?.bcc||''; monthlySubject.value=cfg.monthly?.subject||''; monthlyMessage.value=cfg.monthly?.message||'';
+}
+
+async function sendReportNow(kind){
+  const d=document.getElementById('reportTestDate').value;
+  const out=document.getElementById('reportMsg');
+  out.textContent='Sending Excel...';
+  try{
+    await save(false);
+    const r=await api('/api/email/send-'+kind+'-now',{method:'POST',body:JSON.stringify({date:d})});
+    out.textContent=`Sent successfully by ${r.account}. Attachments: ${(r.files||[]).join(', ')}`;
+  }catch(e){
+    out.textContent='Send failed: '+e.message;
+  }
+}
+
+async function load(){cfg=await api('/api/settings/email');cfg.accounts=cfg.accounts||[];cfg.weekly=cfg.weekly||{};cfg.monthly=cfg.monthly||{};render()}
+function addAccount(){cfg.accounts.push({id:'mail-'+Date.now(),name:'New Email Account',enabled:true,isDefault:cfg.accounts.length===0,smtpHost:'smtp.gmail.com',smtpPort:587,secure:false,smtpUser:'',smtpPassword:'',fromName:'Smart PM Maintenance'});render()}
+function removeAccount(i){if(confirm('Delete this email account?')){cfg.accounts.splice(i,1);if(cfg.accounts.length&&!cfg.accounts.some(a=>a.isDefault))cfg.accounts[0].isDefault=true;render()}}
+function makeDefault(i){cfg.accounts.forEach((a,n)=>a.isDefault=n===i);render()}
+async function testAccount(i){
+  const a=cfg.accounts[i];
+  const to=prompt('Send test email to:', cfg.weekly?.to||'');
+  if(!to)return;
+  // Save first so server has the password/settings.
+  await save(false);
+  try{const r=await api('/api/settings/email/test/'+encodeURIComponent(a.id),{method:'POST',body:JSON.stringify({to})});alert(r.message||'Test email sent successfully')}catch(e){alert('Test failed: '+e.message)}
+}
+async function save(show=true){
+ cfg.fallbackEnabled=fallbackEnabled.value==='true';
+ cfg.weekly={enabled:weeklyEnabled.value==='true',to:weeklyTo.value,cc:weeklyCc.value,bcc:weeklyBcc.value,subject:weeklySubject.value,message:weeklyMessage.value};
+ cfg.monthly={enabled:monthlyEnabled.value==='true',to:monthlyTo.value,cc:monthlyCc.value,bcc:monthlyBcc.value,subject:monthlySubject.value,message:monthlyMessage.value};
+ await api('/api/settings/email',{method:'PUT',body:JSON.stringify(cfg)});
+ if(show){msg.textContent='Saved';setTimeout(()=>msg.textContent='',2000)}
+}
+load().catch(e=>alert(e.message));
+</script><script src="branding-client.js?v=143"></script><script src="i18n.js?v=130"></script>
+<script src="workflow-guide.js?v=141"></script></body></html>

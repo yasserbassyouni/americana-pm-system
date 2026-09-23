@@ -1,0 +1,9 @@
+Smart PM V1.3.5 - Continuous Running Hours Planning
+
+- Imported Annual Excel Running Hours counters start automatically on 01/01/<source year>.
+- Running Hours due dates are calculated from counter start + Interval Hours / Machine Expected Running Hours per Week.
+- A long interval no longer creates a false Week 1 PM.
+- If no PM falls inside a target year, zero occurrences is valid (no warning).
+- Completing a Running Hours / PLC Hours PM resets the future counter from the actual execution date.
+- Year Planner shows First Due Date, Occurrences, Interval Weeks and PM Code separately.
+- Imported machines default to 120 expected running hours/week and can be changed in Machine Management.

@@ -1,0 +1,14 @@
+SMART PM V1.4.0 - Guided Workflow & Annual Plans
+
+Built from V1.3.8 Stable.
+
+Added:
+- Guided setup cycle on every application page.
+- Manual setup path: Line -> Machines -> PM Tasks -> Annual Plans -> Future Years -> Monthly/Execution.
+- Excel import path: Line -> Import Annual Excel -> Machines/Tasks review -> Annual Plans -> Future Years -> Monthly/Execution.
+- Setup Guide page with live status checks for the selected line/year.
+- Annual Plans page to view current and future years and their PM tasks inside the application.
+- Consistent language selector placement inside the setup bar on application pages, with RTL/LTR handling.
+- Setup step labels translated across all supported interface languages.
+
+Core V1.3.8 Year Planner / Running Hours calculations were not changed.

@@ -1,0 +1,2 @@
+Smart PM V1.3.2
+Fix: Running Hours tasks such as 10000 hr are never displayed or interpreted as weekly. Legacy imported calculation methods are normalized in Year Planner and Task Management.

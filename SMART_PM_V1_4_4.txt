@@ -1,0 +1,2 @@
+Smart PM V1.4.4 - Guided Excel Auto-Cycle
+Built from V1.4.3. Excel import workflow simplified to Create Line -> Upload Annual Excel -> Auto Build -> Current PM.

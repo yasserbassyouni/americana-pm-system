@@ -1,0 +1,189 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PM Line</title>
+<style>*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f4f6f9}.top{background:#b60000;color:#fff;padding:15px}.bar{max-width:1280px;margin:auto;display:flex;align-items:center;gap:12px}.btn{border:0;border-radius:8px;padding:9px 12px;font-weight:700;cursor:pointer}.wrap{max-width:1280px;margin:20px auto;padding:0 14px}.summary{background:#fff;padding:14px;border-radius:12px;margin-bottom:14px}.linekpi{background:#fff;padding:14px;border-radius:12px;margin-bottom:14px}.table-wrap{overflow:auto}.kpi{width:100%;border-collapse:separate;border-spacing:5px;min-width:650px}.kpi th{background:#20b2cc;color:#111;text-align:center;padding:10px}.kpi td{background:#c7efcf;text-align:center;padding:10px;border:1px solid #aaa;font-weight:700}.kpi td.label{background:#20b2cc;color:#111}.machines{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:18px}.machine{background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px;min-height:72px;cursor:pointer}.machine>b{font-size:17px;line-height:1.15}.machine .machine-name{font-size:15px;line-height:1.3;margin-top:4px;color:#444}.machine .task-count{font-size:13px;color:#666}.machine.active{border:2px solid #b60000}.tablebox{background:#fff;border:1px solid #b8c0c8;border-radius:12px;overflow:hidden;padding:6px}
+.tablebox table{width:100%;border-collapse:collapse;table-layout:fixed}
+.tablebox th{background:#222;color:#fff;text-align:center;padding:8px 4px;border:1px solid #555;white-space:normal;font-size:12px;line-height:1.05}
+.tablebox td{padding:7px 4px;border:1px solid #b8c0c8;background:#fff;vertical-align:middle;text-align:center;word-break:break-word;overflow-wrap:anywhere;font-size:12px;line-height:1.15}
+.tablebox td:nth-child(6),.tablebox td:nth-child(7){text-align:left}
+.tablebox th:nth-child(1),.tablebox td:nth-child(1){width:6%}
+.tablebox th:nth-child(2),.tablebox td:nth-child(2){width:7%}
+.tablebox th:nth-child(3),.tablebox td:nth-child(3){width:8%}
+.tablebox th:nth-child(4),.tablebox td:nth-child(4){width:9%}
+.tablebox th:nth-child(5),.tablebox td:nth-child(5){width:5%}
+.tablebox th:nth-child(6),.tablebox td:nth-child(6){width:7%}
+.tablebox th:nth-child(7),.tablebox td:nth-child(7){width:16%}
+.tablebox th:nth-child(8),.tablebox td:nth-child(8){width:7%}
+.tablebox th:nth-child(9),.tablebox td:nth-child(9){width:9%}
+.tablebox th:nth-child(10),.tablebox td:nth-child(10){width:6%}
+.tablebox th:nth-child(11),.tablebox td:nth-child(11){width:6%}
+.tablebox th:nth-child(12),.tablebox td:nth-child(12){width:8%}
+.tablebox th:nth-child(13),.tablebox td:nth-child(13){width:13%}
+.tablebox th:nth-child(14),.tablebox td:nth-child(14){width:9%}
+.tablebox tbody tr:hover td{background:#f7fafc}
+@media(max-width:760px){
+ .tablebox{overflow:auto}
+ .tablebox table{min-width:1050px}
+}.badge{padding:5px 9px;border-radius:20px;font-weight:700;font-size:12px;display:inline-block}.c1{background:#92D050}.c2{background:#00B0F0}.c3{background:#0070C0;color:#fff}.c4{background:#275417;color:#fff}.c5{background:#002060;color:#fff}.done{color:#08783c;font-weight:700}.do{background:#08783c;color:#fff}.undo{background:#ddd}.muted{color:#666;font-size:12px}
+.history-note{background:#fff5df;border:1px solid #e8c36f;border-radius:10px;padding:12px;margin:10px 0}
+.history-date{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.history-date input{padding:8px 10px;border:1px solid #bbb;border-radius:7px;font-weight:700}
+.readonly-note{background:#f3f3f3;border:1px solid #ccc;border-radius:10px;padding:12px;margin:10px 0}
+.period-nav{background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;box-shadow:0 1px 2px #0000000d}.period-nav label{font-weight:700}.period-nav select{padding:8px 10px;border:1px solid #c8c8c8;border-radius:8px;background:#fff;font-weight:700}.period-nav .navbtn{border:0;border-radius:8px;padding:9px 13px;font-weight:800;cursor:pointer;background:#b60000;color:#fff}.period-nav .navbtn:disabled{opacity:.45;cursor:not-allowed}.period-nav .range{font-weight:700;min-width:190px;text-align:center}
+/* V1.5.8 grouped machine rows */
+td.machine-merged{vertical-align:middle;background:#f8fafc;font-weight:600}
+tr.machine-group-start td{border-top:2px solid #d9dee7}
+</style><link rel="stylesheet" href="i18n.css">
+</head>
+<body><header class="top"><div class="bar"><button class="btn" onclick="location.href='index.html'">← Lines</button><div><h2 id="title" style="margin:0">Line</h2><div id="week"></div></div></div></header>
+<main class="wrap"><div id="periodNav" class="period-nav"></div><div id="summary" class="summary"></div><div id="lineKpi" class="linekpi"></div><div id="machines" class="machines"></div><div class="tablebox"><table><thead><tr><th>Section</th><th>Machine No.</th><th>Machine Name</th><th>Machine Identified</th><th>Type</th><th>Part</th><th>Maintenance Task</th><th>Frequency</th><th>Code</th><th>Status</th><th>Done By</th><th>Date</th><th>Issue / Comment</th><th>Action</th></tr></thead><tbody id="tasks"></tbody></table></div></main>
+<script>
+const token=localStorage.pmToken;if(!token)location.href='login.html';const me=JSON.parse(localStorage.pmUser||'{}');const H={'Authorization':'Bearer '+token};const line=new URLSearchParams(location.search).get('line');let data;let selectedMachine='ALL';let historicalDateValue='';let access={isAdmin:false,isCurrentWeek:true,isPastWeek:false,isFutureWeek:false,canHistoricalEdit:false};
+const periodNavEl=document.getElementById('periodNav');const summaryEl=document.getElementById('summary');const lineKpiEl=document.getElementById('lineKpi');const machinesEl=document.getElementById('machines');const tasksEl=document.getElementById('tasks');
+const PM_AR={"Bearing": "رولمان بلي", "Bearing & shafts": "رولمان بلي وأعمدة", "Bearing and rotating parts": "رولمان بلي وأجزاء دوارة", "Bearing supports": "حوامل رولمان البلي", "Belt": "سير", "Blade clreaning  & roller shaft&cutters": "تنظيف الشفرة وعمود الرول والقواطع", "Blowers": "مراوح النفخ", "Bowel gear": "ترس مخروطي", "Bowel gear swiveral bearing &Toll beearing": "ترس مخروطي ورولمان بلي دوار ورولمان بلي الأداة", "Bronze nut dough conveying mechanism": "صامولة برونزية لآلية نقل العجين", "Burner": "الحارق", "Cam & Transimision Duel adjustment &  internal gear": "الكامة ونقل الحركة وضبط مزدوج والترس الداخلي", "Cam discs and cam rollers": "أقراص الكامة ورولات الكامة", "Chain": "جنزير", "Chain and gear": "جنزير وترس", "Check PIV Oil": "فحص زيت PIV", "Clow Bolts": "مسامير التثبيت", "Cylindrical and bevel gears": "تروس أسطوانية ومخروطية", "Depositor head points": "نقاط رأس الديبوزيتر", "Discharge unit": "وحدة التفريغ", "Dough conveying mechanism": "آلية نقل العجين", "Electric": "كهرباء", "Electric panel": "لوحة كهربائية", "Exit conveyors": "سيور الخروج", "Flab folder": "وحدة الطي", "Gear & Gear box": "ترس وصندوق تروس", "Gear box": "صندوق تروس", "Gear boxes shaft": "عمود صندوق التروس", "Gears": "تروس", "Gripper clamping surface": "سطح تثبيت الماسك", "Height adjustment screw": "مسمار ضبط الارتفاع", "Hydraulic cylinder": "أسطوانة هيدروليكية", "Jaws": "فكوك اللحام", "Jaws & belt": "فكوك اللحام والسير", "Motor": "موتور", "Moving parts": "أجزاء متحركة", "Pneumatic cercuit": "دائرة هواء مضغوط", "Pusher & Feeding chain": "الدافع وجنزير التغذية", "Pusher & Transmition and feeding chain": "الدافع ونقل الحركة وجنزير التغذية", "Reduction unitl sealing shafet": "وحدة التخفيض وعمود اللحام", "Rollers": "رولات", "Rollers & belt": "رولات وسير", "Rotating parts": "أجزاء دوارة", "Safety devices": "أجهزة السلامة", "Sealing wheel": "عجلة اللحام", "Spindle And guide spindle": "عمود دوران وعمود توجيه", "Spur gear": "ترس مستقيم", "Spur gears of jaws": "تروس مستقيمة لفكوك اللحام", "Steel belt": "سير فولاذي", "Tool bearing, Hydraulic Cylinde, tool gear& Tool Drive": "رولمان بلي الأداة والأسطوانة الهيدروليكية وترس الأداة ووحدة تشغيل الأداة", "bronze nut dough conveying mechanism": "صامولة برونزية لآلية نقل العجين", "chain": "جنزير", "depositor head points": "نقاط رأس الديبوزيتر", "dough conveying mechanism": "آلية نقل العجين", "electric panel": "لوحة كهربائية", "gear box": "صندوق تروس", "linear guide": "دليل خطي", "lungtidunal sealing unit": "وحدة اللحام الطولي", "piping valves, Gaskets": "صمامات المواسير والجوانات", "Change": "تغيير", "Change bearing": "تغيير رولمان البلي", "Change bearing grease, shaft seal and elastic rim gear": "تغيير شحم رولمان البلي وصوفة العمود وترس الحافة المرن", "Change oil of gear box": "تغيير زيت صندوق التروس", "Check air leakage": "فحص تسريب الهواء", "Check and Greasing": "فحص وتشحيم", "Check bearing and vibration": "فحص رولمان البلي والاهتزاز", "Check functioning of safety devices \nand switches (emergency stop button)": "فحص عمل أجهزة ومفاتيح السلامة (زر إيقاف الطوارئ)", "Check hose and filter and regulator": "فحص الخرطوم والفلتر والمنظم", "Check jaws and sealing &belts": "فحص فكوك اللحام واللحام والسيور", "Check leakage": "فحص التسريب", "Check oil": "فحص الزيت", "Check oil level ,sound and vibration": "فحص مستوى الزيت والصوت والاهتزاز", "Check rivits": "فحص البرشام", "Check swiches,alarm lamp and all caple": "فحص المفاتيح ولمبة الإنذار وجميع الكابلات", "Check the bearing of all rollers": "فحص رولمان بلي جميع الرولات", "Check the bearing of all rollers, belt": "فحص رولمان بلي جميع الرولات والسير", "Check the burner": "فحص الحارق", "Check the conveyors": "فحص السيور الناقلة", "Check vibration": "فحص الاهتزاز", "Clean the Burner": "تنظيف الحارق", "Clean, swiches,alarm lamp and all caple": "تنظيف المفاتيح ولمبة الإنذار وجميع الكابلات", "Grease all bearing and rotating Parts": "تشحيم جميع رولمان البلي والأجزاء الدوارة", "Greasin nozzles": "تشحيم النوزلات", "Greasing": "تشحيم", "Greasing cam": "تشحيم الكامة", "Greasing rotatingg parts": "تشحيم الأجزاء الدوارة", "Greasing the chain": "تشحيم الجنزير", "Lubricate": "تشحيم", "Oil": "تزييت", "change oil of gear box": "تغيير زيت صندوق التروس", "check air leakage": "فحص تسريب الهواء", "check hose and filter and regulator": "فحص الخرطوم والفلتر والمنظم", "check jaws and sealing": "فحص فكوك اللحام واللحام", "check oil level ,sound and vibration": "فحص مستوى الزيت والصوت والاهتزاز", "check oil of gear box heck gearwheels and tooth racks; lubricate if require": "فحص زيت صندوق التروس والتروس والجريدة المسننة؛ والتشحيم عند الحاجة", "check the bearing of all rollers & Belt": "فحص رولمان بلي جميع الرولات والسير", "clean, swiches,alarm lamp and all caple": "تنظيف المفاتيح ولمبة الإنذار وجميع الكابلات", "clean, swiches,alarm lamp and all caple & fans": "تنظيف المفاتيح ولمبة الإنذار وجميع الكابلات والمراوح", "control & adjust conveyor belt & scraper": "فحص وضبط السير الناقل والكاشط", "grease all bearing and rotating Parts": "تشحيم جميع رولمان البلي والأجزاء الدوارة", "grease roller": "تشحيم الرول", "grease sealng wheels and bevel gear": "تشحيم عجلات اللحام والترس المخروطي", "greasing": "تشحيم", "greasing the chain": "تشحيم الجنزير", "low-clean light barriers and reflectors with compressed air, Check slippage of conveyor belts & pneumatic": "تنظيف الحواجز الضوئية والعاكسات بالهواء المضغوط، وفحص انزلاق السيور ودائرة الهواء", "lubricate": "تشحيم", "lubricate  flab folder": "تشحيم وحدة الطي", "lubricate bevel gear": "تشحيم الترس المخروطي", "lubricate the chain": "تشحيم الجنزير", "Weekly": "أسبوعي", "Monthly": "شهري", "Quarterly": "ربع سنوي", "Annual": "سنوي", "Pending": "قيد الانتظار", "Future": "مستقبلي", "Read Only": "للقراءة فقط", "Done": "تم", "Report Issue": "الإبلاغ عن مشكلة", "Issue / Comment": "مشكلة / تعليق"};
+function pmTaskText(v){const s=String(v??'');if(localStorage.getItem('pmLang')!=='ar')return s;return PM_AR[s]||s.replace(/^(\d+) hr$/i,'كل $1 ساعة');}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function api(url,opt={}){opt.headers={...(opt.headers||{}),...H};if(opt.body&&!opt.headers['Content-Type'])opt.headers['Content-Type']='application/json';const r=await fetch(url,opt);if(r.status===401){localStorage.clear();location.href='login.html';throw new Error('Login required')}const j=await r.json();if(!r.ok)throw new Error(j.error||'Error');return j}
+function render(machine=selectedMachine){
+ selectedMachine=machine||'ALL';
+ const list=selectedMachine==='ALL'?data.tasks:data.tasks.filter(t=>(t.machineNo||`ROW-${t.row}`)===selectedMachine);
+ document.querySelectorAll('.machine').forEach(x=>x.classList.toggle('active',x.dataset.id===selectedMachine));
+
+ const viewerOnly=String(me.role||'').toLowerCase()==='viewer';
+ const canEditHistorical=access.isPastWeek&&!viewerOnly;
+ const currentEditable=access.isCurrentWeek&&!viewerOnly;
+ const canDo=(currentEditable||canEditHistorical)&&!viewerOnly;
+ const groups=[];
+ list.forEach(t=>{const key=String(t.machineNo||`ROW-${t.row}`);let g=groups.find(x=>x.key===key);if(!g){g={key,items:[]};groups.push(g)}g.items.push(t)});
+
+ tasksEl.innerHTML=groups.map(g=>g.items.map((t,i)=>{
+   let action='';
+   if(viewerOnly){
+     action='<span class="muted">Review Only</span>';
+   }else if(access.isFutureWeek){
+     action='<span class="muted">Future</span>';
+   }else if(t.done){
+     action=`<button class="btn undo" onclick="setDone(${t.row},false)">Undo</button>`;
+   }else if(canDo){
+     action=`<button class="btn do" onclick="setDone(${t.row},true)">✔ Done</button>`;
+   }
+   if(canDo){
+     action += ` <button class="btn" style="background:#f4b400;color:#111" onclick="reportIssue(${t.row})">⚠ ${esc(pmTaskText('Report Issue'))}</button>`;
+   }
+   const span=g.items.length;
+   const machineCells=i===0?`
+     <td class="machine-merged" rowspan="${span}">${esc(t.section)||'-'}</td>
+     <td class="machine-merged" rowspan="${span}"><b>${esc(t.machineNo)||'-'}</b></td>
+     <td class="machine-merged" rowspan="${span}">${esc(t.machineName)||'-'}</td>
+     <td class="machine-merged" rowspan="${span}">${esc(t.machineIdentified)||'-'}</td>
+     <td class="machine-merged" rowspan="${span}">${esc(t.type)||'-'}</td>`:'';
+   return `<tr class="${i===0?'machine-group-start':''}">
+     ${machineCells}
+     <td>${esc(pmTaskText(t.part))||'-'}</td>
+     <td>${esc(localStorage.getItem('pmLang')==='ar' && t.arabicMaintenance ? t.arabicMaintenance : pmTaskText(t.maintenance))||'-'}</td>
+     <td>${esc(pmTaskText(t.frequency))||'-'}</td>
+     <td><span class="badge c${t.code}">${t.code} · ${esc(t.codeName)}</span></td>
+     <td>${t.done?'<span class="done">✔ '+esc(pmTaskText('Done'))+'</span>':esc(pmTaskText('Pending'))}</td>
+     <td>${esc(t.doneBy)||'-'}</td>
+     <td>${esc(t.doneDate)||'-'}</td>
+     <td>${t.issue?`<b>⚠ ${esc(t.issue.comment)}</b><div class="muted">${esc(t.issue.reportedBy)} · ${esc(new Date(t.issue.reportedAt).toLocaleString())}</div>`:'-'}</td>
+     <td>${action}</td>
+   </tr>`;
+ }).join('')).join('');
+}
+async function reportIssue(row){
+ const task=(data.tasks||[]).find(t=>t.row===row);
+ const existing=task?.issue?.comment||'';
+ const comment=prompt('Report Issue / Add Comment\n\nDescribe the problem found during PM. This is optional and will NOT mark the PM as completed.',existing);
+ if(comment===null)return;
+ if(!comment.trim()){alert('Please enter the issue / comment.');return;}
+ try{
+   await api(`/api/task/${encodeURIComponent(line)}/${row}/issue`,{method:'POST',body:JSON.stringify({taskId:task?.taskId,comment:comment.trim()})});
+   await load();
+ }catch(e){alert(e.message)}
+}
+
+async function setDone(row,on){
+ let body='{}';
+
+ if(on){
+   if(access.isFutureWeek){
+     alert('Future PM weeks cannot be completed.');
+     return;
+   }
+
+   if(access.isPastWeek){
+     const input=document.getElementById('historicalExecutionDate');
+     const executionDate=input&&input.value;
+     historicalDateValue=executionDate||historicalDateValue;
+     if(!executionDate){
+       alert('Select the actual execution date first.');
+       if(input)input.focus();
+       return;
+     }
+     if(!confirm(`HISTORICAL PM EDIT\nExecution Date: ${executionDate}\n\nComplete this task?`))return;
+     body=JSON.stringify({executionDate});
+   }else{
+     if(!confirm('Complete this task? The system will save: 6 + your username + actual execution date.'))return;
+   }
+ }else{
+   if(!confirm(access.isPastWeek?'HISTORICAL PM EDIT: Undo this old PM task?':'Undo? This clears completion, username and date.'))return;
+ }
+
+ await api(`/api/task/${encodeURIComponent(line)}/${row}/${on?'done':'undo'}`,{method:'POST',body:JSON.stringify({...JSON.parse(body||'{}'),taskId:(data.tasks||[]).find(t=>t.row===row)?.taskId})});
+ await load();
+}
+async function setPmView(year,month,weekIndex){
+ await api('/api/pm/view',{method:'POST',body:JSON.stringify({year:Number(year),month:Number(month),weekIndex:Number(weekIndex)})});
+ selectedMachine='ALL'; historicalDateValue=''; await load();
+}
+function monthName(m){return new Date(2026,m-1,1).toLocaleString(localStorage.getItem('pmLang')==='ar'?'ar-SA':'en-US',{month:'long'});}
+async function renderPeriodNav(){
+ const v=await api('/api/pm/view');
+ const years=[]; for(let y=v.year-5;y<=v.year+3;y++)years.push(y);
+ const selectedWeek=Math.max(1,(v.weeks||[]).findIndex(w=>w.start===v.date)+1);
+ const wk=(v.weeks||[])[selectedWeek-1];
+ periodNavEl.innerHTML=`<button class="navbtn" id="prevWeek">◀ ${localStorage.getItem('pmLang')==='ar'?'السابق':'Previous'}</button>
+ <label>${localStorage.getItem('pmLang')==='ar'?'السنة':'Year'}:</label><select id="pmYear">${years.map(y=>`<option ${y===v.year?'selected':''}>${y}</option>`).join('')}</select>
+ <label>${localStorage.getItem('pmLang')==='ar'?'الشهر':'Month'}:</label><select id="pmMonth">${Array.from({length:12},(_,i)=>i+1).map(m=>`<option value="${m}" ${m===v.month?'selected':''}>${monthName(m)}</option>`).join('')}</select>
+ <label>${localStorage.getItem('pmLang')==='ar'?'الأسبوع':'Week'}:</label><select id="pmWeek">${(v.weeks||[]).map(w=>`<option value="${w.index}" ${w.index===selectedWeek?'selected':''}>W${w.index} (${w.label.replace(/^W\d+\s*/, '')})</option>`).join('')}</select>
+ <span class="range">${wk?wk.start+' → '+data.week.end:''}</span><button class="navbtn" id="nextWeek">${localStorage.getItem('pmLang')==='ar'?'التالي':'Next'} ▶</button>`;
+ const Y=()=>Number(document.getElementById('pmYear').value), M=()=>Number(document.getElementById('pmMonth').value), W=()=>Number(document.getElementById('pmWeek').value);
+ document.getElementById('pmYear').onchange=()=>setPmView(Y(),M(),1);
+ document.getElementById('pmMonth').onchange=()=>setPmView(Y(),M(),1);
+ document.getElementById('pmWeek').onchange=()=>setPmView(Y(),M(),W());
+ document.getElementById('prevWeek').onclick=async()=>{if(W()>1)return setPmView(Y(),M(),W()-1);let y=Y(),m=M()-1;if(m<1){m=12;y--}const tmp=await api('/api/pm/view');const fridays=[];const d=new Date(y,m-1,1,12);while(d.getMonth()===m-1){if(d.getDay()===5)fridays.push(new Date(d));d.setDate(d.getDate()+1)}return setPmView(y,m,Math.max(1,fridays.length));};
+ document.getElementById('nextWeek').onclick=()=>{if(W()<(v.weeks||[]).length)return setPmView(Y(),M(),W()+1);let y=Y(),m=M()+1;if(m>12){m=1;y++}return setPmView(y,m,1);};
+}
+async function load(){
+ [data,access]=await Promise.all([
+   api('/api/line/'+encodeURIComponent(line)),
+   api('/api/pm/access-mode')
+ ]);
+ await renderPeriodNav();
+
+ const pageTitleEl=document.querySelector('.pm-page-title')||document.getElementById('title');
+ if(pageTitleEl)pageTitleEl.textContent=data.line+' Line';
+ const weekEl=document.getElementById('week');
+ if(weekEl)weekEl.textContent=`${data.week.start} → ${data.week.end} | ${data.week.header}`;
+
+ let modeHtml='';
+ if(access.isPastWeek){
+   modeHtml=`<div class="history-note"><b>HISTORICAL PM / EDIT</b><div class="muted">Choose the real execution date inside the selected PM week before pressing Done.</div><div class="history-date"><label><b>Execution Date:</b></label><input id="historicalExecutionDate" type="date" min="${access.weekStart}" max="${access.weekEnd}" value="${historicalDateValue}"><span class="muted">${access.weekStart} → ${access.weekEnd}</span></div></div>`;
+
+ }else if(access.isFutureWeek){
+   modeHtml='<div class="readonly-note"><b>FUTURE PM / READ ONLY</b><div class="muted">Future PM tasks cannot be completed before their PM week starts.</div></div>';
+ }
+
+ const ws=data.monthWeeks||[];
+ lineKpiEl.innerHTML=ws.length?`<div style="font-weight:700;margin-bottom:8px;font-size:18px">${esc(data.line)} PM Performance</div><div class="table-wrap"><table class="kpi"><tr><th></th>${ws.map(w=>`<th>W${w.week}<br>${w.header}</th>`).join('')}</tr><tr><td class="label">Plan</td>${ws.map(w=>`<td>${w.planned}</td>`).join('')}</tr><tr><td class="label">Achieved</td>${ws.map(w=>`<td>${w.achieved}</td>`).join('')}</tr><tr><td class="label">Rate</td>${ws.map(w=>`<td>${Number(w.rate||0).toFixed(1)}%</td>`).join('')}</tr></table></div>`:'';
+
+ summaryEl.innerHTML=`Logged in: <b>${esc(me.name)}</b>${String(me.role||'').toLowerCase()==='viewer'?' &nbsp; | &nbsp; <b>Viewer / Review Only</b>':''} &nbsp; | &nbsp; <b>${data.tasks.length}</b> planned tasks. ${access.isCurrentWeek?'Done writes <b>6 + Username + actual computer date</b> to the monthly Excel.':''}${modeHtml}`;
+
+ machinesEl.innerHTML=`<div class="machine active" data-id="ALL"><b>All Machines</b></div>`+data.machines.map(m=>`<div class="machine" data-id="${esc(m.id)}"><b>${esc(m.machineNo)}</b><div class="machine-name">${esc(m.machineName)}</div><div class="task-count">${m.taskCount} tasks</div></div>`).join('');
+ machinesEl.onclick=e=>{const c=e.target.closest('.machine');if(c){selectedMachine=c.dataset.id;render(selectedMachine)}};
+ const validMachine=selectedMachine==='ALL'||data.machines.some(m=>m.id===selectedMachine);
+ if(!validMachine)selectedMachine='ALL';
+ render(selectedMachine);
+}
+load().catch(e=>{summaryEl.textContent=e.message;console.error(e)});
+</script><script src="branding-client.js?v=143"></script><script src="i18n.js?v=131"></script>
+</body></html>

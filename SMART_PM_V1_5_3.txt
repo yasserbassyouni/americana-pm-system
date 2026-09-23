@@ -1,0 +1,8 @@
+Smart PM Maintenance V1.5.3 - Annual Plans Runtime Fix
+
+Fixes:
+- Fixed Annual Plans JavaScript stopping at startup because annual-plans.html and settings-common.js both declared a global `const esc`.
+- Annual Plans page JavaScript is now isolated inside its own scope, so Line / Year / existing annual tasks can load normally.
+- Added type="button" to Annual Plans buttons to prevent accidental submit/navigation behavior.
+- Stabilized Annual Plans button/layout rendering to avoid the visible one-time page jump when pressing buttons.
+- Workflow logic, PM calculations, Running Hours, Excel and Year Planner calculations were not changed.

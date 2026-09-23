@@ -1,0 +1,9 @@
+Smart PM Maintenance V1.3.7
+Base: V1.3.5 Visible Warnings (stable)
+
+Change scope intentionally limited to legacy Excel Import/Migrate:
+- Legacy Running Hours text with comma thousands separators is normalized during import.
+- Example: 10,000 hr -> Frequency Text 10000 hr and Interval Hours 10000.
+- 6,000 hr -> 6000 hr; 5,000 hours -> 5000 hr.
+- No Year Planner, Continuous Running Hours, scheduling, or runtime calculation logic was changed.
+- V1.3.6 parser changes are NOT included.

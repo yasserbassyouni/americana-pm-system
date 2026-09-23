@@ -1,0 +1,20 @@
+Smart PM V1.5.0 CLEAN WORKFLOW
+
+Base: V1.4.5 (not V1.4.6/1.4.7/1.4.8)
+
+Manual cycle:
+1. Create Line
+2. Automatically create Current Monthly Excel
+3. Open Add Machines for the same line/year
+4. Add PM Tasks
+5. After at least one task exists, show choices:
+   - Continue This Line -> Review Annual Plan
+   - Add More Machines / Tasks
+   - Create Another Line
+
+Workflow colors are based on real system data:
+- Green = completed in data
+- Red = next required action
+- Gray = later/pending
+
+No changes to PM scheduling, Running Hours, Excel calculations, or Year Planner formulas.

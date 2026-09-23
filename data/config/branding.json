@@ -1,0 +1,115 @@
+{
+  "companyName": "Smart PM Maintenance",
+  "factoryName": "",
+  "headerTitle": "Preventive Maintenance System",
+  "logoMode": "left",
+  "companyLogo": "data/branding/company_logo1.png",
+  "leftLogo": "",
+  "rightLogo": "",
+  "logos": [
+    {
+      "id": "logo1",
+      "file": "data/branding/company_logo1.png",
+      "position": "left",
+      "size": "medium",
+      "width": 200,
+      "height": 120,
+      "enabled": true
+    },
+    {
+      "id": "logo2",
+      "file": "data/branding/company_logo2.png",
+      "position": "center",
+      "size": "medium",
+      "width": 92,
+      "height": 48,
+      "enabled": true
+    },
+    {
+      "id": "logo3",
+      "file": "",
+      "position": "right",
+      "size": "medium",
+      "width": 92,
+      "height": 48,
+      "enabled": false
+    }
+  ],
+  "excelLogo": {
+    "slot": 1,
+    "width": 160,
+    "height": 100,
+    "autoFitCell": true,
+    "padding": 8
+  },
+  "headerZones": {
+    "left": {
+      "logoSlot": 1,
+      "showLogo": true,
+      "showCompany": false,
+      "showFactory": false,
+      "showHeaderTitle": false,
+      "showPageTitle": false,
+      "align": "left",
+      "logoWidth": 200,
+      "logoHeight": 120,
+      "companySize": "medium",
+      "factorySize": "small",
+      "headerTitleSize": "small",
+      "pageTitleSize": "large"
+    },
+    "center": {
+      "logoSlot": 2,
+      "showLogo": false,
+      "showCompany": true,
+      "showFactory": true,
+      "showHeaderTitle": true,
+      "showPageTitle": true,
+      "align": "center",
+      "logoWidth": 92,
+      "logoHeight": 48,
+      "companySize": "medium",
+      "factorySize": "small",
+      "headerTitleSize": "small",
+      "pageTitleSize": "large"
+    },
+    "right": {
+      "logoSlot": 3,
+      "showLogo": true,
+      "showCompany": false,
+      "showFactory": false,
+      "showHeaderTitle": false,
+      "showPageTitle": false,
+      "align": "right",
+      "logoWidth": 92,
+      "logoHeight": 48,
+      "companySize": "medium",
+      "factorySize": "small",
+      "headerTitleSize": "small",
+      "pageTitleSize": "large"
+    }
+  },
+  "textLayout": {
+    "company": {
+      "position": "left",
+      "size": "medium",
+      "enabled": true
+    },
+    "factory": {
+      "position": "left",
+      "size": "small",
+      "enabled": true,
+      "mode": "underCompany"
+    },
+    "pageTitle": {
+      "position": "center",
+      "size": "large",
+      "enabled": true
+    },
+    "headerTitle": {
+      "position": "center",
+      "size": "small",
+      "enabled": true
+    }
+  }
+}

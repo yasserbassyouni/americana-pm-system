@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Import Excel & Build PM</title><link rel="stylesheet" href="settings.css"><style>
+.status{padding:16px;border-radius:10px;background:#fff7df;margin:16px 0;line-height:1.6}.ok{background:#eaf7ee;color:#166534}.err{background:#fee2e2;color:#7f1d1d}.big{font-size:18px;padding:16px}.muted{color:#666}.donebox{display:none;margin-top:15px}.donebox .btn{width:auto;margin-right:8px}
+</style></head><body>
+<header class="top"><div class="bar"><div><h2>Import Excel → Build PM → Done</h2><div>Excel is the only PM setup source. One import automatically builds the complete January–December plan.</div></div><button class="btn" onclick="location.href='index.html'">← PM Plan</button></div></header>
+<main class="wrap"><div class="card"><h3>Import Annual PM Excel</h3>
+<label>Select Excel File (.xlsx)<input class="big" id="file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>
+<label><b>Section / Line Name</b><input id="sectionName" placeholder="Example: Preparation, Packaging, Utilities" style="width:100%;max-width:520px;padding:11px;margin:7px 0 12px;border:1px solid #ccc;border-radius:8px"><small class="muted">For a new section, enter its name here. If blank, the system uses the Excel sheet/file name.</small></label><div id="status" class="status">Enter the Section / Line Name (or leave it blank to use the Excel name), then choose the Excel file. A new section is created automatically and the full January–December PM plan is built.</div>
+<div id="done" class="donebox"><button class="btn red" onclick="location.href='index.html'">Open PM Plan</button><button class="btn" onclick="location.href='reports.html'">View Full Year</button></div>
+</div></main><script src="settings-common.js"></script><script>
+const file=document.getElementById('file'),status=document.getElementById('status'),done=document.getElementById('done');let busy=false;
+function esc2(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function show(m,t=''){status.className='status '+t;status.innerHTML=m}
+function lineFromFile(name,sheet){const generic=/^(full|sheet1|sheet 1|annual|pm)$/i; if(sheet&&!generic.test(sheet.trim()))return sheet.trim(); return name.replace(/\.xlsx$/i,'').replace(/\b(preventive\s*maintenance|annual|pm)\b/ig,' ').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim()||'Imported Line'}
+async function upload(f){const r=await fetch('/api/pm-master/upload-xlsx',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/octet-stream','X-File-Name':encodeURIComponent(f.name)},body:await f.arrayBuffer()});let j={};try{j=await r.json()}catch(_){}if(!r.ok)throw Error(j.error||'Upload failed');return j.token}
+async function run(){if(busy)return;const f=file.files&&file.files[0];if(!f)return;if(!/\.xlsx$/i.test(f.name)){show('Only .xlsx files are accepted.','err');return}busy=true;file.disabled=true;done.style.display='none';const year=new Date().getFullYear();
+ try{
+  show('<b>Importing Excel…</b><br>Please wait. No other setup step is required.');
+  const uploadToken=await upload(f);const pv=await api('/api/excel-migration/preview',{method:'POST',body:JSON.stringify({kind:'annual',uploadToken,year})});
+  if(!pv.tasks||!pv.machines)throw Error('No machines or PM tasks were detected in this Excel file');
+  const line=(document.getElementById('sectionName').value||'').trim()||lineFromFile(f.name,pv.sheet);let master=await api('/api/pm-master');let exists=(master.lines||[]).some(x=>String(x.name).toLowerCase()===line.toLowerCase());
+  if(!exists){show(`<b>Excel read successfully.</b><br>Creating line <b>${esc2(line)}</b> and importing ${pv.tasks} PM tasks…`);await api('/api/pm-master/lines',{method:'POST',body:JSON.stringify({name:line,year,annualSource:'blank_auto',monthlySource:'blank_auto'})})}
+  show(`<b>Building ${esc2(line)} / ${year}…</b><br>Importing ${pv.machines} machines and ${pv.tasks} PM tasks.`);
+  const cv=await api('/api/excel-migration/convert',{method:'POST',body:JSON.stringify({kind:'annual',uploadToken,line,year})});
+  for(let m=1;m<=12;m++){show(`<b>Building full-year PM…</b><br>${esc2(line)} / ${year} — month ${m} of 12`);await api('/api/pm-master/lines/'+encodeURIComponent(line)+'/rebuild-monthly/'+year+'/'+m,{method:'POST',body:'{}'})}
+  show(`<b>Done ✓</b><br>${esc2(line)} / ${year}<br>Machines: <b>${cv.machines??pv.machines}</b> &nbsp; PM Tasks: <b>${cv.systemTasks??pv.tasks}</b><br>Full January–December PM plan built and saved. Existing execution history was preserved.`,'ok');done.style.display='block';
+ }catch(e){show('<b>Import stopped:</b> '+esc2(e.message||e),'err')}finally{busy=false;file.disabled=false}
+}
+file.addEventListener('change',run);
+</script><script src="branding-client.js?v=143"></script><script src="i18n.js?v=130"></script></body></html>
