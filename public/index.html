@@ -10,11 +10,43 @@ async function api(u,o={}){o.headers={...(o.headers||{}),...H};if(o.body&&!o.hea
 function fmt(d){return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}function fridays(y,m){let d=new Date(y,m-1,1,12);while(d.getDay()!=5)d.setDate(d.getDate()+1);let a=[];while(d.getMonth()==m-1){a.push(new Date(d));d.setDate(d.getDate()+7)}return a}
 function globalWeek(d){const first=new Date(d.getFullYear(),0,1,12);while(first.getDay()!=5)first.setDate(first.getDate()+1);return Math.floor((d-first)/604800000)+1}
 function syncPeriodSelectors(){
- const s=new Date(view.date+'T12:00:00'), y=s.getFullYear(), m=s.getMonth()+1, fs=fridays(y,m); let wi=fs.findIndex(x=>x.getDate()===s.getDate())+1;if(wi<1)wi=1;
- const Y=document.getElementById('navYear'),M=document.getElementById('navMonth'),W=document.getElementById('navWeek');
- Y.innerHTML=[y-2,y-1,y,y+1,y+2].map(v=>`<option value="${v}">${v}</option>`).join('');Y.value=y;
- const mn=['January','February','March','April','May','June','July','August','September','October','November','December'];M.innerHTML=mn.map((n,i)=>`<option value="${i+1}">${n}</option>`).join('');M.value=m;
- W.innerHTML=fs.map((d,i)=>`<option value="${i+1}">W${i+1} (${fmt(d)})</option>`).join('');W.value=wi;
+  const Y = document.getElementById('navYear');
+  const M = document.getElementById('navMonth');
+  const W = document.getElementById('navWeek');
+
+  // Dashboard can load without the period selectors
+  if (!Y || !M || !W || !view || !view.date) return;
+
+  const s = new Date(view.date + 'T12:00:00');
+  const y = s.getFullYear();
+  const m = s.getMonth() + 1;
+  const fs = fridays(y,m);
+
+  let wi = fs.findIndex(x =>
+    x.getDate() === s.getDate()
+  ) + 1;
+
+  if (wi < 1) wi = 1;
+
+  Y.innerHTML = [y-2,y-1,y,y+1,y+2]
+    .map(v => `<option value="${v}">${v}</option>`)
+    .join('');
+  Y.value = y;
+
+  const mn = [
+    'January','February','March','April','May','June',
+    'July','August','September','October','November','December'
+  ];
+
+  M.innerHTML = mn
+    .map((n,i) => `<option value="${i+1}">${n}</option>`)
+    .join('');
+  M.value = m;
+
+  W.innerHTML = fs
+    .map((d,i) => `<option value="${i+1}">W${i+1} (${fmt(d)})</option>`)
+    .join('');
+  W.value = wi;
 }
 function showWeek(){
   const s = new Date(view.date + 'T12:00:00');
