@@ -16,7 +16,26 @@ function syncPeriodSelectors(){
  const mn=['January','February','March','April','May','June','July','August','September','October','November','December'];M.innerHTML=mn.map((n,i)=>`<option value="${i+1}">${n}</option>`).join('');M.value=m;
  W.innerHTML=fs.map((d,i)=>`<option value="${i+1}">W${i+1} (${fmt(d)})</option>`).join('');W.value=wi;
 }
-function showWeek(){const s=new Date(view.date+'T12:00:00'),e=new Date(s);e.setDate(e.getDate()+6);document.getElementById('weekTitle').textContent=`Week ${globalWeek(s)>0?globalWeek(s):'-'} / ${s.getFullYear()}`;document.getElementById('weekDates').textContent=`${fmt(s)} - ${fmt(e)}`;syncPeriodSelectors()}
+function showWeek(){
+  const s = new Date(view.date + 'T12:00:00');
+  const e = new Date(s);
+  e.setDate(e.getDate() + 6);
+
+  const weekTitleEl = document.getElementById('weekTitle');
+  const weekDatesEl = document.getElementById('weekDates');
+
+  if (weekTitleEl) {
+    weekTitleEl.textContent =
+      'Week ' + (globalWeek(s) > 0 ? globalWeek(s) : '-') +
+      ' / ' + s.getFullYear();
+  }
+
+  if (weekDatesEl) {
+    weekDatesEl.textContent = fmt(s) + ' - ' + fmt(e);
+  }
+
+  syncPeriodSelectors();
+}
 async function setPeriod(){try{const y=+document.getElementById('navYear').value,m=+document.getElementById('navMonth').value,w=+document.getElementById('navWeek').value||1;await api('/api/pm/view',{method:'POST',body:JSON.stringify({year:y,month:m,weekIndex:w})});await load()}catch(e){document.getElementById('err').innerHTML='<div class=error>'+e.message+'</div>'}}
 function refreshWeeks(){const y=+document.getElementById('navYear').value,m=+document.getElementById('navMonth').value,W=document.getElementById('navWeek'),fs=fridays(y,m);W.innerHTML=fs.map((d,i)=>`<option value="${i+1}">W${i+1} (${fmt(d)})</option>`).join('');W.value=1;setPeriod()}
 async function moveWeek(delta){try{let d=new Date(view.date+'T12:00:00');d.setDate(d.getDate()+delta*7);const fs=fridays(d.getFullYear(),d.getMonth()+1);let idx=fs.findIndex(x=>x.getDate()===d.getDate());if(idx<0)idx=0;await api('/api/pm/view',{method:'POST',body:JSON.stringify({year:d.getFullYear(),month:d.getMonth()+1,weekIndex:idx+1})});await load()}catch(e){document.getElementById('err').innerHTML='<div class=error>'+e.message+'</div>'}}
